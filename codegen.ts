@@ -1,29 +1,26 @@
-import type { CodegenConfig } from '@graphql-codegen/cli'
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  overwrite: true,
-  schema: 'https://ly-budget-gql-dev-1075249966777.asia-east1.run.app/api/graphql',
-  documents: [
-    'graphql/**/*.graphql',
-    'app/**/*.tsx'
-  ],
+  schema:
+    "https://ly-budget-gql-dev-1075249966777.asia-east1.run.app/api/graphql",
+  documents: ["./**/*.{gql,graphql}"],
   generates: {
-    'generated/graphql.tsx': {
-      plugins: [
-        'typescript',
-        'typescript-operations',
-        'typescript-react-apollo'
-      ],
+    "./graphql/__generated__/": {
+      preset: "client",
+      plugins: [],
+      presetConfig: {
+        gqlTagName: "gql",
+        fragmentMasking: false,
+      },
+    },
+    "introspection.json": {
+      plugins: ["introspection"],
       config: {
-        reactApolloVersion: 3,
-        withHooks: true,
-        withHOC: false
-      }
-    }
+        minify: true,
+      },
+    },
   },
-  // hooks: {
-  //   afterAllFileWrite: ['pnpm lint --fix']
-  // }
-}
+  ignoreNoDocuments: true,
+};
 
-export default config
+export default config;
