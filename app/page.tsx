@@ -1,16 +1,14 @@
+import { GetBudgetDocument } from "@/generated/graphql";
+import { getClient } from "@/lib/apollo-client";
+
 import Image from "next/image";
 
 export default async function Home() {
-  const result = await fetch(
-    "https://ly-budget-gql-dev-1075249966777.asia-east1.run.app/api/graphql",
-    {
-      headers: {
-        "x-apollo-operation-name": "Query",
-      },
-    }
-  );
-  const data = await result.json();
-  console.log({ data: data.errors });
+  const { data } = await getClient().query({
+    query: GetBudgetDocument,
+    variables: { id: "1" },
+  });
+  console.log({ data });
   return (
     <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
