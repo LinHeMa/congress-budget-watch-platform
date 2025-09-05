@@ -1,0 +1,25 @@
+query GetMeetings {
+  meetings {
+    id
+    type
+    location
+    meetingDate
+    meetingRecordUrl
+    description
+  }
+  meetingsCount
+}
+
+query GetMeeting($id: ID!) {
+  meeting(where: { id: $id }) {
+    id
+    type
+    location
+    meetingDate
+    meetingRecordUrl
+    description
+    committee {
+      id
+    }
+  }
+}

@@ -1,0 +1,35 @@
+query GetProposals {
+  proposals {
+    id
+    proposalTypes
+    result
+    reductionAmount
+    freezeAmount
+    unfreezeStatus
+    description
+  }
+  proposalsCount
+}
+
+query GetProposal($id: ID!) {
+  proposal(where: { id: $id }) {
+    id
+    proposalTypes
+    result
+    reductionAmount
+    freezeAmount
+    unfreezeStatus
+    budgetImageUrl
+    description
+    meetingsCount
+    proposersCount
+    coSignersCount
+    government {
+      id
+    }
+    budget {
+      id
+      projectName
+    }
+  }
+}

@@ -1,0 +1,35 @@
+query GetBudgets {
+  budgets {
+    id
+    type
+    year
+    projectName
+    projectDescription
+    budgetAmount
+    majorCategory
+    mediumCategory
+    minorCategory
+    description
+  }
+  budgetsCount
+}
+
+query GetBudget($id: ID!) {
+  budget(where: { id: $id }) {
+    id
+    type
+    year
+    projectName
+    projectDescription
+    budgetAmount
+    lastYearSettlement
+    majorCategory
+    mediumCategory
+    minorCategory
+    budgetUrl
+    description
+    government {
+      id
+    }
+  }
+}
