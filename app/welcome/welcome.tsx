@@ -20,11 +20,18 @@ const GetBudgetsQuery = graphql(`
   }
 `);
 export function Welcome() {
-  console.log({ GetBudgetsQuery });
-  const { data } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     queryKey: ["Budgets"],
     queryFn: () => execute(GetBudgetsQuery),
   });
   console.log(data);
-  return <main className="flex items-center justify-center pt-16 pb-4"></main>;
+  if (isLoading) return <>loading</>;
+  if (isError) return <>error</>;
+  return (
+    <main className="flex items-center justify-center pt-16 pb-4">
+      {data?.budgets?.map((bud) => (
+        <li key={bud.id}>{bud.projectName}</li>
+      ))}
+    </main>
+  );
 }

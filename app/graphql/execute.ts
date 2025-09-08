@@ -21,5 +21,6 @@ export async function execute<TResult, TVariables>(
     throw new Error("Network response was not ok");
   }
 
-  return response.json() as TResult;
+  const result = await response.json();
+  return result.data as TResult;
 }
