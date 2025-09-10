@@ -1,0 +1,62 @@
+description: Git commit message 規範與樣板（遵循 7 原則）
+globs:
+alwaysApply: true
+---
+
+### 目的
+統一 Git 提交訊息格式，提升可讀性與可維護性。規則參考 Chris Beams 的七原則與樣板化做法。
+
+### 主要規範（務必遵守）
+- **主旨行（Subject）**: 最多 50 字元、句首大寫、使用祈使語氣、不要句點結尾
+- **空白行**: 主旨行與內文之間留一個空白行
+- **內文（Body）**: 解釋「做了什麼、為什麼要做」，不要寫「怎麼做」；每行建議 72 字元換行
+- **附註（Footers）**: 需要時加上 `Co-authored-by` 或追蹤資訊（例如 Issue/PR）
+
+### 建議樣板（.gitmessage）
+將以下內容存成 `~/.gitmessage` 作為個人樣板。
+
+```
+# Title: Summary, imperative, start upper case, don't end with a period
+# No more than 50 chars. #### 50 chars is here:  #
+
+# Remember blank line between title and body.
+
+# Body: Explain *what* and *why* (not *how*). Include task ID (Jira issue).
+# Wrap at 72 chars. ################################## which is here:  #
+
+
+# At the end: Include Co-authored-by for all contributors. 
+# Include at least one empty line before it. Format: 
+# Co-authored-by: name <user@users.noreply.github.com>
+#
+# How to Write a Git Commit Message:
+# https://cbea.ms/git-commit/
+#
+# 1. Separate subject from body with a blank line
+# 2. Limit the subject line to 50 characters
+# 3. Capitalize the subject line
+# 4. Do not end the subject line with a period
+# 5. Use the imperative mood in the subject line
+# 6. Wrap the body at 72 characters
+# 7. Use the body to explain what and why vs. how
+```
+
+### Git 設定（建議）
+- 啟用樣板：
+
+```bash
+git config --global commit.template ~/.gitmessage
+```
+
+- 確保註解能被自動剝除（預設即為 strip）：
+
+```bash
+git config --global commit.cleanup strip
+```
+
+### 送出前自我檢查
+- **50/72 規則**: 主旨 ≤ 50、內文每行 ≤ 72
+- **語氣**: 主旨用祈使句，句首大寫，末尾不加句點
+- **內容**: 說明「做了什麼與為什麼」，必要時加 Issue/PR/Co-authored-by
+
+參考資料：`https://gist.github.com/lisawolderiksen/a7b99d94c92c6671181611be1641c733`
