@@ -26,7 +26,7 @@ const AllBudgets = () => {
 
   const transformedData = useMemo(() => {
     if (!data?.budgets) return [];
-    
+
     return data.budgets.map((budget) => ({
       id: budget.id,
       department: budget.department || "未指定部會",
@@ -38,7 +38,8 @@ const AllBudgets = () => {
       proposalResult: "通過",
       originalAmount: 21200000,
       reducedAmount: 21200000,
-      proposalContent: "原住民族委員會為深化民族教育內涵，促進原住民族語言、教育及文化推廣，提升大眾傳播媒體及其他公共領域原住民族之聲、文化、藝術形象之自我詮釋，促進族群和諧共處，教育政策與業務之專業督導與管理，其預算數自111年度之475萬2千元逐年增加至113年度之1,960萬元，增加1,084萬8千元增幅92.28倍，「原住民族教育推廣」之效..."
+      proposalContent:
+        "原住民族委員會為深化民族教育內涵，促進原住民族語言、教育及文化推廣，提升大眾傳播媒體及其他公共領域原住民族之聲、文化、藝術形象之自我詮釋，促進族群和諧共處，教育政策與業務之專業督導與管理，其預算數自111年度之475萬2千元逐年增加至113年度之1,960萬元，增加1,084萬8千元增幅92.28倍，「原住民族教育推廣」之效...",
     }));
   }, [data?.budgets]);
 
@@ -51,47 +52,47 @@ const AllBudgets = () => {
 
       <div className="p-5">
         {/* title start */}
-        <p className="w-full text-center font-bold text-xl mb-3">
+        <p className="mb-3 w-full text-center text-xl font-bold">
           {content.title}
         </p>
-        <div className="relative w-full h-0.5 bg-black mb-3">
+        <div className="relative mb-3 h-0.5 w-full bg-black">
           <img
             src="/image/magnifier-eye.svg"
             height={63}
             width={55}
             alt="magnifier eye logo"
-            className="absolute bg-red -top-[31.5px] z-10"
+            className="bg-red absolute -top-[31.5px] z-10"
           />
-          <div className="absolute h-[63px] w-[55px] bg-[#F6F6F6] -top-[31.5px]" />
+          <div className="absolute -top-[31.5px] h-[63px] w-[55px] bg-[#F6F6F6]" />
         </div>
         {/* title end */}
 
         {/* progress start */}
-        <div className="border-b-[2px] border-black flex items-center justify-center mb-5">
-          <div className="border-[2px] px-2.5 py-1 border-black border-b-0 rounded-t-md bg-[#E9808E] text-[#f6f6f6] font-bold text-[16px]">
+        <div className="mb-5 flex items-center justify-center border-b-[2px] border-black">
+          <div className="rounded-t-md border-[2px] border-b-0 border-black bg-[#E9808E] px-2.5 py-1 text-[16px] font-bold text-[#f6f6f6]">
             {content.progressToggle}
           </div>
         </div>
-        <section className="flex justify-center w-full font-bold text-lg text-[#3E51FF] mb-2">
+        <section className="mb-2 flex w-full justify-center text-lg font-bold text-[#3E51FF]">
           <p>最新進度</p>
         </section>
-        <div className="w-full h-fit flex justify-center items-center mb-5">
+        <div className="mb-5 flex h-fit w-full items-center justify-center">
           <ProgressBar className="w-[165px]" labels={content.progressLabels} />
         </div>
         {/* progress end */}
 
         {/* budgets selector start */}
-        <div className="w-full h-0.5 bg-black" />
+        <div className="h-0.5 w-full bg-black" />
         <BudgetsSelector />
-        <div className="w-full h-0.5 bg-black" />
+        <div className="h-0.5 w-full bg-black" />
 
         {/* 排序下拉（react-select） */}
         <SortToolbar selectedValue={selectedSort} onChange={setSelectedSort} />
-        <div className="w-full h-0.5 bg-black" />
+        <div className="h-0.5 w-full bg-black" />
 
         {/* 使用新的表格組件渲染清單 */}
-        <BudgetTable 
-          data={sortBudgetsByOption(transformedData, selectedSort)} 
+        <BudgetTable
+          data={sortBudgetsByOption(transformedData, selectedSort)}
           className="mt-4"
         />
       </div>

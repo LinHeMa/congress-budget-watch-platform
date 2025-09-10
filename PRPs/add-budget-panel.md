@@ -1,12 +1,15 @@
 # PRP: Create BudgetsPanel Component for Modular Budget List UI
 
 ## Overview
+
 Extract and modularize the existing budget list UI from `app/all-budgets/index.tsx` into a reusable `BudgetsPanel` component. This component will compose existing sub-components (title, progress, filtering, sorting, list) with flexible controlled/uncontrolled patterns using Zustand as the single source of truth.
 
 ## Context & Research Findings
 
 ### Current Implementation State
+
 From `app/all-budgets/index.tsx` (lines 33-83), the existing structure includes:
+
 ```tsx
 // Title section with magnifier eye
 <p className="w-full text-center font-bold text-xl mb-3">{content.title}</p>
@@ -48,18 +51,20 @@ From `app/all-budgets/index.tsx` (lines 33-83), the existing structure includes:
 ### Existing Components Analysis
 
 #### Zustand Store (`app/stores/budget-selector.tsx`)
+
 ```typescript
 interface BudgetSelectState {
-  selectedValue: string;      // Filter value (default: "all")
-  searchedValue: string;      // Search value (default: "")
-  visible: boolean;           // Visibility toggle (default: true)
-  selectedSort: string;       // Sort value (default: "projectName-asc")
+  selectedValue: string; // Filter value (default: "all")
+  searchedValue: string; // Search value (default: "")
+  visible: boolean; // Visibility toggle (default: true)
+  selectedSort: string; // Sort value (default: "projectName-asc")
   setSelectedSort: (value: string) => void;
   // ... other actions
 }
 ```
 
 #### SortToolbar Component (`app/components/sort-toolbar.tsx`)
+
 ```typescript
 interface SortToolbarProps {
   selectedValue: string;
@@ -69,11 +74,13 @@ interface SortToolbarProps {
 ```
 
 #### Other Components
+
 - **BudgetHeader**: Simple header with logo and share button (no props needed)
 - **ProgressBar**: `ProgressBarProps` with optional `isFinished`, `count`, `width`, `height`, `gap`, `className`, `labels`
 - **BudgetsSelector**: `BudgetsSelectorProps` with optional `onSelectionChange`, `className`
 
 ### Component Patterns Established
+
 - Use `React.FC<Props>` with TypeScript interfaces
 - Optional props with sensible defaults
 - Proper event handler typing: `(value: string) => void`
@@ -82,6 +89,7 @@ interface SortToolbarProps {
 ## Implementation Blueprint
 
 ### Phase 1: Component Interface Definition
+
 ```typescript
 // app/components/budgets-panel/index.tsx
 import type { Budget } from "~/graphql/graphql";
@@ -91,38 +99,39 @@ type SortValue = string; // "projectName-asc", "budgetAmount-desc", etc.
 interface BudgetsPanelProps {
   // Required data
   budgets: Budget[];
-  
+
   // Loading states
   isLoading?: boolean;
   isError?: boolean;
 
   // Content customization
-  title?: string;               // Default: content.title from page-content.ts
-  progressToggle?: string;      // Default: content.progressToggle
-  progressLabels?: string[];    // Default: content.progressLabels
-  showProgress?: boolean;       // Default: true
+  title?: string; // Default: content.title from page-content.ts
+  progressToggle?: string; // Default: content.progressToggle
+  progressLabels?: string[]; // Default: content.progressLabels
+  showProgress?: boolean; // Default: true
 
   // Styling
   className?: string;
-  
+
   // Sort control (controlled vs uncontrolled)
-  sortValue?: SortValue;        // If provided, component runs in controlled mode
+  sortValue?: SortValue; // If provided, component runs in controlled mode
   onSortChange?: (value: SortValue) => void;
-  
+
   // List rendering customization
   renderItem?: (budget: Budget, index: number) => React.ReactNode;
-  
+
   // Event handlers
   onItemClick?: (budget: Budget) => void;
-  
+
   // Component visibility toggles
-  showHeader?: boolean;         // Default: true  
-  showFilters?: boolean;        // Default: true
-  showSort?: boolean;          // Default: true
+  showHeader?: boolean; // Default: true
+  showFilters?: boolean; // Default: true
+  showSort?: boolean; // Default: true
 }
 ```
 
 ### Phase 2: Core Component Structure
+
 ```typescript
 // Following React Hooks Rules - all hooks at top level
 const BudgetsPanel: React.FC<BudgetsPanelProps> = ({
@@ -163,8 +172,8 @@ const BudgetsPanel: React.FC<BudgetsPanelProps> = ({
 
   // Default item renderer
   const defaultRenderItem = (budget: Budget, index: number) => (
-    <section 
-      key={budget.id} 
+    <section
+      key={budget.id}
       onClick={() => onItemClick?.(budget)}
       className={onItemClick ? "cursor-pointer" : ""}
     >
@@ -228,9 +237,9 @@ const BudgetsPanel: React.FC<BudgetsPanelProps> = ({
       {/* Sort Section */}
       {showSort && (
         <>
-          <SortToolbar 
-            selectedValue={currentSort} 
-            onChange={handleSortChange} 
+          <SortToolbar
+            selectedValue={currentSort}
+            onChange={handleSortChange}
           />
           <div className="w-full h-0.5 bg-black" />
         </>
@@ -246,6 +255,7 @@ const BudgetsPanel: React.FC<BudgetsPanelProps> = ({
 ```
 
 ### Phase 3: File Structure Setup
+
 ```
 app/components/budgets-panel/
 ├── index.ts          // Export statement
@@ -253,14 +263,15 @@ app/components/budgets-panel/
 ```
 
 ### Phase 4: Integration Pattern Examples
+
 ```typescript
 // 1. Uncontrolled mode (default - uses Zustand store)
 <BudgetsPanel budgets={data?.budgets ?? []} />
 
 // 2. Controlled mode (parent manages sort)
 const [sort, setSort] = useState<string>("budgetAmount-desc");
-<BudgetsPanel 
-  budgets={data?.budgets ?? []} 
+<BudgetsPanel
+  budgets={data?.budgets ?? []}
   sortValue={sort}
   onSortChange={setSort}
 />
@@ -272,8 +283,8 @@ const [sort, setSort] = useState<string>("budgetAmount-desc");
     <section className="border p-4 rounded hover:bg-gray-50">
       <h4 className="font-semibold">{budget.projectName ?? "（未命名）"}</h4>
       <div className="text-sm text-blue-700">
-        預算金額：{typeof budget.budgetAmount === "number" 
-          ? `NT$ ${budget.budgetAmount.toLocaleString()}` 
+        預算金額：{typeof budget.budgetAmount === "number"
+          ? `NT$ ${budget.budgetAmount.toLocaleString()}`
           : "未設定"}
       </div>
     </section>
@@ -282,7 +293,7 @@ const [sort, setSort] = useState<string>("budgetAmount-desc");
 />
 
 // 4. Minimal configuration (headers/progress hidden)
-<BudgetsPanel 
+<BudgetsPanel
   budgets={data?.budgets ?? []}
   showHeader={false}
   showProgress={false}
@@ -293,18 +304,21 @@ const [sort, setSort] = useState<string>("budgetAmount-desc");
 ## Critical Implementation Details
 
 ### React Hooks Rules Compliance
+
 - **All hooks called unconditionally** at component top level
 - **No hooks inside conditions, loops, or nested functions**
 - **Early returns only after all hooks** are called
 - Reference: https://react.dev/reference/rules/rules-of-hooks
 
 ### TypeScript Integration
+
 - **Import Budget type**: `import type { Budget } from "~/graphql/graphql";`
 - **Reuse existing interfaces**: Import `SortToolbarProps` patterns
 - **Proper generic typing**: Use existing patterns from `sort-toolbar.tsx`
 - **Event handler types**: Follow `(value: string) => void` pattern
 
 ### State Management Patterns
+
 ```typescript
 // Controlled vs Uncontrolled Detection
 const isControlled = sortValue !== undefined && onSortChange !== undefined;
@@ -320,6 +334,7 @@ const sortedBudgets = useMemo(() => {
 ```
 
 ### Component Composition Strategy
+
 - **Reuse existing components**: No modifications to `SortToolbar`, `ProgressBar`, `BudgetsSelector`
 - **Import from existing paths**: Leverage established import patterns
 - **Maintain styling consistency**: Copy exact CSS classes from current implementation
@@ -328,10 +343,11 @@ const sortedBudgets = useMemo(() => {
 ## Validation Gates
 
 ### Pre-Implementation Checklist
+
 ```bash
 # Verify all dependencies exist
 ls app/components/sort-toolbar.tsx
-ls app/components/progress-bar.tsx  
+ls app/components/progress-bar.tsx
 ls app/components/budgets-selector.tsx
 ls app/stores/budget-selector.tsx
 
@@ -343,6 +359,7 @@ pnpm typecheck
 ```
 
 ### Implementation Validation Steps
+
 ```bash
 # 1. TypeScript compilation (must pass)
 pnpm typecheck
@@ -354,16 +371,18 @@ pnpm build
 pnpm dev
 
 # 4. Import validation - check all imports resolve
-grep -r "import.*budgets-panel" app/ 
+grep -r "import.*budgets-panel" app/
 ```
 
 ### Functional Testing Checklist
+
 1. **Visual Regression Testing**:
    - Component renders identical to current `all-budgets` page
    - All sections (title, progress, filters, sort, list) appear correctly
    - Styling matches exactly (colors, spacing, layout)
 
 2. **Controlled Mode Testing**:
+
    ```typescript
    // Test controlled sort
    const [sort, setSort] = useState("budgetAmount-desc");
@@ -372,6 +391,7 @@ grep -r "import.*budgets-panel" app/
    ```
 
 3. **Uncontrolled Mode Testing**:
+
    ```typescript
    // Test default Zustand integration
    // Verify sort changes update Zustand store
@@ -392,21 +412,25 @@ grep -r "import.*budgets-panel" app/
 ## External Resources & Documentation
 
 ### React Patterns & Best Practices
+
 - **React Hooks Rules**: https://react.dev/reference/rules/rules-of-hooks
 - **Component Composition**: https://react.dev/learn/sharing-state-between-components
 - **Controlled vs Uncontrolled**: https://react.dev/learn/sharing-state-between-components
 
 ### TypeScript Integration
+
 - **React TypeScript Patterns**: https://react-typescript-cheatsheet.netlify.app/docs/basic/getting-started/function_components
 - **Component Props Typing**: Established patterns in existing codebase components
 
 ### Zustand Integration Patterns
+
 - **Store Usage**: Follow existing `useBudgetSelectStore` patterns from `all-budgets/index.tsx`
 - **State Selection**: Use `useStore(store, selector)` pattern consistently
 
 ## Expected Deliverables
 
 1. **New Component Directory**:
+
    ```
    app/components/budgets-panel/
    ├── index.ts
@@ -455,6 +479,7 @@ grep -r "import.*budgets-panel" app/
 ## Risk Mitigation
 
 ### Potential Issues & Solutions
+
 1. **React Hooks Rules Violations**: Follow strict hook calling pattern, no conditional hooks
 2. **TypeScript Type Errors**: Reuse established patterns from existing components
 3. **Zustand Integration Issues**: Copy exact patterns from current `all-budgets` implementation
@@ -462,6 +487,7 @@ grep -r "import.*budgets-panel" app/
 5. **Performance Issues**: Use `useMemo` for expensive operations like sorting
 
 ### Implementation Safety Measures
+
 - **Incremental approach**: Build component first, integrate second
 - **Copy existing patterns**: Reuse proven code patterns throughout codebase
 - **Comprehensive testing**: Verify both controlled and uncontrolled modes work
@@ -485,8 +511,9 @@ grep -r "import.*budgets-panel" app/
 This PRP provides comprehensive guidance for successful one-pass implementation because:
 
 **Strengths:**
+
 - **Well-defined scope**: Extracting existing, working code rather than creating new functionality
-- **Established patterns**: All sub-components and state management already work correctly  
+- **Established patterns**: All sub-components and state management already work correctly
 - **Clear implementation path**: Step-by-step extraction and composition process
 - **Comprehensive examples**: Multiple usage patterns with actual code samples
 - **Solid validation approach**: Both automated and manual testing strategies

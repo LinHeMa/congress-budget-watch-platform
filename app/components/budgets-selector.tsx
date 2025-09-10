@@ -136,7 +136,7 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
         <div className="mt-3 space-y-3">
           {content.options.map((option) => (
             <div key={option.value} className="flex-col items-center">
-              <div className="flex items-center mb-3">
+              <div className="mb-3 flex items-center">
                 <input
                   type="radio"
                   id={option.value}
@@ -144,11 +144,11 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
                   value={option.value}
                   checked={selectedValue === option.value}
                   onChange={() => handleSelectionChange(option.value)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                  className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-500"
                 />
                 <label
                   htmlFor={option.value}
-                  className="ml-3 block text-sm font-medium text-gray-700 cursor-pointer"
+                  className="ml-3 block cursor-pointer text-sm font-medium text-gray-700"
                 >
                   {option.title}
                 </label>
@@ -168,7 +168,7 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
               placeholder="搜尋"
               value={searchedValue}
               onChange={(e) => setSearchedValue(e.target.value)}
-              className="border-2 text-center rounded-sm"
+              className="rounded-sm border-2 text-center"
             />
           </section>
           <button className="flex" onClick={toggleVisible}>

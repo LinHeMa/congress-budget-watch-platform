@@ -1,10 +1,6 @@
 const BudgetHeader = () => {
   return (
-    <div
-      className="flex justify-between sticky border-t-[12px] border-t-[#3E51FF]
-      pt-2 px-3
-    "
-    >
+    <div className="sticky flex justify-between border-t-[12px] border-t-[#3E51FF] px-3 pt-2">
       <button>
         <img
           src="/image/readr-header.svg"

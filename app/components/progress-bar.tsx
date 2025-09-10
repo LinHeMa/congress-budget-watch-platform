@@ -59,7 +59,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                 marginTop: index > 0 ? 7 : 0,
               }}
             >
-              <span className="text-white font-bold text-sm px-2 text-center">
+              <span className="px-2 text-center text-sm font-bold text-white">
                 {labels[index]}
               </span>
             </div>

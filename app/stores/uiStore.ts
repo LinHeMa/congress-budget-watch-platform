@@ -24,12 +24,12 @@ interface UIActions {
   toggleShareModal: () => void;
   openShareModal: () => void;
   closeShareModal: () => void;
-  
+
   // Progress actions
   updateProgressStep: (step: number) => void;
   markProgressComplete: () => void;
   resetProgress: () => void;
-  
+
   // Combined actions
   resetUI: () => void;
 }
@@ -45,7 +45,7 @@ interface UIState {
 
 /**
  * UI Store using Zustand
- * 
+ *
  * Manages global UI state for header and progress components
  * Following 2025 best practices with TypeScript and devtools integration
  */
@@ -57,7 +57,7 @@ export const useUIStore = create<UIState>()(
         isShareModalOpen: false,
       },
 
-      // Initial progress state  
+      // Initial progress state
       progressState: {
         currentStep: 0,
         isComplete: false,
@@ -174,7 +174,8 @@ export const useHeaderState = () => useUIStore((state) => state.headerState);
 /**
  * Hook to get progress state
  */
-export const useProgressState = () => useUIStore((state) => state.progressState);
+export const useProgressState = () =>
+  useUIStore((state) => state.progressState);
 
 /**
  * Hook to get actions
@@ -184,17 +185,19 @@ export const useUIActions = () => useUIStore((state) => state.actions);
 /**
  * Hook to get specific header actions
  */
-export const useHeaderActions = () => useUIStore((state) => ({
-  toggleShareModal: state.actions.toggleShareModal,
-  openShareModal: state.actions.openShareModal,
-  closeShareModal: state.actions.closeShareModal,
-}));
+export const useHeaderActions = () =>
+  useUIStore((state) => ({
+    toggleShareModal: state.actions.toggleShareModal,
+    openShareModal: state.actions.openShareModal,
+    closeShareModal: state.actions.closeShareModal,
+  }));
 
 /**
- * Hook to get specific progress actions  
+ * Hook to get specific progress actions
  */
-export const useProgressActions = () => useUIStore((state) => ({
-  updateProgressStep: state.actions.updateProgressStep,
-  markProgressComplete: state.actions.markProgressComplete,
-  resetProgress: state.actions.resetProgress,
-}));
+export const useProgressActions = () =>
+  useUIStore((state) => ({
+    updateProgressStep: state.actions.updateProgressStep,
+    markProgressComplete: state.actions.markProgressComplete,
+    resetProgress: state.actions.resetProgress,
+  }));

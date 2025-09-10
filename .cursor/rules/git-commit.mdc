@@ -11,6 +11,7 @@ alwaysApply: true
 - **空白行**: 主旨行與內文之間留一個空白行
 - **內文（Body）**: 解釋「做了什麼、為什麼要做」，不要寫「怎麼做」；每行建議 72 字元換行
 - **附註（Footers）**: 需要時加上 `Co-authored-by` 或追蹤資訊（例如 Issue/PR）
+- **語言**: Commit 訊息（Subject/Body/Footers）一律使用英文
 
 ### 建議樣板（.gitmessage）
 將以下內容存成 `~/.gitmessage` 作為個人樣板。
@@ -58,5 +59,6 @@ git config --global commit.cleanup strip
 - **50/72 規則**: 主旨 ≤ 50、內文每行 ≤ 72
 - **語氣**: 主旨用祈使句，句首大寫，末尾不加句點
 - **內容**: 說明「做了什麼與為什麼」，必要時加 Issue/PR/Co-authored-by
+- **語言**: 全段使用英文（含 Subject/Body/Footers）
 
 參考資料：`https://gist.github.com/lisawolderiksen/a7b99d94c92c6671181611be1641c733`

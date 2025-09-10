@@ -54,10 +54,10 @@ export const GET_BUDGETS_QUERY = graphql(`
  * Following the recommended pattern for hierarchical keys
  */
 export const budgetQueryKeys = {
-  all: ['budgets'] as const,
-  lists: () => [...budgetQueryKeys.all, 'list'] as const,
-  list: (filters?: Record<string, any>) => 
+  all: ["budgets"] as const,
+  lists: () => [...budgetQueryKeys.all, "list"] as const,
+  list: (filters?: Record<string, any>) =>
     [...budgetQueryKeys.lists(), { filters }] as const,
-  details: () => [...budgetQueryKeys.all, 'detail'] as const,
+  details: () => [...budgetQueryKeys.all, "detail"] as const,
   detail: (id: string) => [...budgetQueryKeys.details(), id] as const,
 } as const;

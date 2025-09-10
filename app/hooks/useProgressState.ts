@@ -20,7 +20,7 @@ export interface ProgressCalculations {
 /**
  * Custom hook for progress bar calculations
  * Separates the mathematical logic from the component rendering logic
- * 
+ *
  * @param height - Height of each progress box
  * @param gap - Gap between progress boxes (overlap amount)
  * @param count - Number of progress boxes
@@ -46,11 +46,14 @@ export const useProgressCalculations = ({
 
 /**
  * Hook for getting the z-index for a specific progress box
- * 
+ *
  * @param baseZIndex - Starting z-index value
  * @param index - Index of the current box (0-based)
  * @returns Calculated z-index for the box
  */
-export const useProgressBoxZIndex = (baseZIndex: number, index: number): number => {
+export const useProgressBoxZIndex = (
+  baseZIndex: number,
+  index: number
+): number => {
   return useMemo(() => baseZIndex - index * 10, [baseZIndex, index]);
 };

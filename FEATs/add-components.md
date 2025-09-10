@@ -1,10 +1,13 @@
 ## Feats
+
 1. 請你幫我新增這兩個component然後要符合：「maintainable way while ensuring flexibility and separation of concerns」
 2. 這兩個component是我從既有的專案複製，請你理解他的運作原理，並且改寫成符合react pattern的，狀態管理就統一都使用zustand
 3. 用好之後可以套用在首頁
 
 ## Example
+
 1. Header Component
+
 ```tsx
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
@@ -12,11 +15,7 @@ import React from "react";
 
 const BudgetHeader = () => {
   return (
-    <div
-      className="flex justify-between sticky border-t-[12px] border-t-[#3E51FF]
-      pt-2 px-3
-    "
-    >
+    <div className="sticky flex justify-between border-t-[12px] border-t-[#3E51FF] px-3 pt-2">
       <Button>
         <Image
           src="/image/readr-header.svg"
@@ -39,7 +38,9 @@ const BudgetHeader = () => {
 
 export default BudgetHeader;
 ```
+
 2. progress bar
+
 ```tsx
 import Image from "next/image";
 import React from "react";
@@ -105,7 +106,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
                 marginTop: index > 0 ? 7 : 0,
               }}
             >
-              <span className="text-white font-bold text-sm px-2 text-center">
+              <span className="px-2 text-center text-sm font-bold text-white">
                 {labels[index]}
               </span>
             </div>
@@ -117,8 +118,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
 };
 
 export default ProgressBar;
-
 ```
 
 ## Docs
+
 1. https://dev.to/neetigyachahar/architecture-guide-building-scalable-react-or-react-native-apps-with-zustand-react-query-1nn4

@@ -1,4 +1,3 @@
-
 const BudgetItem = () => {
   return <div>BudgetItem</div>;
 };

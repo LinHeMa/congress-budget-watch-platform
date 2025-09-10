@@ -86,7 +86,7 @@ const SortToolbar: React.FC<SortToolbarProps> = ({
   );
 
   return (
-    <div className="py-3 flex items-center gap-2">
+    <div className="flex items-center gap-2 py-3">
       <span className="text-sm text-gray-600">排序方式：</span>
       <Select
         inputId="budget-sort-select"
