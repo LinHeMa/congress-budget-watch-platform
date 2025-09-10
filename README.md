@@ -82,6 +82,34 @@ Make sure to deploy the output of `npm run build`
 
 This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
 
----
+## 深色模式設定
 
-Built with ❤️ using React Router.
+### 目前狀態：深色模式已暫停
+
+深色模式功能目前已被暫停，只使用淺色模式。
+
+### 如何重新啟用深色模式
+
+如需重新啟用深色模式功能，請在 `app/app.css` 中進行以下修改：
+
+```css
+html,
+body {
+  @apply bg-background dark:bg-gray-950;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
+```
+
+### 修改記錄
+
+- **暫停日期**：2025年1月
+- **修改檔案**：`app/app.css`
+- **修改內容**：
+  - 移除 `dark:bg-gray-950` 深色背景類別
+  - 移除 `@media (prefers-color-scheme: dark)` 媒體查詢
+  - 保留基本的 `@apply bg-background` 設定
+
+---
