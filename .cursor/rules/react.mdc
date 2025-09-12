@@ -1,0 +1,49 @@
+---
+description: 遵循 "Thinking in React" 的理念，建立結構良好、可維護的 React 應用程式。
+globs:
+  - "**/*.{ts,tsx,js,jsx}"
+alwaysApply: true
+---
+
+# Thinking in React: 撰寫優質 React 應用程式的五個步驟
+
+本指南提煉了 React 官方文件中的 "Thinking in React" 核心思想，旨在幫助你建立結構清晰、可擴展且易於維護的 React 應用程式。
+
+在所有設計決策中，請永遠把可讀性擺在第一位。
+
+## 步驟一：將 UI 分解為元件層級結構 (Break The UI Into a Component Hierarchy)
+
+*   **單一職責原則**：將 UI 拆解成小而可複用的元件。每個元件應只負責一件事。如果元件變得過於複雜，就應該將其拆解成更小的子元件。
+*   **階層化**：將元件組織成一個反映 UI 結構的層級。在設計稿中，如果一個元件出現在另一個元件內部，它在層級結構中就應該是子元件。
+*   **與資料模型對應**：良好的元件結構通常會自然地對應到你的資料模型。讓每個元件對應到資料模型的一部分。
+
+## 步驟二：建立靜態版本 (Build a Static Version in React)
+
+*   **先靜態，後互動**：首先建立一個只負責渲染資料模型的靜態版本，完全不處理任何互動。這能讓你專注於 UI 的結構。
+*   **使用 Props 傳遞資料**：在靜態版本中，應完全使用 `props` 從父元件向子元件傳遞資料。
+*   **避免使用 State**：在這個階段，絕對不要使用 `state`。State 專門用於處理會隨時間變化的互動性資料。
+
+## 步驟三：找到最小且完整的 UI 狀態表示 (Find The Minimal But Complete Representation of UI State)
+
+*   **識別最小狀態集**：找出應用程式運作所需的最精簡的 state 集合。避免冗餘，保持 state 的最小化。
+*   **不要重複造輪子 (DRY)**：如果某個資訊可以從 `props` 或其他 `state` 計算出來，就不要將它儲存在 `state` 中。在 render 過程中即時計算即可。
+*   **判斷是否為 State 的三個問題**：
+    1.  它是否是從父元件透過 `props` 傳入的？若是，它可能不是 state。
+    2.  它是否會隨著時間推移而保持不變？若是，它可能不是 state。
+    3.  你是否可以根據元件中任何其他的 `state` 或 `props` 來計算出它？若是，它就不是 state。
+
+## 步驟四：確定你的狀態應該存在哪裡 (Identify Where Your State Should Live)
+
+*   **尋找共同擁有者**：對於每一個 state，找出所有需要依賴它來進行渲染的元件。
+*   **提升狀態 (Lifting State Up)**：將 state 放置在這些元件的「共同擁有者」元件中，也就是在元件層級中位於所有需要此 state 的元件之上的那個元件。
+*   **建立狀態容器**：如果找不到一個適合存放 state 的元件，可以建立一個專門用來管理這個 state 的新元件，並將它放在層級結構中高於共同擁有者的位置。
+
+## 步驟五：新增反向資料流 (Add Inverse Data Flow)
+
+*   **由上而下控制狀態**：狀態應該由擁有它的父元件（步驟四中找到的元件）透過 `setState` 函式來更新。
+*   **傳遞更新函式**：為了讓深層的子元件能夠更新父元件的 state，你需要將更新 state 的函式（例如 `setFilterText`）作為 props 往下傳遞。
+*   **在子元件中觸發**：子元件會在事件處理函式（例如 `onChange`）中呼叫從 props 接收到的更新函式，從而實現「反向資料流」，更新父元件的 state。
+
+遵循以上五個步驟，可以幫助你更有條理地思考和建構 React 應用程式。
+
+參考資料：[Thinking in React - React Docs](https://react.dev/learn/thinking-in-react)
