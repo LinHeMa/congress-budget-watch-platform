@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Link, redirect } from "react-router";
+import { redirect } from "react-router";
 import { ERROR_REDIRECT_ROUTE } from "~/constants/endpoints";
 import { execute } from "~/graphql/execute";
 import { GET_BUDGETS_QUERY, budgetQueryKeys } from "~/queries";
@@ -24,24 +24,26 @@ const AllBudgets = () => {
     (s) => s.setSelectedSort
   );
 
-  const transformedData = useMemo(() => {
+  const tableData = useMemo(() => {
     if (!data?.budgets) return [];
+    console.log(data.budgets);
 
-    return data.budgets.map((budget) => ({
+    const sortedBudgets = sortBudgetsByOption(data.budgets, selectedSort);
+
+    return sortedBudgets.map((budget) => ({
       id: budget.id,
-      department: budget.department || "未指定部會",
-      reviewDate: "2024-01",
-      reviewStage: "教育文化委員會",
+      department: budget.government?.name || "未指定部會",
+      reviewDate: String(budget.year || "N/A"),
+      reviewStage: budget.government?.category || "未指定部會",
       proposer: "李柏毅",
       cosigners: "王美惠、張宏陸",
       proposalType: "凍結",
       proposalResult: "通過",
-      originalAmount: 21200000,
-      reducedAmount: 21200000,
-      proposalContent:
-        "原住民族委員會為深化民族教育內涵，促進原住民族語言、教育及文化推廣，提升大眾傳播媒體及其他公共領域原住民族之聲、文化、藝術形象之自我詮釋，促進族群和諧共處，教育政策與業務之專業督導與管理，其預算數自111年度之475萬2千元逐年增加至113年度之1,960萬元，增加1,084萬8千元增幅92.28倍，「原住民族教育推廣」之效...",
+      originalAmount: budget.budgetAmount || 0,
+      reducedAmount: budget.budgetAmount || 0,
+      proposalContent: budget.description || "未指定內容",
     }));
-  }, [data?.budgets]);
+  }, [data?.budgets, selectedSort]);
 
   if (isLoading) return <>loading</>;
   if (isError) return redirect(ERROR_REDIRECT_ROUTE);
@@ -91,10 +93,7 @@ const AllBudgets = () => {
         <div className="h-0.5 w-full bg-black" />
 
         {/* 使用新的表格組件渲染清單 */}
-        <BudgetTable
-          data={sortBudgetsByOption(transformedData, selectedSort)}
-          className="mt-4"
-        />
+        <BudgetTable data={tableData} className="mt-4" />
       </div>
     </>
   );
