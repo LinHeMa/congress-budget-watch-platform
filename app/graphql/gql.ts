@@ -1,5 +1,7 @@
 /* eslint-disable */
-import * as types from "./graphql";
+import * as types from './graphql';
+
+
 
 /**
  * Map of all GraphQL operations in the project.
@@ -13,19 +15,23 @@ import * as types from "./graphql";
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
-  "\n  query GetBudgets {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n    }\n    budgetsCount\n  }\n": typeof types.GetBudgetsDocument;
+    "\n  query GetBudgetsWithGovernment {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n      government {\n        id\n        name\n        category\n      }\n    }\n    budgetsCount\n  }\n": typeof types.GetBudgetsWithGovernmentDocument,
+    "\n  query GetBudgets {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n    }\n    budgetsCount\n  }\n": typeof types.GetBudgetsDocument,
 };
 const documents: Documents = {
-  "\n  query GetBudgets {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n    }\n    budgetsCount\n  }\n":
-    types.GetBudgetsDocument,
+    "\n  query GetBudgetsWithGovernment {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n      government {\n        id\n        name\n        category\n      }\n    }\n    budgetsCount\n  }\n": types.GetBudgetsWithGovernmentDocument,
+    "\n  query GetBudgets {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n    }\n    budgetsCount\n  }\n": types.GetBudgetsDocument,
 };
 
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(
-  source: "\n  query GetBudgets {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n    }\n    budgetsCount\n  }\n"
-): typeof import("./graphql").GetBudgetsDocument;
+export function graphql(source: "\n  query GetBudgetsWithGovernment {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n      government {\n        id\n        name\n        category\n      }\n    }\n    budgetsCount\n  }\n"): typeof import('./graphql').GetBudgetsWithGovernmentDocument;
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetBudgets {\n    budgets {\n      id\n      type\n      year\n      projectName\n      projectDescription\n      budgetAmount\n      majorCategory\n      mediumCategory\n      minorCategory\n      description\n    }\n    budgetsCount\n  }\n"): typeof import('./graphql').GetBudgetsDocument;
+
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

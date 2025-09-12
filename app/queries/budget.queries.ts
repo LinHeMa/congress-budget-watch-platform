@@ -4,7 +4,7 @@ import { graphql } from "~/graphql";
  * GraphQL query to get all budgets with their details
  */
 export const GET_BUDGETS_QUERY = graphql(`
-  query GetBudgets {
+  query GetBudgetsWithGovernment {
     budgets {
       id
       type
@@ -16,6 +16,11 @@ export const GET_BUDGETS_QUERY = graphql(`
       mediumCategory
       minorCategory
       description
+      government {
+        id
+        name
+        category
+      }
     }
     budgetsCount
   }
@@ -56,8 +61,11 @@ export const GET_BUDGETS_QUERY = graphql(`
 export const budgetQueryKeys = {
   all: ["budgets"] as const,
   lists: () => [...budgetQueryKeys.all, "list"] as const,
-  list: (filters?: Record<string, any>) =>
+  list: (filters?: Record<string, unknown>) =>
     [...budgetQueryKeys.lists(), { filters }] as const,
+  listsWithGovernment: () => [...budgetQueryKeys.all, "listWithGovernment"] as const,
+  listWithGovernment: (filters?: Record<string, unknown>) =>
+    [...budgetQueryKeys.listsWithGovernment(), { filters }] as const,
   details: () => [...budgetQueryKeys.all, "detail"] as const,
   detail: (id: string) => [...budgetQueryKeys.details(), id] as const,
 } as const;

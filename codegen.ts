@@ -3,7 +3,7 @@ import { GQL_ENDPOINTS } from "./app/constants/endpoints";
 
 const config: CodegenConfig = {
   schema: GQL_ENDPOINTS,
-  documents: ["app/**/*.tsx"],
+  documents: ["app/**/*.{ts,tsx}"],
   ignoreNoDocuments: true,
   generates: {
     "./app/graphql/": {
