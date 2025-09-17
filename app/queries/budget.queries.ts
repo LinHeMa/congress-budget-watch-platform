@@ -63,7 +63,8 @@ export const budgetQueryKeys = {
   lists: () => [...budgetQueryKeys.all, "list"] as const,
   list: (filters?: Record<string, unknown>) =>
     [...budgetQueryKeys.lists(), { filters }] as const,
-  listsWithGovernment: () => [...budgetQueryKeys.all, "listWithGovernment"] as const,
+  listsWithGovernment: () =>
+    [...budgetQueryKeys.all, "listWithGovernment"] as const,
   listWithGovernment: (filters?: Record<string, unknown>) =>
     [...budgetQueryKeys.listsWithGovernment(), { filters }] as const,
   details: () => [...budgetQueryKeys.all, "detail"] as const,

@@ -1,9 +1,11 @@
 # PRP: Add daisyUI Timeline Component
 
 ## Overview
+
 Replace the existing custom timeline component with daisyUI's vertical timeline (right-side only) implementation to maintain consistency with modern UI component libraries while preserving existing functionality.
 
 ## Feature Requirements
+
 - Install daisyUI and integrate with existing TailwindCSS v4 setup
 - Replace current timeline component with daisyUI vertical timeline (right side only)
 - Maintain existing Timeline and TimelineItem interfaces
@@ -13,11 +15,13 @@ Replace the existing custom timeline component with daisyUI's vertical timeline 
 ## Current Implementation Analysis
 
 ### Existing Files
+
 - `app/components/timeline/Timeline.tsx` - Main timeline container component
-- `app/components/timeline/TimelineItem.tsx` - Individual timeline item component  
+- `app/components/timeline/TimelineItem.tsx` - Individual timeline item component
 - `app/budget-detail/index.tsx` - Usage example with mock data
 
 ### Current Timeline Structure
+
 ```typescript
 // Current TimelineItemData interface
 export type TimelineItemData = {
@@ -34,6 +38,7 @@ type TimelineProps = {
 ```
 
 ### Current Styling System
+
 - TailwindCSS v4 with Vite plugin (`@tailwindcss/vite`: `^4.1.4`)
 - Configured in `vite.config.ts` with `tailwindcss()` plugin
 - Main CSS file: `app/app.css` with `@import "tailwindcss"`
@@ -42,12 +47,14 @@ type TimelineProps = {
 ## DaisyUI Integration Research
 
 ### Installation Requirements
+
 Based on daisyUI documentation (https://daisyui.com/docs/install/react/):
 
 1. Install daisyUI: `pnpm add daisyui@latest`
 2. Update CSS file to include daisyUI plugin: `@plugin "daisyui"`
 
 ### DaisyUI Timeline Structure
+
 From https://daisyui.com/components/timeline/:
 
 ```html
@@ -63,24 +70,26 @@ From https://daisyui.com/components/timeline/:
 ```
 
 Key classes:
+
 - `timeline`: Base container
 - `timeline-vertical`: Vertical layout
-- `timeline-middle`: Icon/marker position  
+- `timeline-middle`: Icon/marker position
 - `timeline-end`: Right-side content placement
 - `timeline-box`: Content box styling
 
 ## Implementation Plan
 
 ### Phase 1: Environment Setup
+
 1. Install daisyUI dependency
 2. Update CSS configuration to include daisyUI plugin
 3. Verify build and typecheck still work
 
 ### Phase 2: Component Migration
+
 1. Update `Timeline.tsx` to use daisyUI structure
    - Change from `<ol>` to `<ul class="timeline timeline-vertical">`
    - Remove custom border styling
-   
 2. Update `TimelineItem.tsx` to use daisyUI classes
    - Convert to `<li>` structure with timeline classes
    - Replace custom dot/marker with `timeline-middle`
@@ -88,6 +97,7 @@ Key classes:
    - Maintain existing button and styling within content box
 
 ### Phase 3: Verification
+
 1. Test with existing mock data in `budget-detail/index.tsx`
 2. Ensure visual parity with current design
 3. Run validation gates
@@ -95,6 +105,7 @@ Key classes:
 ## Technical Implementation Details
 
 ### New Timeline Component Structure
+
 ```typescript
 // Timeline.tsx - Updated structure
 export const Timeline = ({ items }: TimelineProps) => {
@@ -108,7 +119,8 @@ export const Timeline = ({ items }: TimelineProps) => {
 };
 ```
 
-### New TimelineItem Component Structure  
+### New TimelineItem Component Structure
+
 ```typescript
 // TimelineItem.tsx - Updated with daisyUI classes
 export const TimelineItem = ({ date, title, description, isLast = false }: TimelineItemProps) => {
@@ -142,22 +154,26 @@ export const TimelineItem = ({ date, title, description, isLast = false }: Timel
 ## Key Considerations
 
 ### API Compatibility
+
 - Maintain exact same `TimelineItemData` interface
 - Keep same `TimelineProps` structure
 - Preserve `isLast` prop functionality for conditional styling
 
-### Visual Consistency  
+### Visual Consistency
+
 - Preserve current color scheme (gray-900, gray-200, etc.)
 - Maintain custom button styling and Chinese text
 - Keep existing spacing, typography, and shadows
 - Ensure responsive design (md: breakpoints) continues to work
 
 ### Integration Safety
+
 - No changes to other components or global styles
 - DaisyUI plugin added safely without affecting existing TailwindCSS setup
 - Preserve existing custom utilities (line-clamp-8, etc.)
 
 ## Error Handling & Edge Cases
+
 - Empty timeline items array
 - Missing description fields
 - Long title/description text overflow
@@ -166,27 +182,31 @@ export const TimelineItem = ({ date, title, description, isLast = false }: Timel
 ## Validation Gates
 
 ### Syntax/Style Validation
+
 ```bash
 pnpm typecheck
 pnpm lint:check
 pnpm format:check
 ```
 
-### Build Verification  
+### Build Verification
+
 ```bash
 pnpm build
 ```
 
 ### Development Server Test
+
 ```bash
 pnpm dev
 # Navigate to /budget-detail route and verify timeline renders correctly
 ```
 
 ## Success Criteria
+
 - [ ] daisyUI successfully installed and configured
 - [ ] Timeline component renders using daisyUI classes
-- [ ] Existing functionality preserved (button, descriptions, dates)  
+- [ ] Existing functionality preserved (button, descriptions, dates)
 - [ ] Visual appearance matches or improves current design
 - [ ] No TypeScript errors or build failures
 - [ ] No impact on other components or pages
@@ -194,26 +214,31 @@ pnpm dev
 - [ ] All existing props and interfaces unchanged
 
 ## Files to Modify
+
 1. `package.json` - Add daisyUI dependency
-2. `app/app.css` - Add daisyUI plugin  
+2. `app/app.css` - Add daisyUI plugin
 3. `app/components/timeline/Timeline.tsx` - Update to use daisyUI structure
 4. `app/components/timeline/TimelineItem.tsx` - Update to use daisyUI classes
 
 ## Files to Reference (No Changes)
+
 - `app/budget-detail/index.tsx` - Test usage location
 - `vite.config.ts` - Existing TailwindCSS configuration
 - `package.json` - Existing scripts and TailwindCSS setup
 
 ## Documentation URLs for Implementation
+
 - daisyUI Installation: https://daisyui.com/docs/install/react/
 - daisyUI Timeline Components: https://daisyui.com/components/timeline/
 - daisyUI Configuration: https://daisyui.com/docs/config/
 - daisyUI Colors: https://daisyui.com/docs/colors/
 
 ## Implementation Priority
+
 **High Priority** - This is a straightforward component replacement with clear requirements and minimal risk of breaking changes.
 
 ---
+
 **PRP Confidence Score: 9/10**
 
 This PRP provides comprehensive context for one-pass implementation success. All necessary research has been completed, existing patterns identified, and integration approach clearly defined. The only minor uncertainty is potential minor visual adjustments that may be needed once daisyUI styles are applied, but the structure and approach are solid.

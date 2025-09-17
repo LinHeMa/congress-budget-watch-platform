@@ -1,5 +1,5 @@
-import React from 'react';
-import { TimelineItem, type TimelineItemData } from './TimelineItem';
+import React from "react";
+import { TimelineItem, type TimelineItemData } from "./TimelineItem";
 
 type TimelineProps = {
   items: TimelineItemData[];
@@ -7,10 +7,15 @@ type TimelineProps = {
 
 export const Timeline = ({ items }: TimelineProps) => {
   return (
-    <ol className="relative border-s-2 border-gray-900">
-      {items.map((item, index) => (
-        <TimelineItem key={item.id} {...item} isLast={index === items.length - 1} />
-      ))}
-    </ol>
+      <ul className="timeline timeline-vertical timeline-compact">
+        {items.map((item, index) => (
+          <TimelineItem
+            key={item.id}
+            {...item}
+            isLast={index === items.length - 1}
+            isFirst={index === 0}
+          />
+        ))}
+      </ul>
   );
 };

@@ -35,7 +35,7 @@ export const DropdownIndicator = (props: any) => {
   return (
     <components.DropdownIndicator {...props}>
       <img
-        src="/icon/dropdown-container.svg"
+        src={`${import.meta.env.BASE_URL}icon/dropdown-container.svg`}
         alt="dropdown"
         width="10"
         height="8"
@@ -172,13 +172,13 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
             />
           </section>
           <button className="flex" onClick={toggleVisible}>
-            收合 <img src={`/icon/reverse-dropdown-container.svg`} />
+            收合 <img src={`${import.meta.env.BASE_URL}icon/reverse-dropdown-container.svg`} />
           </button>
         </div>
       ) : (
         <button className="flex" onClick={toggleVisible}>
           展開
-          <img src={`/icon/dropdown-container.svg`} />
+          <img src={`${import.meta.env.BASE_URL}icon/dropdown-container.svg`} />
         </button>
       )}
     </fieldset>

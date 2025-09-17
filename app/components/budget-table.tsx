@@ -98,7 +98,10 @@ const VoteButtons = ({ proposalId }: { proposalId: string }) => {
             currentVote === value ? "bg-gray-300" : ""
           }`}
         >
-          <img src={`/image/vote-${label}.svg`} alt={label} />
+          <img
+            src={`/project/3/congress-budget-watch/assets/icon/vote-${label}.svg`}
+            alt={label}
+          />
         </button>
       ))}
     </div>

@@ -18,8 +18,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   labels = [],
 }) => {
   const progressBoxType = isFinished
-    ? "/image/progress-box.svg"
-    : "/image/not-finished-progress-box.svg";
+    ? `${import.meta.env.BASE_URL}image/progress-box.svg`
+    : `${import.meta.env.BASE_URL}image/not-finished-progress-box.svg`;
 
   const baseZIndex = 90;
 
@@ -31,7 +31,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       style={{ height: totalHeight }}
     >
       <img
-        src="/image/eye.svg"
+        src={`${import.meta.env.BASE_URL}image/eye.svg`}
         alt="eye icon"
         height={28}
         width={72}

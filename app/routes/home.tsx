@@ -1,13 +1,19 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import BudgetHeader from "~/components/budget-header";
+import { NavLink } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "國會預算監督平台" },
+    { name: "description", content: "國會預算監督平台" },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <>
+      <BudgetHeader />
+      <NavLink to="/all-budgets">All Budgets</NavLink>
+    </>
+  );
 }

@@ -59,7 +59,7 @@ const AllBudgets = () => {
         </p>
         <div className="relative mb-3 h-0.5 w-full bg-black">
           <img
-            src="/image/magnifier-eye.svg"
+            src={`${import.meta.env.BASE_URL}image/magnifier-eye.svg`}
             height={63}
             width={55}
             alt="magnifier eye logo"
