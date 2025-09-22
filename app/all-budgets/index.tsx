@@ -12,6 +12,7 @@ import SortToolbar, { sortBudgetsByOption } from "~/components/sort-toolbar";
 import BudgetTable from "~/components/budget-table";
 import { useStore } from "zustand";
 import useBudgetSelectStore from "~/stores/budget-selector";
+import Image from "~/components/image";
 const AllBudgets = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: budgetQueryKeys.lists(),
@@ -58,12 +59,10 @@ const AllBudgets = () => {
           {content.title}
         </p>
         <div className="relative mb-3 h-0.5 w-full bg-black">
-          <img
-            src={`${import.meta.env.BASE_URL}image/magnifier-eye.svg`}
-            height={63}
-            width={55}
+          <Image
+            src="/image/magnifier-eye.svg"
             alt="magnifier eye logo"
-            className="bg-red absolute -top-[31.5px] z-10"
+            className="bg-red absolute -top-[31.5px] z-10 h-[63px] w-[55px]"
           />
           <div className="absolute -top-[31.5px] h-[63px] w-[55px] bg-[#F6F6F6]" />
         </div>

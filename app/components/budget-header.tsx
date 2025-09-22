@@ -1,20 +1,20 @@
+import Image from "./image";
+
 const BudgetHeader = () => {
   return (
     <div className="sticky flex justify-between border-t-[12px] border-t-[#3E51FF] px-3 pt-2">
       <button>
-        <img
-          src={`${import.meta.env.BASE_URL}image/readr-header.svg`}
-          height={28}
-          width={92}
+        <Image
+          src="/image/readr-header.svg"
           alt="Readr logo"
+          className="h-[28px] w-[92px]"
         />
       </button>
       <button>
-        <img
-          src={`${import.meta.env.BASE_URL}icon/share-header.svg`}
-          height={20}
-          width={20}
+        <Image
+          src="/icon/share-header.svg"
           alt="Readr header share button"
+          className="h-[20px] w-[20px]"
         />
       </button>
     </div>

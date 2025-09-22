@@ -1,6 +1,7 @@
 import { NavLink } from "react-router";
 import BudgetHeader from "~/components/budget-header";
 import { Timeline } from "../components/timeline/Timeline";
+import Image from "~/components/image";
 
 const MOCK_DATA = [
   {
@@ -78,6 +79,8 @@ const BudgetDetail = () => {
               </div>
             </li>
           </ul>
+          {/* divider */}
+          <div className="my-4 h-[1px] w-full bg-gray-300" />
           <div className="flex flex-col gap-y-3">
             <p className="font-bold">提案人（連署）</p>
             <section>
@@ -85,6 +88,131 @@ const BudgetDetail = () => {
               <p>（王美惠、張宏陸）</p>
             </section>
           </div>
+          {/* divider */}
+          <div className="my-4 h-[1px] w-full bg-gray-300" />
+          <div className="flex justify-between">
+            <section className="flex gap-x-12">
+              <section className="flex-col">
+                <p className="font-bold">提案</p>
+                <p>凍結</p>
+              </section>
+              <section className="flex-col">
+                <p className="font-bold">審議結果</p>
+                <p>通過</p>
+              </section>
+            </section>
+            {/* fake link */}
+            <a href="#" className="underline" target="_blank">
+              資料來源
+            </a>
+          </div>
+          {/* divider */}
+          <div className="my-4 h-[1px] w-full bg-gray-300" />
+          <div>
+            <p className="mb-4 font-bold">提案內容</p>
+            <p>
+              原住民族委員會為深化民族教育內涵，促進原住民族族語、教育及文化推廣，提升大眾傳播媒體及其他公共領域原住民族史觀、文化、藝術能見度之目標，近年每年均編列「原住民族教育推展」媒體政策及業務宣導費，其預算數自111年度之475萬2千元逐年增加至113年度之1,560萬元，增加1,084萬8千元(增加約2.28倍)；且「原住民族教育推展」之媒體政策及業務宣導費占該項費用整體預算經費之比率，由111年度30.77%增至113年度60.34%，呈上升之勢。原住民族委員會賡續於114年度預算案「原住民族教育推展」工作計畫編列媒體政策及業務宣導費2,120萬元，包括辦理「原住民族教育協調與發展」及「原住民族文化維護與發展」等相關工作，預計辦理內容與113年度預算相近，惟該媒體政策及業務宣傳經費卻較113年度預算數1,560萬元增加35.90%，且較112年度決算數1,122萬5元增加88.86%，爰請原住民族委員會於2月內，向立法院內政委員會提出書面報告，說明預算相關運用規劃。【208】
+            </p>
+          </div>
+          {/* divider */}
+          <div className="my-4 h-[1px] w-full bg-gray-300" />
+          <div className="flex gap-x-10">
+            <section className="flex flex-col gap-y-4">
+              <p className="font-bold">預算金額</p>
+              <p className="text-[#D18081]">21,200,000</p>
+            </section>
+            <section className="flex flex-col gap-y-4">
+              <p className="font-bold">減列金額</p>
+              <p className="text-[#D18081]">21,200,000</p>
+            </section>
+          </div>
+          <div className="my-4 h-[1px] w-full bg-gray-300" />
+          <div className="flex gap-x-10">
+            <section className="flex flex-col gap-y-4">
+              <p className="font-bold">凍結金額</p>
+              <p className="text-[#D18081]">21,200,000</p>
+            </section>
+            <section className="flex flex-col gap-y-4">
+              <p className="font-bold">預算書圖檔</p>
+              <Image
+                src="/icon/default-image.svg"
+                alt="default-image"
+                className="size-5"
+              />
+            </section>
+          </div>
+          <div className="my-4 h-[1px] w-full bg-gray-300" />
+          <div className="flex flex-col gap-y-4">
+            <div className="flex justify-between">
+              <div className="flex items-center gap-x-2">
+                <p className="font-bold">科目/計畫</p>
+                <button>
+                  <Image
+                    src="/icon/explain-term.svg"
+                    alt="explain-term"
+                    className="size-5"
+                  />
+                </button>
+              </div>
+              <a href="#" className="text-[#3E51FF] underline" target="_blank">
+                預算書連結
+              </a>
+            </div>
+            <p>
+              3703610100 一般行政 &gt; 02 基本行政工作維持費 &gt; 計畫 1090000
+            </p>
+            <div className="flex items-center gap-x-2">
+              <p className="font-bold">科目/計畫</p>
+              <button>
+                <Image
+                  src="/icon/explain-term.svg"
+                  alt="explain-term"
+                  className="size-5"
+                />
+              </button>
+            </div>
+            <p>
+              大樓管理費11815千元、保全人員及保全系統等費用270千元、新聞連絡聯誼費用100千元、文宣用品60千元、國會聯繫工作等費用150千元、政風及主計工作費用81千元、線上新聞資料庫維護及授權費用335千元、文康活動723千元(3000元*241人)、辦公室清潔維護費用及勞務外包協助行政事務等所需經費2690千元、員工協助方案150千元、辦理特種考試原住民族考試之分發所需經費140千元、檔案搬遷所需經費1000千元，合計17514千元。
+            </p>
+          </div>
+          {/* divider */}
+          <div className="my-4 h-[1px] w-full bg-gray-300" />
+          <div className="flex">
+            <div className="flex flex-col gap-y-4">
+              <p className="font-bold">上年度決算</p>
+              <p>21200000</p>
+            </div>
+            <div className="flex flex-col gap-y-4">
+              <p className="font-bold">上年度法定預算</p>
+              <p>21200000</p>
+            </div>
+            <div className="flex flex-col gap-y-4">
+              <p className="font-bold">與上年度比較</p>
+              <p>+50%</p>
+            </div>
+          </div>
+          <section className="grid grid-cols-2 items-center justify-items-center gap-10">
+            <div className="flex flex-col items-center justify-center">
+              <p className="mb-2 font-bold">我覺得很讚</p>
+              <p className="mb-6">999999</p>
+              <Image src="/image/vote-good.svg" alt="vote-good" className="w-32"/>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <p className="mb-2 font-bold">我感到生氣</p>
+              <p className="mb-6">999999</p>
+              <Image src="/image/vote-angry.svg" alt="vote-angry" className="w-32"/>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <p className="mb-2 font-bold">我有點失望</p>
+              <p className="mb-6">999999</p>
+              <Image src="/image/vote-sad.svg" alt="vote-sad" className="w-32"/>
+            </div>
+            <div className="flex flex-col items-center justify-center">
+              <p className="mb-2 font-bold">我不在意</p>
+              <p className="mb-6">999999</p>
+              <Image src="/image/vote-neutral.svg" alt="vote-neutral" className="w-32"/>
+            </div>
+          </section>
         </div>
       </div>
     </>

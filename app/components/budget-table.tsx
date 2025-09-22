@@ -1,6 +1,7 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import { useVoteActions, useVotes } from "../stores/vote.store";
 import { NavLink } from "react-router";
+import Image from "./image";
 
 interface BudgetTableData {
   id: string;
@@ -38,19 +39,22 @@ const TableRow = ({
   </>
 );
 
-const ProposalContent = ({ content }: { content: string }) => (
+const ProposalContent = ({
+  content,
+  itemId,
+}: {
+  content: string;
+  itemId: string;
+}) => (
   <div className="w-full border-b-2 py-3">
     <div className="relative flex items-start gap-2">
-      <p className="line-clamp-8 flex-1">{content}</p>
+      <p className="mb-5 line-clamp-8 flex-1">{content}</p>
       <div className="absolute right-0 bottom-0">
         <Dialog.Root>
           <Dialog.Trigger asChild>
-            <button
-              className="shrink-0 text-blue-600 hover:underline"
-              onClick={(e) => e.preventDefault()}
-            >
+            <span className="shrink-0 text-blue-600 hover:underline">
               [更多]
-            </button>
+            </span>
           </Dialog.Trigger>
           <Dialog.Portal>
             <Dialog.Overlay className="fixed inset-0 bg-black/40" />
@@ -98,10 +102,7 @@ const VoteButtons = ({ proposalId }: { proposalId: string }) => {
             currentVote === value ? "bg-gray-300" : ""
           }`}
         >
-          <img
-            src={`/project/3/congress-budget-watch/assets/icon/vote-${label}.svg`}
-            alt={label}
-          />
+          <Image src={`/image/vote-${label}.svg`} alt={label} />
         </button>
       ))}
     </div>
@@ -110,10 +111,14 @@ const VoteButtons = ({ proposalId }: { proposalId: string }) => {
 
 const BudgetTableRow = ({ item }: { item: BudgetTableData }) => {
   return (
-    <NavLink
-      to={`/budget/${item.id}`}
-      className="flex flex-col border-b-2 text-current no-underline hover:bg-gray-50"
-    >
+    <>
+      <div className="flex items-center justify-start gap-x-2 border-y-2 bg-[#C7C7C7] py-2">
+        <span className="font-bold">編號</span>{" "}
+        <span className="font-bold text-[#D18081]">{item.id}</span>
+        <NavLink to={`/budget/${item.id}`} className="ml-2 text-[#3E51FF]">
+          [查看單頁]
+        </NavLink>
+      </div>
       <TableRow label="部會">{item.department}</TableRow>
       <TableRow label="審議日期（階段）">{item.reviewDate}</TableRow>
       <TableRow label="提案人（連署）">{item.proposer}</TableRow>
@@ -138,11 +143,11 @@ const BudgetTableRow = ({ item }: { item: BudgetTableData }) => {
       </div>
 
       <TableRow label="提案內容">
-        <ProposalContent content={item.proposalContent} />
+        <ProposalContent content={item.proposalContent} itemId={item.id} />
       </TableRow>
       <TableRow label="關心數">999999</TableRow>
       <TableRow label="我要關心這個">
-        <div className="flex w-full flex-col items-center justify-center gap-y-4">
+        <div className="mb-9 flex w-full flex-col items-center justify-center gap-y-4">
           <button
             className="rounded-sm border-2 px-0.5 py-1"
             onClick={(e) => {
@@ -157,7 +162,7 @@ const BudgetTableRow = ({ item }: { item: BudgetTableData }) => {
           </div>
         </div>
       </TableRow>
-    </NavLink>
+    </>
   );
 };
 

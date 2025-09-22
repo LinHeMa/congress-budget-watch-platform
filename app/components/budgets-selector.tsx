@@ -2,6 +2,7 @@ import React from "react";
 import { useStore } from "zustand";
 import useBudgetSelectStore from "~/stores/budget-selector";
 import Select, { components } from "react-select";
+import Image from "./image";
 
 interface BudgetOption {
   title: string;
@@ -34,11 +35,10 @@ const content = {
 export const DropdownIndicator = (props: any) => {
   return (
     <components.DropdownIndicator {...props}>
-      <img
-        src={`${import.meta.env.BASE_URL}icon/dropdown-container.svg`}
+      <Image
+        src="/icon/dropdown-container.svg"
         alt="dropdown"
-        width="10"
-        height="8"
+        className="h-2 w-2.5"
       />
     </components.DropdownIndicator>
   );
@@ -172,13 +172,17 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
             />
           </section>
           <button className="flex" onClick={toggleVisible}>
-            收合 <img src={`${import.meta.env.BASE_URL}icon/reverse-dropdown-container.svg`} />
+            收合{" "}
+            <Image
+              src="/icon/reverse-dropdown-container.svg"
+              alt="reverse-dropdown-container"
+            />
           </button>
         </div>
       ) : (
         <button className="flex" onClick={toggleVisible}>
           展開
-          <img src={`${import.meta.env.BASE_URL}icon/dropdown-container.svg`} />
+          <Image src="/icon/dropdown-container.svg" alt="dropdown-container" />
         </button>
       )}
     </fieldset>
