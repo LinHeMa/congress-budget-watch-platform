@@ -29,7 +29,6 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   if (isDesktop)
     return (
       <div>
-        <div className="absolute -top-[31.5px] h-[63px] w-[55px] bg-[#F6F6F6]" />
         <section className="mb-2 flex w-full items-center justify-center gap-x-2 text-lg font-bold text-[#3E51FF]">
           <p className="relative">
             <span className="text-xl">最新進度</span>
