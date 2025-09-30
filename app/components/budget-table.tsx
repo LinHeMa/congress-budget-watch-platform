@@ -41,7 +41,6 @@ const TableRow = ({
 
 const ProposalContent = ({
   content,
-  itemId,
 }: {
   content: string;
   itemId: string;
@@ -113,7 +112,7 @@ const BudgetTableRow = ({ item }: { item: BudgetTableData }) => {
   return (
     <>
       <div className="flex items-center justify-start gap-x-2 border-y-2 bg-[#C7C7C7] py-2">
-        <span className="font-bold">編號</span>{" "}
+        <span className="font-bold">編號</span>
         <span className="font-bold text-[#D18081]">{item.id}</span>
         <NavLink to={`/budget/${item.id}`} className="ml-2 text-[#3E51FF]">
           [查看單頁]

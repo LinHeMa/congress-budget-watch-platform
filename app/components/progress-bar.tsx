@@ -1,4 +1,5 @@
 interface ProgressBarProps {
+  isDesktop?: boolean;
   isFinished?: boolean;
   count?: number;
   width?: number;
@@ -10,12 +11,13 @@ interface ProgressBarProps {
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
   isFinished = true,
-  count = 3,
+  count = 6,
   width = 165,
   height = 48,
   gap = 16,
   className = "",
   labels = [],
+  isDesktop = false,
 }) => {
   const progressBoxType = isFinished
     ? `${import.meta.env.BASE_URL}image/progress-box.svg`
@@ -24,7 +26,37 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   const baseZIndex = 90;
 
   const totalHeight = height + (height - gap) * (count - 1);
-
+  if (isDesktop)
+    return (
+      <div>
+        <div className="absolute -top-[31.5px] h-[63px] w-[55px] bg-[#F6F6F6]" />
+        <section className="mb-2 flex w-full items-center justify-center gap-x-2 text-lg font-bold text-[#3E51FF]">
+          <p className="relative">
+            <span className="text-xl">最新進度</span>
+            <img
+              src={`${import.meta.env.BASE_URL}image/magnifier-eye.svg`}
+              alt="magnifier eye logo"
+              className="absolute -top-10 -left-12 z-10 h-[63px] w-[55px]"
+            />
+          </p>
+          <div className="relative flex items-center">
+            {labels.map((label, index) => (
+              <div
+                className={`relative rounded-lg border-2 pr-3 ${
+                  isFinished
+                    ? "border-white bg-[#3E51FF] text-white"
+                    : "border-[#3E51FF] bg-white text-[#3E51FF]"
+                } ${index > 0 ? "-ml-3 pl-5" : "pl-3"}`}
+                key={label}
+                style={{ zIndex: labels.length - index }}
+              >
+                {label}
+              </div>
+            ))}
+          </div>
+        </section>
+      </div>
+    );
   return (
     <section
       className={`relative ${className}`}
@@ -33,10 +65,8 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
       <img
         src={`${import.meta.env.BASE_URL}image/eye.svg`}
         alt="eye icon"
-        height={28}
-        width={72}
         className="absolute -top-[14px] -right-[38px] z-99"
-      ></img>
+      />
       {Array.from({ length: count }, (_, index) => (
         <div
           key={index}

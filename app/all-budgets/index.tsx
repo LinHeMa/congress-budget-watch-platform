@@ -13,11 +13,14 @@ import BudgetTable from "~/components/budget-table";
 import { useStore } from "zustand";
 import useBudgetSelectStore from "~/stores/budget-selector";
 import Image from "~/components/image";
+import { useMediaQuery } from "usehooks-ts";
+
 const AllBudgets = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: budgetQueryKeys.lists(),
     queryFn: () => execute(GET_BUDGETS_QUERY),
   });
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   // TODO: add skeleton
   const selectedSort = useStore(useBudgetSelectStore, (s) => s.selectedSort);
   const setSelectedSort = useStore(
@@ -58,7 +61,21 @@ const AllBudgets = () => {
         <p className="mb-3 w-full text-center text-xl font-bold">
           {content.title}
         </p>
-        <div className="relative mb-3 h-0.5 w-full bg-black">
+        {/* desktop progress start */}
+        <div className="mb-5 hidden h-fit w-full items-center justify-center md:flex">
+          <ProgressBar
+            isDesktop={isDesktop}
+            className="w-[165px]"
+            labels={content.progressLabels}
+          />
+        </div>
+        <div className="mb-5 hidden items-center justify-start border-b-[2px] border-black md:flex">
+          <div className="rounded-t-md border-[2px] border-b-0 border-black bg-[#E9808E] px-2.5 py-1 text-[16px] font-bold text-[#f6f6f6]">
+            {content.progressToggle}
+          </div>
+        </div>
+        {/* desktop progress end */}
+        <div className="relative mb-3 h-0.5 w-full bg-black md:hidden">
           <Image
             src="/image/magnifier-eye.svg"
             alt="magnifier eye logo"
@@ -68,19 +85,19 @@ const AllBudgets = () => {
         </div>
         {/* title end */}
 
-        {/* progress start */}
-        <div className="mb-5 flex items-center justify-center border-b-[2px] border-black">
+        {/* mobile progress start */}
+        <div className="mb-5 flex items-center justify-center border-b-[2px] border-black md:hidden">
           <div className="rounded-t-md border-[2px] border-b-0 border-black bg-[#E9808E] px-2.5 py-1 text-[16px] font-bold text-[#f6f6f6]">
             {content.progressToggle}
           </div>
         </div>
-        <section className="mb-2 flex w-full justify-center text-lg font-bold text-[#3E51FF]">
+        <section className="mb-2 flex w-full justify-center text-lg font-bold text-[#3E51FF] md:hidden">
           <p>最新進度</p>
         </section>
-        <div className="mb-5 flex h-fit w-full items-center justify-center">
+        <div className="mb-5 flex h-fit w-full items-center justify-center md:hidden">
           <ProgressBar className="w-[165px]" labels={content.progressLabels} />
         </div>
-        {/* progress end */}
+        {/* mobile progress end */}
 
         {/* budgets selector start */}
         <div className="h-0.5 w-full bg-black" />
