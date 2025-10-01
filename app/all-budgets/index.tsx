@@ -56,7 +56,7 @@ const AllBudgets = () => {
     <>
       <BudgetHeader />
 
-      <div className="p-5">
+      <div className="max-w-[960px] p-5 md:mx-auto md:p-0 md:pt-8">
         {/* title start */}
         <p className="mb-3 w-full text-center text-xl font-bold">
           {content.title}
@@ -69,10 +69,15 @@ const AllBudgets = () => {
             labels={content.progressLabels}
           />
         </div>
-        <div className="mb-5 hidden items-center justify-start border-b-[2px] border-black md:flex">
+        <div className="relative mb-5 hidden items-center justify-start border-b-[2px] border-black md:flex">
           <div className="rounded-t-md border-[2px] border-b-0 border-black bg-[#E9808E] px-2.5 py-1 text-[16px] font-bold text-[#f6f6f6]">
             {content.progressToggle}
           </div>
+          <img
+            src={`${import.meta.env.BASE_URL}image/eye.svg`}
+            alt="eye icon"
+            className="absolute top-[14px] right-16 z-99"
+          />
         </div>
         {/* desktop progress end */}
         <div className="relative mb-3 h-0.5 w-full bg-black md:hidden">
@@ -100,16 +105,16 @@ const AllBudgets = () => {
         {/* mobile progress end */}
 
         {/* budgets selector start */}
-        <div className="h-0.5 w-full bg-black" />
+        <div className="h-0.5 w-full bg-black md:hidden" />
         <BudgetsSelector />
-        <div className="h-0.5 w-full bg-black" />
+        <div className="h-0.5 w-full bg-black md:hidden" />
 
         {/* 排序下拉（react-select） */}
         <SortToolbar selectedValue={selectedSort} onChange={setSelectedSort} />
-        <div className="h-0.5 w-full bg-black" />
+        <div className="h-0.5 w-full bg-black md:hidden" />
 
         {/* 使用新的表格組件渲染清單 */}
-        <BudgetTable data={tableData} className="mt-4" />
+        <BudgetTable isDesktop={isDesktop} data={tableData} className="mt-4" />
       </div>
     </>
   );

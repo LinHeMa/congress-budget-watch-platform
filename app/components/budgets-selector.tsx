@@ -52,7 +52,7 @@ const ByDepartmentSelector = ({ value }: { value: string }) => {
 
   if (value !== "by-department") return null;
   return (
-    <div className="flex flex-col gap-y-3">
+    <div className="flex flex-col gap-y-3 md:flex-row md:gap-x-2">
       <Select
         options={deleteTypeOptions}
         components={{ DropdownIndicator }}
@@ -85,6 +85,7 @@ const ByLegislatorSelector = ({ value }: { value: string }) => {
       <Select
         options={legislatorOptions}
         components={{ DropdownIndicator }}
+        className="md:w-96"
         styles={{
           control: (styles) => ({ ...styles, border: "2px solid black" }),
           indicatorSeparator: (styles) => ({ ...styles, display: "none" }),
@@ -131,12 +132,14 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
   return (
     <fieldset>
       <legend className="sr-only">{content.pageTitle}</legend>
-      <div>selectedValue:{selectedValue}</div>
       {visible ? (
         <div className="mt-3 space-y-3">
           {content.options.map((option) => (
-            <div key={option.value} className="flex-col items-center">
-              <div className="mb-3 flex items-center">
+            <div
+              key={option.value}
+              className="flex flex-col items-center justify-start md:flex-row md:gap-x-2"
+            >
+              <div className="mb-3 flex items-center md:mb-0">
                 <input
                   type="radio"
                   id={option.value}
@@ -172,7 +175,7 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
             />
           </section>
           <button className="flex" onClick={toggleVisible}>
-            收合{" "}
+            收合
             <Image
               src="/icon/reverse-dropdown-container.svg"
               alt="reverse-dropdown-container"
