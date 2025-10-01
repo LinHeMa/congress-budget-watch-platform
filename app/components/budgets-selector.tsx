@@ -164,17 +164,17 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
               )}
             </div>
           ))}
-          <section>
+          <section  className="md:flex md:items-center">
             <p>或搜尋：</p>
             <input
               type="search"
               placeholder="搜尋"
               value={searchedValue}
               onChange={(e) => setSearchedValue(e.target.value)}
-              className="rounded-sm border-2 text-center"
+              className="rounded-sm border-2 text-center bg-white md:w-80"
             />
           </section>
-          <button className="flex" onClick={toggleVisible}>
+          <button className="flex md:hidden" onClick={toggleVisible}>
             收合
             <Image
               src="/icon/reverse-dropdown-container.svg"
