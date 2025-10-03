@@ -56,7 +56,7 @@ const AllBudgets = () => {
     <>
       <BudgetHeader />
 
-      <div className="max-w-[960px] p-5 md:mx-auto md:p-0 md:pt-8">
+      <div className="md:max-w-[720px] lg:max-w-[960px] p-5 md:mx-auto md:p-0 md:pt-8">
         {/* title start */}
         <p className="mb-3 w-full text-center text-xl font-bold">
           {content.title}

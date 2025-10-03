@@ -25,15 +25,15 @@ const MOCK_DATA = [
   },
 ];
 
-const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
+const BudgetDetail = ({ hasImage = false }: { hasImage?: boolean }) => {
   const isDesktop = useMediaQuery("(min-width: 768px)");
   if (isDesktop)
     return (
-      <div>
+      <div className="pb-8 text-sm">
         <div className="mb-8">
           <BudgetHeader />
         </div>
-        <div className="mx-2.5 flex flex-col">
+        <div className="mx-2.5 md:mx-8 flex flex-col">
           <NavLink to="/all-budgets" className="underline">
             {"<" + "回到列表頁"}
           </NavLink>
@@ -51,13 +51,13 @@ const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
                     <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                       分類
                     </p>
-                    <p className="flex w-fit border-t-1 pt-4 pr-12">經濟部</p>
+                    <p className="flex w-fit border-t-1 pt-4 md:pr-8 lg:pr-12">經濟部</p>
                   </div>
                   <div>
                     <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                       部會
                     </p>
-                    <p className="flex w-fit border-t-1 pt-4 pr-12">
+                    <p className="flex w-fit border-t-1 pt-4 md:pr-8 lg:pr-12">
                       台灣自來水股份有限公司
                     </p>
                   </div>
@@ -65,7 +65,7 @@ const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
                     <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                       提案人（連署）
                     </p>
-                    <p className="flex w-fit border-t-1 pt-4 pr-14">
+                    <p className="flex w-fit border-t-1 pt-4 md:pr-8 lg:pr-12">
                       李柏毅
                       <br />
                       （王美惠、張宏陸）
@@ -75,7 +75,7 @@ const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
                     <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                       提案
                     </p>
-                    <p className="flex w-fit border-t-1 pt-4 pr-16">凍結</p>
+                    <p className="flex w-fit border-t-1 pt-4 md:pr-12">凍結</p>
                   </div>
                   <div className="grow">
                     <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
@@ -90,7 +90,7 @@ const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
                     <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                       審議階段
                     </p>
-                    <div className="flex w-fit border-t-1 pt-4 pr-13">
+                    <div className="flex w-fit border-t-1 pt-4 md:pr-24 pr-13">
                       <Timeline items={MOCK_DATA} />
                     </div>
                   </div>
@@ -167,7 +167,7 @@ const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
                       <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                         預算金額
                       </p>
-                      <p className="flex w-fit border-t-1 border-black pt-4 pr-[136px] font-bold text-[#E9808E]">
+                      <p className="flex w-fit border-t-1 border-black pt-4  pr-32 font-bold text-[#E9808E]">
                         21,200,000
                       </p>
                     </div>
@@ -198,7 +198,7 @@ const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
                           <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                             預算金額
                           </p>
-                          <p className="flex w-fit border-t-1 border-black pt-4 pr-[136px] font-bold text-[#E9808E]">
+                          <p className="flex w-fit border-t-1 border-black pt-4 md:pr-8 lg:pr-16 xl:pr-32 font-bold text-[#E9808E]">
                             21,200,000
                           </p>
                         </div>
@@ -206,7 +206,7 @@ const BudgetDetail = ({ hasImage = true }: { hasImage?: boolean }) => {
                           <p className="w-fit rounded-t-lg border-2 border-black bg-[#E9808E] px-2.5 py-1 text-white">
                             減列金額
                           </p>
-                          <p className="flex w-fit border-t-1 border-black pt-4 pr-[136px] font-bold text-[#E9808E]">
+                          <p className="flex w-fit border-t-1 border-black pt-4 md:pr-8 lg:pr-16 xl:pr-32 font-bold text-[#E9808E]">
                             21,200,000
                           </p>
                         </div>

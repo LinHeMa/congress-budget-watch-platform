@@ -28,20 +28,20 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
   const totalHeight = height + (height - gap) * (count - 1);
   if (isDesktop)
     return (
-      <div>
+      <div className="text-sm">
         <section className="mb-2 flex w-full items-center justify-center gap-x-2 text-lg font-bold text-[#3E51FF]">
           <p className="relative">
-            <span className="text-xl">最新進度</span>
+            <span className="md:text-sm lg:text-xl">最新進度</span>
             <img
               src={`${import.meta.env.BASE_URL}image/magnifier-eye.svg`}
               alt="magnifier eye logo"
-              className="absolute -top-10 -left-12 z-10 h-[63px] w-[55px]"
+              className="absolute lg:-top-10 lg:-left-12 z-10 lg:h-[63px] lg:w-[55px] md:h-[48px] md:w-auto md:-top-7 md:-left-7"
             />
           </p>
           <div className="relative flex items-center">
             {labels.map((label, index) => (
               <div
-                className={`relative rounded-lg border-2 pr-3 ${
+                className={`md:text-xs relative rounded-lg border-2 pr-3 ${
                   isFinished
                     ? "border-white bg-[#3E51FF] text-white"
                     : "border-[#3E51FF] bg-white text-[#3E51FF]"

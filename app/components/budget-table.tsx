@@ -109,7 +109,7 @@ const VoteButtons = ({ proposalId }: { proposalId: string }) => {
 
 const BudgetTableRow = ({ item }: { item: BudgetTableData }) => {
   return (
-    <div className="flex flex-col md:flex-row md:w-full">
+    <div className="flex flex-col md:w-full md:flex-row">
       <div className="flex items-center justify-start gap-x-2 border-y-2 bg-[#C7C7C7] py-2 md:min-w-16 md:flex-col md:border-y-0 md:bg-[#F5F5F5] md:py-0">
         <span className="flex items-center font-bold md:flex md:h-[76px] md:border-y-2 md:bg-[#C7C7C7] md:px-4 md:py-5">
           編號
@@ -215,7 +215,7 @@ const DesktopTableRow = ({ item }: { item: BudgetTableData }) => {
       </div>
       <div className="flex items-start justify-start pt-3 text-sm">
         <div className="relative w-full">
-          <p className="line-clamp-10">{item.proposalContent}</p>
+          <p className="line-clamp-4">{item.proposalContent}</p>
           <Dialog.Root>
             <Dialog.Trigger asChild>
               <span className="cursor-pointer text-xs text-blue-600 hover:underline">
@@ -240,13 +240,13 @@ const DesktopTableRow = ({ item }: { item: BudgetTableData }) => {
           </Dialog.Root>
         </div>
       </div>
-      <div className="flex items-start justify-center pt-3 text-sm">
+      <div className="flex items-start justify-center pt-3 md:text-xs lg:text-sm">
         {item.reducedAmount.toLocaleString()}
       </div>
-      <div className="flex items-start justify-center pt-3 text-sm">
+      <div className="flex items-start justify-center pt-3 md:text-xs lg:text-sm">
         {item.originalAmount.toLocaleString()}
       </div>
-      <div className="flex items-start justify-center pt-3 text-sm">
+      <div className="flex items-start justify-center pt-3 md:text-xs lg:text-sm">
         999999
       </div>
       <div className="flex items-start justify-center pt-3">
@@ -265,7 +265,7 @@ const DesktopTableRow = ({ item }: { item: BudgetTableData }) => {
             請支援心情
           </span>
           {isVoteMenuOpen && (
-            <div className="absolute w-[69px] right-0 bottom-0 z-10 translate-x-11 translate-y-[10.5rem] rounded-[24px] border-2 bg-white p-2.5 text-[9px]">
+            <div className="md: absolute right-0 bottom-0 z-10 w-[69px] rounded-[24px] border-2 bg-white p-2.5 text-[9px] md:translate-x-8 md:translate-y-[10.5rem] lg:translate-x-11 lg:translate-y-[10.5rem]">
               <div
                 onClick={toggleIsVoteMenuOpen}
                 className="flex flex-col items-center justify-center"
@@ -326,39 +326,39 @@ const BudgetTable = ({ data, isDesktop, className = "" }: BudgetTableProps) => {
           <div key={item.id}>
             {/* Header Row */}
             <div className="grid-rows-auto grid grid-cols-[1.2fr_1fr_1.5fr_1fr_1fr_1fr_2.5fr_1.5fr_1.5fr_1.3fr_1.2fr] bg-gray-100 font-bold">
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 編號
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 部會
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 審議日期 <br />
                 （階段）
               </div>
-              <div className="flex items-center justify-center border-y-2 px-2 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-2 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 提案人
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 提案
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 審議結果
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 提案內容
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 減列/
                 <br /> 凍結金額
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 預算金額
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 關心數
               </div>
-              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm">
+              <div className="flex items-center justify-center border-y-2 px-4 py-7 text-sm md:px-2 md:py-3.5 lg:px-4 lg:py-7">
                 我關心這個
               </div>
             </div>
