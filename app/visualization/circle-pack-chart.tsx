@@ -44,13 +44,25 @@ const FAKE_DATA: NodeDatum = {
   ],
 };
 
-const CirclePackChart = () => {
+type CirclePackChartProps = {
+  data?: NodeDatum;
+  width?: number;
+  height?: number;
+  padding?: number;
+};
+
+const CirclePackChart = ({
+  data = FAKE_DATA,
+  width: customWidth = 720,
+  height: customHeight,
+  padding = 3,
+}: CirclePackChartProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
 
   const { root, width, height, color } = useMemo(() => {
-    const width = 720;
-    const height = width;
+    const width = customWidth;
+    const height = customHeight ?? width;
 
     const color = d3
       .scaleLinear<string>()
@@ -59,16 +71,16 @@ const CirclePackChart = () => {
       .interpolate(d3.interpolateHcl);
 
     const pack = (data: NodeDatum) =>
-      d3.pack<NodeDatum>().size([width, height]).padding(3)(
+      d3.pack<NodeDatum>().size([width, height]).padding(padding)(
         d3
           .hierarchy<NodeDatum>(data)
           .sum((d) => (typeof d.value === "number" ? d.value : 0))
           .sort((a, b) => (b.value ?? 0) - (a.value ?? 0))
       );
 
-    const root = pack(FAKE_DATA);
+    const root = pack(data);
     return { root, width, height, color };
-  }, []);
+  }, [data, customWidth, customHeight, padding]);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -80,7 +92,7 @@ const CirclePackChart = () => {
       .attr("height", height)
       .attr(
         "style",
-        `max-width: 100%; height: auto; display: block; background: ${color(0)}; cursor: pointer;`
+        `max-width: 100%; height: auto; display: block; cursor: pointer;`
       );
 
     const nodesData: d3.HierarchyCircularNode<NodeDatum>[] = root
@@ -98,6 +110,8 @@ const CirclePackChart = () => {
         "fill",
         (d) => d.data.color ?? (d.children ? color(d.depth) : "white")
       )
+      .attr("stroke", "#000")
+      .attr("stroke-width", 1.5)
       .attr("pointer-events", (d) =>
         d.children || d.data.id ? "auto" : "none"
       )
@@ -105,10 +119,10 @@ const CirclePackChart = () => {
         d.data.id ? "pointer" : d.children ? "pointer" : "default"
       )
       .on("mouseover", function () {
-        d3.select(this).attr("stroke", "#000");
+        d3.select(this).attr("stroke-width", 3);
       })
       .on("mouseout", function () {
-        d3.select(this).attr("stroke", null);
+        d3.select(this).attr("stroke-width", 1.5);
       });
 
     const label = svg
@@ -118,8 +132,8 @@ const CirclePackChart = () => {
       .selectAll<SVGTextElement, d3.HierarchyCircularNode<NodeDatum>>("text")
       .data(root.descendants() as d3.HierarchyCircularNode<NodeDatum>[])
       .join("text")
-      .style("fill-opacity", (d) => (d.parent === root ? "1" : "0"))
-      .style("display", (d) => (d.parent === root ? "inline" : "none"))
+      .style("fill-opacity", (d) => (d.parent === root || d.parent?.parent === root ? "1" : "0"))
+      .style("display", (d) => (d.parent === root || d.parent?.parent === root ? "inline" : "none"))
       .style("font-size", (d) => `${Math.max(18, Math.min(24, d.r / 4))}px`)
       .style("font-family", "sans-serif")
       .each(function (this: SVGTextElement, d) {
@@ -207,10 +221,16 @@ const CirclePackChart = () => {
     function zoomTo(v: [number, number, number]) {
       const k = width / v[2];
       view = v;
-      label.attr(
-        "transform",
-        (d) => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`
-      );
+      label.attr("transform", (d) => {
+        const x = (d.x - v[0]) * k;
+        const y = (d.y - v[1]) * k;
+        // 如果有子節點，將文字移到圓圈頂部
+        if (d.children && d.children.length > 0) {
+          const offsetY = -d.r * k * 0.7;
+          return `translate(${x}, ${y + offsetY})`;
+        }
+        return `translate(${x}, ${y})`;
+      });
       node.attr(
         "transform",
         (d) => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`

@@ -33,8 +33,8 @@ const TableRow = ({
   label: string;
   children: React.ReactNode;
 }) => (
-  <div className="flex md:w-20 md:max-w-[138px] md:flex-col">
-    <p className="flex w-full items-center justify-center border-b-2 bg-white font-bold md:h-[76px] md:border-y-2 md:bg-[#C7C7C7]">
+  <div className="flex flex-col md:w-20 md:max-w-[138px]">
+    <p className="flex w-full items-center justify-center border-y-2 bg-white font-bold md:h-[76px] md:border-y-2 md:bg-[#C7C7C7]">
       {label}
     </p>
     <div className="flex w-full items-center justify-start border-b-2 py-3 md:border-b-0">
@@ -44,7 +44,7 @@ const TableRow = ({
 );
 
 const ProposalContent = ({ content }: { content: string; itemId: string }) => (
-  <div className="w-full border-b-2 py-3">
+  <div className="w-full py-3">
     <div className="relative flex items-start gap-2">
       <p className="mb-5 line-clamp-8 flex-1">{content}</p>
       <div className="absolute right-0 bottom-0">
@@ -128,7 +128,7 @@ const BudgetTableRow = ({ item }: { item: BudgetTableData }) => {
       <TableRow label="審議日期（階段）">{item.reviewDate}</TableRow>
       <TableRow label="提案人（連署）">{item.proposer}</TableRow>
 
-      <div className="grid grid-cols-[44px_45px_92px_92px] grid-rows-[76px] justify-items-center text-center">
+      <div className="grid grid-cols-[1fr_1fr_2fr_2fr] grid-rows-[76px] justify-items-center text-center">
         <p className="flex size-full items-center justify-center border-b-2 bg-white px-2 py-3.5 font-bold md:border-y-2 md:bg-[#C7C7C7] md:p-0">
           提案
         </p>
