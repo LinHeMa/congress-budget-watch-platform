@@ -4,7 +4,8 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "deploy:gcp": "sh ./deploy.sh",
+    "deploy:gcp:prod": "sh ./deploy-prod.sh",
+    "deploy:gcp:dev": "sh ./deploy-dev.sh",
     "dev": "react-router dev",
     "start": "react-router-serve ./build/client/index.html",
     "typecheck": "react-router typegen && tsc",

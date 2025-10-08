@@ -8,6 +8,6 @@ echo "Deploying to gcloud storage..."
 
 # Deploy all files with no cache
 echo "Uploading all files with no-store cache control..."
-gcloud storage rsync -h "Cache-Control:no-store" ./build/client gs://readr-coverage/project/3/congress-budget-watch
+gcloud storage rsync --cache-control="no-store" --recursive ./build/client gs://readr-coverage/project/3/dev-congress-budget-watch
 
 echo "Deployment complete."
