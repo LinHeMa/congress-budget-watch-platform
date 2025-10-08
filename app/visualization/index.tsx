@@ -3,7 +3,8 @@ import BudgetHeader from "~/components/budget-header";
 import { VisualizationSelector } from "~/components/visualization-selector";
 import CirclePackChart from "./circle-pack-chart";
 import DepartmentChart from "./department";
-import Image from "~/components/image";
+import BudgetTypeLegend from "~/components/budget-type-legend";
+import { BUDGET_TYPE_LEGEND_ITEMS } from "~/constants/legends";
 
 type OptionType = {
   value: string;
@@ -100,32 +101,7 @@ const Visualization = () => {
             </p>
           </div>
         </div>
-        <div className="flex items-center justify-center gap-5">
-          <div className="flex flex-col items-center justify-center gap-y-6">
-            <Image
-              src="/icon/circle-pack-frozen.svg"
-              alt="circle-pack-frozen"
-              className="h-[48px] w-[48px]"
-            />
-            <p>凍結</p>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-y-6">
-            <Image
-              src="/icon/circle-pack-default.svg"
-              alt="circle-pack-default"
-              className="h-[48px] w-[48px]"
-            />
-            <p>刪除</p>
-          </div>
-          <div className="flex flex-col items-center justify-center gap-y-6">
-            <Image
-              src="/icon/circle-pack-main.svg"
-              alt="circle-pack-main"
-              className="h-[48px] w-[48px]"
-            />
-            <p>主決議</p>
-          </div>
-        </div>
+        <BudgetTypeLegend items={BUDGET_TYPE_LEGEND_ITEMS} />
         {activeTab === "legislator" && <CirclePackChart />}
         {activeTab === "department" && <DepartmentChart />}
       </div>

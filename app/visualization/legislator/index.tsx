@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router";
 import BudgetHeader from "~/components/budget-header";
 import SessionChart from "./session-chart";
+import BudgetTypeLegend from "~/components/budget-type-legend";
+import { BUDGET_TYPE_LEGEND_ITEMS } from "~/constants/legends";
 
 const VisualizationLegislator = () => {
   const [selectedType, setSelectedType] = useState<
@@ -12,7 +14,7 @@ const VisualizationLegislator = () => {
   return (
     <div>
       <BudgetHeader />
-      <div className="flex flex-col items-center justify-center px-3">
+      <div className="flex flex-col items-center justify-center px-3 md:mx-auto md:max-w-[800px]">
         <Link to="/visualization">{"<"} 回到視覺化主頁</Link>
         <div className="mt-4 flex flex-col items-center justify-center gap-y-2">
           <p>徐巧芯</p>
@@ -80,6 +82,9 @@ const VisualizationLegislator = () => {
           <p>
             主決議提案數： <span className="text-[#E9808E]">32</span>個
           </p>
+        </div>
+        <div className="mt-6">
+          <BudgetTypeLegend items={BUDGET_TYPE_LEGEND_ITEMS} />
         </div>
         {/* session chart */}
         <SessionChart />

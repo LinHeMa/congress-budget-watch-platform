@@ -63,7 +63,7 @@ const SessionChart = () => {
           <p>第OO屆</p>
           <p>OOOO委員會</p>
         </div>
-        <div>
+        <div className="md:mx-auto">
           <CirclePackChart data={FAKE_DATA} padding={8} />
         </div>
       </div>
