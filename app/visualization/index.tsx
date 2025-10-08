@@ -2,6 +2,7 @@ import { useState } from "react";
 import BudgetHeader from "~/components/budget-header";
 import { VisualizationSelector } from "~/components/visualization-selector";
 import CirclePackChart from "./circle-pack-chart";
+import DepartmentChart from "./department";
 
 type OptionType = {
   value: string;
@@ -15,6 +16,7 @@ const yearOptions: OptionType[] = [
 
 // data layer
 const Visualization = () => {
+  // "department" || "legislator"
   const [activeTab, setActiveTab] = useState("legislator");
   const [mode, setMode] = useState<"amount" | "count">("amount");
   const [selectOptions, setSelectOptions] = useState<OptionType[]>(yearOptions);
@@ -49,7 +51,9 @@ const Visualization = () => {
           <VisualizationSelector
             options={yearOptions}
             value={selectOptions[0]}
-            onChange={(option: OptionType) => setSelectOptions([option])}
+            onChange={(option) => {
+              if (option) setSelectOptions([option]);
+            }}
           />
         </div>
         <div>
@@ -91,7 +95,8 @@ const Visualization = () => {
             主決議提案數： <span className="text-[#E9808E]">32</span>個
           </p>
         </div>
-        <CirclePackChart />
+        {activeTab === "legislator" && <CirclePackChart />}
+        {activeTab === "department" && <DepartmentChart />}
       </div>
     </div>
   );
