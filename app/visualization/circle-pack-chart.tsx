@@ -95,7 +95,7 @@ const CirclePackChart = ({
       .attr("height", height)
       .attr(
         "style",
-        `max-width: 100%; height: auto; display: block; cursor: pointer;`
+        `max-width: 100%; height: auto; display: block; cursor: grab;`
       );
 
     const nodesData: d3.HierarchyCircularNode<NodeDatum>[] = root
@@ -260,11 +260,9 @@ const CirclePackChart = ({
       });
 
     let focus: d3.HierarchyCircularNode<NodeDatum> = root;
-    let view: [number, number, number];
 
     function zoomTo(v: [number, number, number]) {
       const k = width / v[2];
-      view = v;
       label.attr("transform", (d) => {
         const x = (d.x - v[0]) * k;
         const y = (d.y - v[1]) * k;
@@ -304,22 +302,64 @@ const CirclePackChart = ({
       frozenNodes.select("circle").attr("r", (d) => d.r * k);
     }
 
+    // 將 view 轉換為 d3.ZoomTransform
+    function viewToTransform(v: [number, number, number]): d3.ZoomTransform {
+      const k = width / v[2];
+      return d3.zoomIdentity.translate(width / 2, height / 2).scale(k).translate(-v[0], -v[1]);
+    }
+
+    // 從 d3.ZoomTransform 更新視圖
+    function applyZoomTransform(transform: d3.ZoomTransform) {
+      const k = transform.k;
+      const x = (width / 2 - transform.x) / k;
+      const y = (height / 2 - transform.y) / k;
+      const newView: [number, number, number] = [x, y, width / k];
+      zoomTo(newView);
+    }
+
+    // 建立 d3-zoom behavior
+    const zoomBehavior = d3
+      .zoom<SVGSVGElement, unknown>()
+      .scaleExtent([0.5, 10]) // 限制縮放範圍：最小 0.5 倍，最大 10 倍
+      .on("zoom", (event) => {
+        // 拖曳和滾輪時更新視圖
+        applyZoomTransform(event.transform);
+      });
+
     function zoom(
       event: (MouseEvent & { altKey?: boolean }) | null,
       d: d3.HierarchyCircularNode<NodeDatum>
     ) {
       focus = d;
       const isSlow = Boolean(event?.altKey);
-      const t = d3
+      const targetView: [number, number, number] = [focus.x, focus.y, focus.r * 2];
+      
+      // 使用 d3-zoom 的程式化縮放
+      svg
         .transition()
         .duration(isSlow ? 7500 : 750)
-        .tween("zoom", () => {
-          const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
-          return (tt: number) => zoomTo(i(tt));
+        .call(
+          zoomBehavior.transform as (
+            transition: d3.Transition<SVGSVGElement, undefined, null, undefined>,
+            transform: d3.ZoomTransform
+          ) => void,
+          viewToTransform(targetView)
+        )
+        .on("end", () => {
+          // 更新標籤顯示
+          label
+            .style("fill-opacity", (dd: d3.HierarchyCircularNode<NodeDatum>) =>
+              dd.parent === focus || dd === focus ? "1" : "0"
+            )
+            .style("display", (dd: d3.HierarchyCircularNode<NodeDatum>) =>
+              dd.parent === focus || dd === focus ? "inline" : "none"
+            );
         });
 
+      // 立即開始標籤過渡動畫
       label
-        .transition(t)
+        .transition()
+        .duration(isSlow ? 7500 : 750)
         .style("fill-opacity", (dd: d3.HierarchyCircularNode<NodeDatum>) =>
           dd.parent === focus || dd === focus ? "1" : "0"
         )
@@ -345,10 +385,36 @@ const CirclePackChart = ({
         );
     }
 
+    // 綁定 zoom behavior 到 SVG
+    svg.call(
+      zoomBehavior as (
+        selection: d3.Selection<SVGSVGElement, undefined, null, undefined>
+      ) => void
+    );
+
+    // 設定初始視圖
+    const initialView: [number, number, number] = [root.x, root.y, root.r * 2];
+    const initialTransform = viewToTransform(initialView);
+    svg.call(
+      zoomBehavior.transform as (
+        selection: d3.Selection<SVGSVGElement, undefined, null, undefined>,
+        transform: d3.ZoomTransform
+      ) => void,
+      initialTransform
+    );
+    zoomTo(initialView);
+
     // initial interactions
-    svg.on("click", (event) => zoom(event as unknown as MouseEvent, root));
+    svg.on("click", (event) => {
+      // 防止在拖曳後觸發點擊
+      if (event.defaultPrevented) return;
+      zoom(event as unknown as MouseEvent, root);
+    });
 
     node.on("click", (event, d) => {
+      // 防止在拖曳後觸發點擊
+      if (event.defaultPrevented) return;
+      
       // 如果節點有 id，則導航到詳情頁
       if (d.data.id) {
         navigate(`/visualization/legislator/${d.data.id}`);
@@ -361,7 +427,6 @@ const CirclePackChart = ({
         event.stopPropagation();
       }
     });
-    zoomTo([root.x, root.y, root.r * 2]);
 
     // mount
     containerRef.current.innerHTML = "";
