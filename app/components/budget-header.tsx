@@ -1,15 +1,16 @@
+import { NavLink } from "react-router";
 import Image from "./image";
 
 const BudgetHeader = () => {
   return (
     <div className="sticky flex justify-between border-t-[12px] border-t-[#3E51FF] px-3 pt-2">
-      <button>
+      <NavLink to="/">
         <Image
           src="/image/readr-header.svg"
           alt="Readr logo"
           className="h-[28px] w-[92px]"
         />
-      </button>
+      </NavLink>
       <button>
         <Image
           src="/icon/share-header.svg"
