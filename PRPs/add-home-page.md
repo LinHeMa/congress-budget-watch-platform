@@ -13,7 +13,7 @@
 - **State Management**: Zustand v5.0.8 (已安裝且有完整的 `uiStore.ts`)
 - **Package Manager**: pnpm
 - **TypeScript**: 嚴格模式，避免使用 `any` 型別
-- **Image Handling**: 
+- **Image Handling**:
   - 自定義 `Image` 組件位於 `app/components/image.tsx`
   - 使用 `STATIC_ASSETS_PREFIX = "/project/3/congress-budget-watch"` (from `app/constants/config.ts`)
   - 圖片資源存放在 `public/image/` 和 `public/icon/`
@@ -24,9 +24,9 @@ From `app/routes.ts`:
 
 ```typescript
 export default [
-  index("routes/home.tsx"),                                  // "/" - Home page
-  route("/all-budgets", "all-budgets/index.tsx"),           // 歷年預算
-  route("/visualization", "visualization/index.tsx"),        // 視覺化專區
+  index("routes/home.tsx"), // "/" - Home page
+  route("/all-budgets", "all-budgets/index.tsx"), // 歷年預算
+  route("/visualization", "visualization/index.tsx"), // 視覺化專區
   route("/budget/:id", "budget-detail/index.tsx"),
   route("/visualization/legislator/:id", "visualization/legislator/index.tsx"),
 ] satisfies RouteConfig;
@@ -57,10 +57,11 @@ export default function Home() {
 
 ```tsx
 // Active state
-className="rounded px-2.5 transition-colors bg-[#3E51FF] text-white"
+className = "rounded px-2.5 transition-colors bg-[#3E51FF] text-white";
 
 // Inactive state
-className="rounded px-2.5 transition-colors border border-gray-300 bg-white text-gray-800"
+className =
+  "rounded px-2.5 transition-colors border border-gray-300 bg-white text-gray-800";
 ```
 
 從 Feature 需求中的按鈕樣式：
@@ -73,6 +74,7 @@ onSelected: bg-[#E9808E]
 ```
 
 **專案主題色**:
+
 - 主色（藍）: `#3E51FF`
 - 次色（粉紅）: `#E9808E`
 - 背景色: `#F6F6F6` (from `app/app.css`)
@@ -96,7 +98,14 @@ onSelected: bg-[#E9808E]
 From `app/components/image.tsx`:
 
 ```tsx
-const Image = ({ src, ...props }: { src: string; alt: string; className?: string }) => {
+const Image = ({
+  src,
+  ...props
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) => {
   return <img src={STATIC_ASSETS_PREFIX + src} {...props} />;
 };
 ```
@@ -104,6 +113,7 @@ const Image = ({ src, ...props }: { src: string; alt: string; className?: string
 ### Assets Verification
 
 確認所需資源已存在：
+
 - ✅ `public/image/homepage-banner.svg` - Banner 圖片（已確認存在）
 - ✅ `public/image/readr-header.svg` - Header logo (已用於 BudgetHeader)
 - ✅ `public/icon/share-header.svg` - Share icon (已用於 BudgetHeader)
@@ -129,7 +139,7 @@ const Image = ({ src, ...props }: { src: string; alt: string; className?: string
 
 ```css
 flex, flex-col, gap-y-9
-button: 
+button:
   - border: 3px solid #E9808E
   - bg-white
   - onSelected: bg-[#E9808E]
@@ -164,7 +174,7 @@ export default function Collaboration() {
     <>
       <BudgetHeader />
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">協作區</h1>
+        <h1 className="mb-4 text-2xl font-bold">協作區</h1>
         <p className="text-gray-700">
           歡迎加入協作行列，協助辨識預算提案掃描檔。
         </p>
@@ -203,9 +213,10 @@ import Image from "~/components/image";
 export function meta() {
   return [
     { title: "中央政府總預算案審查監督平台" },
-    { 
-      name: "description", 
-      content: "收錄歷年及最新中央政府預算審議情形，包含立委提案刪減和凍結的緣由和金額，便於搜尋及比較，更能即時追蹤最新審議進度。" 
+    {
+      name: "description",
+      content:
+        "收錄歷年及最新中央政府預算審議情形，包含立委提案刪減和凍結的緣由和金額，便於搜尋及比較，更能即時追蹤最新審議進度。",
     },
   ];
 }
@@ -227,15 +238,15 @@ export default function Home() {
   return (
     <>
       <BudgetHeader />
-      
-      <main className="min-h-screen bg-background p-5 md:p-8">
+
+      <main className="bg-background min-h-screen p-5 md:p-8">
         <div className="mx-auto max-w-4xl">
           {/* Title Section */}
           <header className="mb-8 text-center md:mb-12">
             <h1 className="mb-6 text-3xl font-bold text-gray-900 md:text-4xl">
               中央政府總預算案審查監督平台
             </h1>
-            
+
             {/* Banner Image */}
             <div className="mb-8 flex justify-center">
               <Image
@@ -244,15 +255,15 @@ export default function Home() {
                 className="h-auto w-full max-w-2xl"
               />
             </div>
-            
+
             {/* Description */}
             <p className="mx-auto max-w-2xl text-base leading-relaxed text-gray-700 md:text-lg">
               收錄歷年及最新中央政府預算審議情形，包含立委提案刪減和凍結的緣由和金額，便於搜尋及比較，更能即時追蹤最新審議進度。還可透過視覺化方式瀏覽，一目暸然。除了已數位化的資料，此平台也透過群眾協力（crowdsourcing）辨識提案掃描檔，歡迎至協作區加入合作行列。
             </p>
           </header>
-          
+
           {/* Navigation Buttons */}
-          <nav 
+          <nav
             className="flex flex-col gap-y-9 md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-4"
             aria-label="主要導航"
           >
@@ -261,12 +272,11 @@ export default function Home() {
                 key={button.label}
                 to={button.href}
                 className={({ isActive }) =>
-                  `rounded-lg border-3 border-[#E9808E] px-6 py-4 text-center text-lg font-medium transition-colors
-                  ${isActive 
-                    ? "bg-[#E9808E] text-white" 
-                    : "bg-white text-gray-800 hover:bg-[#E9808E] hover:text-white"
-                  }
-                  focus:outline-none focus:ring-2 focus:ring-[#E9808E] focus:ring-offset-2`
+                  `rounded-lg border-3 border-[#E9808E] px-6 py-4 text-center text-lg font-medium transition-colors ${
+                    isActive
+                      ? "bg-[#E9808E] text-white"
+                      : "bg-white text-gray-800 hover:bg-[#E9808E] hover:text-white"
+                  } focus:ring-2 focus:ring-[#E9808E] focus:ring-offset-2 focus:outline-none`
                 }
               >
                 {button.label}
@@ -297,10 +307,10 @@ interface NavigationButton {
 
 ```tsx
 // Mobile (default): flex-col with vertical spacing
-className="flex flex-col gap-y-9"
+className = "flex flex-col gap-y-9";
 
 // Desktop (md breakpoint): Grid layout
-className="md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-4"
+className = "md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-4";
 ```
 
 #### 3.2 Button Responsive Behavior
@@ -320,16 +330,11 @@ className="md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-4"
 
 ```css
 /* Primary Colors */
---primary-blue: #3E51FF
---primary-pink: #E9808E
---background: #F6F6F6
---text-gray: #868686
-
-/* Button States */
-Default: bg-white, border-[#E9808E]
-Hover: bg-[#E9808E], text-white
-Active/Selected: bg-[#E9808E], text-white
-Focus: ring-[#E9808E]
+--primary-blue:
+  #3e51ff --primary-pink: #e9808e --background: #f6f6f6 --text-gray: #868686
+    /* Button States */ Default: bg-white,
+  border-[#E9808E] Hover: bg-[#E9808E],
+  text-white Active/Selected: bg-[#E9808E], text-white Focus: ring-[#E9808E];
 ```
 
 #### 4.2 Typography
@@ -378,7 +383,7 @@ React Router's `NavLink` provides `isActive` prop in render function:
 ```tsx
 <NavLink
   to="/path"
-  className={({ isActive }) => 
+  className={({ isActive }) =>
     isActive ? "active-styles" : "default-styles"
   }
 >
@@ -516,6 +521,7 @@ pnpm format:check || echo "No formatter configured"
 ### Manual Testing Checklist
 
 #### Visual Testing
+
 - [ ] Banner image loads correctly
 - [ ] Title displays with correct font and size
 - [ ] Description text is readable and properly formatted
@@ -523,18 +529,21 @@ pnpm format:check || echo "No formatter configured"
 - [ ] Colors match design specifications (#E9808E for buttons)
 
 #### Responsive Testing
+
 - [ ] Mobile view (< 768px): Buttons stack vertically with gap-y-9
 - [ ] Tablet view (768px-1024px): 2x2 grid layout
 - [ ] Desktop view (> 1024px): 4-column layout
 - [ ] Image scales appropriately on all screen sizes
 
 #### Interaction Testing
+
 - [ ] Clicking each button navigates to correct route
 - [ ] Hover states work correctly (background changes to #E9808E)
 - [ ] Focus indicators visible when tabbing through buttons
 - [ ] NavLink active state highlights current page (if applicable)
 
 #### Accessibility Testing
+
 - [ ] Tab key navigates through all buttons in logical order
 - [ ] Enter/Space key activates focused button
 - [ ] Screen reader announces button labels correctly
@@ -542,6 +551,7 @@ pnpm format:check || echo "No formatter configured"
 - [ ] Color contrast meets WCAG AA standards (4.5:1 minimum)
 
 #### Browser Compatibility
+
 - [ ] Chrome: All features work correctly
 - [ ] Firefox: All features work correctly
 - [ ] Safari: All features work correctly
@@ -560,7 +570,6 @@ pnpm format:check || echo "No formatter configured"
 
 - `app/routes.ts` - Updated route configuration
   - Added `/collaboration` route
-  
 - `app/routes/home.tsx` - Completely redesigned home page
   - New layout with title, banner, description
   - 4 navigation buttons with responsive design
@@ -602,7 +611,8 @@ pnpm format:check || echo "No formatter configured"
 #### 1. Image Not Loading
 
 **Problem**: Banner image doesn't display
-**Solution**: 
+**Solution**:
+
 - Verify `STATIC_ASSETS_PREFIX` is correctly applied
 - Check file path: `public/image/homepage-banner.svg` exists
 - Test with direct path: `/project/3/congress-budget-watch/image/homepage-banner.svg`
@@ -611,14 +621,16 @@ pnpm format:check || echo "No formatter configured"
 #### 2. NavLink Active State Issues
 
 **Problem**: Home route (`/`) always shows as active
-**Solution**: 
+**Solution**:
+
 - Add `end` prop to home NavLink: `<NavLink to="/" end>`
 - Or design home page to not use active state highlighting
 
 #### 3. Button Border Not Showing
 
 **Problem**: `border-3` class doesn't exist in Tailwind
-**Solution**: 
+**Solution**:
+
 - Tailwind v4 uses `border-[3px]` for custom border width
 - Update className: `border-[3px] border-[#E9808E]`
 
@@ -626,6 +638,7 @@ pnpm format:check || echo "No formatter configured"
 
 **Problem**: Buttons not stacking correctly on mobile
 **Solution**:
+
 - Verify mobile-first approach: default `flex flex-col`
 - Check breakpoint syntax: `md:grid` (not `grid md:grid-cols-2`)
 - Use Chrome DevTools responsive mode for debugging
@@ -634,6 +647,7 @@ pnpm format:check || echo "No formatter configured"
 
 **Problem**: Text not readable on colored backgrounds
 **Solution**:
+
 - White text on #E9808E background (active state)
 - Gray/black text on white background (default state)
 - Test with browser accessibility tools
@@ -642,6 +656,7 @@ pnpm format:check || echo "No formatter configured"
 
 **Problem**: Type errors in NavLink className function
 **Solution**:
+
 - Use proper type for className prop: `className={({ isActive }) => ...}`
 - React Router types are already imported
 - Check `isActive` is boolean type
@@ -722,10 +737,10 @@ Tailwind v4 custom border widths use array syntax:
 
 ```tsx
 // ❌ Wrong
-className="border-3"
+className = "border-3";
 
 // ✅ Correct
-className="border-[3px]"
+className = "border-[3px]";
 ```
 
 ### 3. NavLink Active State
@@ -737,9 +752,9 @@ The home route `/` will match all paths starting with `/`. Solutions:
 <NavLink to="/" end>Home</NavLink>
 
 // Solution 2: Conditional styling
-<NavLink 
-  to="/" 
-  className={({ isActive }) => 
+<NavLink
+  to="/"
+  className={({ isActive }) =>
     location.pathname === "/" && isActive ? "active" : "default"
   }
 >
@@ -808,12 +823,14 @@ pnpm format:check
 ### Manual Verification Steps
 
 #### Step 1: Visual Inspection (5 min)
+
 1. Start dev server: `pnpm dev`
 2. Open http://localhost:5173/
 3. Verify all elements render correctly
 4. Check console for errors
 
 #### Step 2: Navigation Testing (5 min)
+
 1. Click "歷年預算" → Should navigate to `/all-budgets`
 2. Click "視覺化專區" → Should navigate to `/visualization`
 3. Click "協作區" → Should navigate to `/collaboration`
@@ -821,6 +838,7 @@ pnpm format:check
 5. Use browser back button → Should work correctly
 
 #### Step 3: Responsive Testing (10 min)
+
 1. Open Chrome DevTools (F12)
 2. Toggle device toolbar (Ctrl+Shift+M / Cmd+Shift+M)
 3. Test iPhone SE (375px width) - Mobile layout
@@ -829,6 +847,7 @@ pnpm format:check
 6. Verify button layout changes at breakpoints
 
 #### Step 4: Accessibility Testing (10 min)
+
 1. Tab through page (Tab key)
 2. Verify focus indicators visible on all buttons
 3. Activate button with Enter key
@@ -839,6 +858,7 @@ pnpm format:check
 5. Check color contrast with browser tools
 
 #### Step 5: Browser Compatibility (10 min)
+
 1. Test in Chrome/Edge
 2. Test in Firefox
 3. Test in Safari (if available)
@@ -888,6 +908,7 @@ This is a straightforward implementation with well-defined requirements, existin
 ### Context Summary
 
 You are implementing a landing page redesign for a React Router v7 application. The project uses:
+
 - TypeScript (strict mode, no `any` types)
 - TailwindCSS v4 + DaisyUI
 - Zustand for state management (already configured)

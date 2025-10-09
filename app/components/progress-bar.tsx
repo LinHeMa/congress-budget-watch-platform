@@ -35,13 +35,13 @@ const ProgressBar: React.FC<ProgressBarProps> = ({
             <img
               src={`${import.meta.env.BASE_URL}image/magnifier-eye.svg`}
               alt="magnifier eye logo"
-              className="absolute lg:-top-10 lg:-left-12 z-10 lg:h-[63px] lg:w-[55px] md:h-[48px] md:w-auto md:-top-7 md:-left-7"
+              className="absolute z-10 md:-top-7 md:-left-7 md:h-[48px] md:w-auto lg:-top-10 lg:-left-12 lg:h-[63px] lg:w-[55px]"
             />
           </p>
           <div className="relative flex items-center">
             {labels.map((label, index) => (
               <div
-                className={`md:text-xs relative rounded-lg border-2 pr-3 ${
+                className={`relative rounded-lg border-2 pr-3 md:text-xs ${
                   isFinished
                     ? "border-white bg-[#3E51FF] text-white"
                     : "border-[#3E51FF] bg-white text-[#3E51FF]"

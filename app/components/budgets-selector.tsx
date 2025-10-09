@@ -164,14 +164,14 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
               )}
             </div>
           ))}
-          <section  className="md:flex md:items-center">
+          <section className="md:flex md:items-center">
             <p>或搜尋：</p>
             <input
               type="search"
               placeholder="搜尋"
               value={searchedValue}
               onChange={(e) => setSearchedValue(e.target.value)}
-              className="rounded-sm border-2 text-center bg-white md:w-80"
+              className="rounded-sm border-2 bg-white text-center md:w-80"
             />
           </section>
           <button className="flex md:hidden" onClick={toggleVisible}>

@@ -305,7 +305,10 @@ const CirclePackChart = ({
     // 將 view 轉換為 d3.ZoomTransform
     function viewToTransform(v: [number, number, number]): d3.ZoomTransform {
       const k = width / v[2];
-      return d3.zoomIdentity.translate(width / 2, height / 2).scale(k).translate(-v[0], -v[1]);
+      return d3.zoomIdentity
+        .translate(width / 2, height / 2)
+        .scale(k)
+        .translate(-v[0], -v[1]);
     }
 
     // 從 d3.ZoomTransform 更新視圖
@@ -332,15 +335,24 @@ const CirclePackChart = ({
     ) {
       focus = d;
       const isSlow = Boolean(event?.altKey);
-      const targetView: [number, number, number] = [focus.x, focus.y, focus.r * 2];
-      
+      const targetView: [number, number, number] = [
+        focus.x,
+        focus.y,
+        focus.r * 2,
+      ];
+
       // 使用 d3-zoom 的程式化縮放
       svg
         .transition()
         .duration(isSlow ? 7500 : 750)
         .call(
           zoomBehavior.transform as (
-            transition: d3.Transition<SVGSVGElement, undefined, null, undefined>,
+            transition: d3.Transition<
+              SVGSVGElement,
+              undefined,
+              null,
+              undefined
+            >,
             transform: d3.ZoomTransform
           ) => void,
           viewToTransform(targetView)
@@ -414,7 +426,7 @@ const CirclePackChart = ({
     node.on("click", (event, d) => {
       // 防止在拖曳後觸發點擊
       if (event.defaultPrevented) return;
-      
+
       // 如果節點有 id，則導航到詳情頁
       if (d.data.id) {
         navigate(`/visualization/legislator/${d.data.id}`);

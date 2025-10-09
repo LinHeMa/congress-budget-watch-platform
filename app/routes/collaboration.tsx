@@ -11,7 +11,7 @@ export default function Collaboration() {
   return (
     <>
       <BudgetHeader />
-      <main className="min-h-screen bg-background p-5 md:p-8">
+      <main className="bg-background min-h-screen p-5 md:p-8">
         <div className="mx-auto max-w-4xl">
           <h1 className="mb-4 text-2xl font-bold text-gray-900 md:text-3xl">
             協作區
@@ -20,9 +20,7 @@ export default function Collaboration() {
             歡迎加入協作行列，協助辨識預算提案掃描檔。
           </p>
           <div className="mt-8 rounded-lg border-2 border-gray-300 bg-white p-6">
-            <p className="text-gray-600">
-              此功能即將推出，敬請期待！
-            </p>
+            <p className="text-gray-600">此功能即將推出，敬請期待！</p>
           </div>
         </div>
       </main>

@@ -7,15 +7,15 @@ type TimelineProps = {
 
 export const Timeline = ({ items }: TimelineProps) => {
   return (
-      <ul className="timeline timeline-vertical timeline-compact">
-        {items.map((item, index) => (
-          <TimelineItem
-            key={item.id}
-            {...item}
-            isLast={index === items.length - 1}
-            isFirst={index === 0}
-          />
-        ))}
-      </ul>
+    <ul className="timeline timeline-vertical timeline-compact">
+      {items.map((item, index) => (
+        <TimelineItem
+          key={item.id}
+          {...item}
+          isLast={index === items.length - 1}
+          isFirst={index === 0}
+        />
+      ))}
+    </ul>
   );
 };
