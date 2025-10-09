@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router";
-import BudgetHeader from "~/components/budget-header";
 import SessionChart from "./session-chart";
 import BudgetTypeLegend from "~/components/budget-type-legend";
 import { BUDGET_TYPE_LEGEND_ITEMS } from "~/constants/legends";
@@ -13,7 +12,6 @@ const VisualizationLegislator = () => {
 
   return (
     <div>
-      <BudgetHeader />
       <div className="flex flex-col items-center justify-center px-3 md:mx-auto md:max-w-[800px]">
         <Link to="/visualization">{"<"} 回到視覺化主頁</Link>
         <div className="mt-4 flex flex-col items-center justify-center gap-y-2">

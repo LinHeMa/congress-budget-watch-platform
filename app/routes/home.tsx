@@ -1,5 +1,4 @@
 import { NavLink } from "react-router";
-import BudgetHeader from "~/components/budget-header";
 import Image from "~/components/image";
 
 export function meta() {
@@ -29,9 +28,7 @@ const navigationButtons: NavigationButton[] = [
 export default function Home() {
   return (
     <>
-      <BudgetHeader />
-
-      <main className="bg-background min-h-screen p-5 md:p-8">
+      <main className="bg-background p-5 md:p-8">
         <div className="mx-auto max-w-4xl">
           {/* Title Section */}
           <header className="mb-8 text-center md:mb-12">

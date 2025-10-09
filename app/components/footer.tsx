@@ -1,6 +1,6 @@
 const Footer = () => {
   return (
-    <footer className="bg-footer flex h-[176px] flex-col justify-center gap-3 p-10 md:mx-auto md:h-32 md:gap-4">
+    <footer className="bg-footer flex h-[176px] w-full flex-col justify-center gap-3 p-10 md:mx-auto md:h-32 md:gap-4">
       {/* Attribution Text */}
       <p className="text-center text-xs text-[#959595] md:text-sm">
         此計畫由弗里德里希諾曼自由基金會（FNF）及公民監督國會聯盟支持。立法院資料串接由歐噴有限公司（OpenFun）協力。

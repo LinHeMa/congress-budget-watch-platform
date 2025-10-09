@@ -6,7 +6,6 @@ import { execute } from "~/graphql/execute";
 import { GET_BUDGETS_QUERY, budgetQueryKeys } from "~/queries";
 import content from "./page-content";
 import ProgressBar from "~/components/progress-bar";
-import BudgetHeader from "~/components/budget-header";
 import BudgetsSelector from "~/components/budgets-selector";
 import SortToolbar, { sortBudgetsByOption } from "~/components/sort-toolbar";
 import BudgetTable from "~/components/budget-table";
@@ -54,8 +53,6 @@ const AllBudgets = () => {
 
   return (
     <>
-      <BudgetHeader />
-
       <div className="p-5 md:mx-auto md:max-w-[720px] md:p-0 md:pt-8 lg:max-w-[960px]">
         {/* title start */}
         <p className="mb-3 w-full text-center text-xl font-bold">

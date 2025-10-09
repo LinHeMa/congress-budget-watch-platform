@@ -239,7 +239,7 @@ export default function Home() {
     <>
       <BudgetHeader />
 
-      <main className="bg-background min-h-screen p-5 md:p-8">
+      <main className="bg-background p-5 md:p-8">
         <div className="mx-auto max-w-4xl">
           {/* Title Section */}
           <header className="mb-8 text-center md:mb-12">

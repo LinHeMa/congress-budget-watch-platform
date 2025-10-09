@@ -1,5 +1,3 @@
-import BudgetHeader from "~/components/budget-header";
-
 export function meta() {
   return [
     { title: "協作區 - 國會預算監督平台" },
@@ -10,8 +8,7 @@ export function meta() {
 export default function Collaboration() {
   return (
     <>
-      <BudgetHeader />
-      <main className="bg-background min-h-screen p-5 md:p-8">
+      <main className="bg-background p-5 md:p-8">
         <div className="mx-auto max-w-4xl">
           <h1 className="mb-4 text-2xl font-bold text-gray-900 md:text-3xl">
             協作區

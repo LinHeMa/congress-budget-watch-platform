@@ -12,6 +12,7 @@ import "./app.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Footer from "./components/footer";
+import BudgetHeader from "./components/budget-header";
 // Create a client
 const queryClient = new QueryClient();
 
@@ -39,8 +40,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <QueryClientProvider client={queryClient}>
-          {children}
-          <Footer />
+          <div className="grid min-h-screen grid-rows-[auto_1fr_auto]">
+            <BudgetHeader />
+            <main>{children}</main>
+            <Footer />
+          </div>
           <ReactQueryDevtools initialIsOpen={false} />
         </QueryClientProvider>
         <ScrollRestoration />

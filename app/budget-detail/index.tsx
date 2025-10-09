@@ -1,5 +1,4 @@
 import { NavLink } from "react-router";
-import BudgetHeader from "~/components/budget-header";
 import { Timeline } from "../components/timeline/Timeline";
 import Image from "~/components/image";
 import { useMediaQuery } from "usehooks-ts";
@@ -30,9 +29,6 @@ const BudgetDetail = ({ hasImage = false }: { hasImage?: boolean }) => {
   if (isDesktop)
     return (
       <div className="pb-8 text-sm">
-        <div className="mb-8">
-          <BudgetHeader />
-        </div>
         <div className="mx-2.5 flex flex-col md:mx-8">
           <NavLink to="/all-budgets" className="underline">
             {"<" + "回到列表頁"}
@@ -352,9 +348,6 @@ const BudgetDetail = ({ hasImage = false }: { hasImage?: boolean }) => {
     );
   return (
     <>
-      <div className="mb-8">
-        <BudgetHeader />
-      </div>
       <div className="mx-2.5 flex flex-col">
         <NavLink to="/all-budgets" className="underline">
           {"<" + "回到列表頁"}

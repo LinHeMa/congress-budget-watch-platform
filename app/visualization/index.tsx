@@ -1,5 +1,4 @@
 import { useState } from "react";
-import BudgetHeader from "~/components/budget-header";
 import { VisualizationSelector } from "~/components/visualization-selector";
 import CirclePackChart from "./circle-pack-chart";
 import DepartmentChart from "./department";
@@ -25,7 +24,6 @@ const Visualization = () => {
 
   return (
     <div>
-      <BudgetHeader />
       <div className="flex flex-col gap-y-3 p-4">
         <div className="flex flex-col gap-y-2 md:flex-row md:items-center md:justify-center md:gap-x-6">
           <div className="flex items-center justify-center gap-x-1.5 md:gap-x-6">
