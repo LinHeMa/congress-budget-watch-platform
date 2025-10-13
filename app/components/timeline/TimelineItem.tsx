@@ -12,6 +12,7 @@ type TimelineItemProps = TimelineItemData & {
 const TimelineConnector = () => <hr style={{ width: "2px" }} />;
 
 export const TimelineItem = ({ date, title, isFirst }: TimelineItemProps) => {
+  // TODO: title 不需要再加時間了
   return (
     <li>
       {!isFirst && <TimelineConnector />}

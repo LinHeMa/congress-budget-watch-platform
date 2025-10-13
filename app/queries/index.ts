@@ -11,5 +11,6 @@ export {
 
 export {
   GET_PROPOSALS_QUERY,
+  GET_PROPOSAL_BY_ID_QUERY,
   proposalQueryKeys,
 } from './proposal.queries'

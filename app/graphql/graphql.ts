@@ -1954,6 +1954,13 @@ export type GetProposalsOrderedByIdDescQueryVariables = Exact<{ [key: string]: n
 
 export type GetProposalsOrderedByIdDescQuery = { __typename?: 'Query', proposalsCount?: number | null, proposals?: Array<{ __typename?: 'Proposal', id: string, description?: string | null, reason?: string | null, publishStatus?: string | null, result?: string | null, freezeAmount?: number | null, reductionAmount?: number | null, budgetImageUrl?: string | null, proposalTypes?: Array<ProposalProposalTypeType> | null, recognitionAnswer?: string | null, unfreezeStatus?: string | null, government?: { __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null } | null, budget?: { __typename?: 'Budget', id: string, projectName?: string | null, budgetAmount?: number | null, year?: number | null, type?: string | null, majorCategory?: string | null, mediumCategory?: string | null, minorCategory?: string | null } | null, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null }> | null, coSigners?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null }> | null }> | null };
 
+export type GetProposalByIdQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type GetProposalByIdQuery = { __typename?: 'Query', proposal?: { __typename?: 'Proposal', id: string, description?: string | null, reason?: string | null, publishStatus?: string | null, result?: string | null, freezeAmount?: number | null, reductionAmount?: number | null, budgetImageUrl?: string | null, proposalTypes?: Array<ProposalProposalTypeType> | null, recognitionAnswer?: string | null, unfreezeStatus?: string | null, government?: { __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null } | null, budget?: { __typename?: 'Budget', id: string, projectName?: string | null, projectDescription?: string | null, budgetAmount?: number | null, budgetUrl?: string | null, lastYearSettlement?: number | null, year?: number | null, type?: string | null, majorCategory?: string | null, mediumCategory?: string | null, minorCategory?: string | null, description?: string | null } | null, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null }> | null, coSigners?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null }> | null, meetings?: Array<{ __typename?: 'Meeting', id: string, displayName?: string | null, meetingDate?: any | null, description?: string | null, location?: string | null, meetingRecordUrl?: string | null, type?: string | null }> | null, mergedProposals?: Array<{ __typename?: 'Proposal', id: string, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null }> | null }> | null, historicalProposals?: Array<{ __typename?: 'Proposal', id: string, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null }> | null }> | null } | null };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -2040,3 +2047,74 @@ export const GetProposalsOrderedByIdDescDocument = new TypedDocumentString(`
   proposalsCount
 }
     `) as unknown as TypedDocumentString<GetProposalsOrderedByIdDescQuery, GetProposalsOrderedByIdDescQueryVariables>;
+export const GetProposalByIdDocument = new TypedDocumentString(`
+    query GetProposalById($id: ID!) {
+  proposal(where: {id: $id}) {
+    id
+    description
+    reason
+    publishStatus
+    result
+    freezeAmount
+    reductionAmount
+    budgetImageUrl
+    proposalTypes
+    recognitionAnswer
+    unfreezeStatus
+    government {
+      id
+      name
+      category
+      description
+    }
+    budget {
+      id
+      projectName
+      projectDescription
+      budgetAmount
+      budgetUrl
+      lastYearSettlement
+      year
+      type
+      majorCategory
+      mediumCategory
+      minorCategory
+      description
+    }
+    proposers {
+      id
+      name
+      type
+      description
+    }
+    coSigners {
+      id
+      name
+      type
+    }
+    meetings(orderBy: [{meetingDate: desc}]) {
+      id
+      displayName
+      meetingDate
+      description
+      location
+      meetingRecordUrl
+      type
+    }
+    mergedProposals {
+      id
+      proposers {
+        id
+        name
+      }
+    }
+    historicalProposals {
+      id
+      proposers {
+        id
+        name
+      }
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetProposalByIdQuery, GetProposalByIdQueryVariables>;

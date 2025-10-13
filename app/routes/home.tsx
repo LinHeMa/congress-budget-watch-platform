@@ -74,13 +74,13 @@ export default function Home() {
           ))}
         </nav>
       </div>
-      <div className="flex items-center justify-center md:gap-x-3">
+      <div className="flex items-center justify-center md:mt-25 md:gap-x-3">
         <Image
           src="/image/Friedrich-Naumann-Foundation-logo.svg"
           alt="Friedrich-Naumann-Foundation-logo"
           className="h-auto w-[130px] md:w-50"
         />
-        <Image src="/image/CCW-logo.png" alt="Citizen-Watch-logo" />
+        <Image src="/image/CCW-logo.svg" alt="Citizen-Watch-logo" />
         <Image src="/image/donate-CCW-logo.svg" alt="donate-CCW-logo" />
       </div>
     </div>

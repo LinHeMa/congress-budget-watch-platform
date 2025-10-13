@@ -81,6 +81,104 @@ export const GET_PROPOSALS_QUERY = graphql(`
 `)
 
 /**
+ * GraphQL query to get a single proposal by ID
+ * Includes all related data needed for the detail page
+ *
+ * Usage Example:
+ *
+ * ```tsx
+ * import { useQuery } from "@tanstack/react-query";
+ * import { execute } from "~/graphql/execute";
+ * import { GET_PROPOSAL_BY_ID_QUERY, proposalQueryKeys } from "~/queries";
+ *
+ * const BudgetDetail = () => {
+ *   const { id } = useParams();
+ *   const { data, isLoading, isError } = useQuery({
+ *     queryKey: proposalQueryKeys.detail(id!),
+ *     queryFn: () => execute(GET_PROPOSAL_BY_ID_QUERY, { id: id! }),
+ *     enabled: !!id,
+ *   });
+ *
+ *   if (isLoading) return <BudgetDetailSkeleton />;
+ *   if (isError || !data?.proposal) return <div>Error</div>;
+ *
+ *   return <div>{data.proposal.description}</div>;
+ * };
+ * ```
+ */
+export const GET_PROPOSAL_BY_ID_QUERY = graphql(`
+  query GetProposalById($id: ID!) {
+    proposal(where: { id: $id }) {
+      id
+      description
+      reason
+      publishStatus
+      result
+      freezeAmount
+      reductionAmount
+      budgetImageUrl
+      proposalTypes
+      recognitionAnswer
+      unfreezeStatus
+      government {
+        id
+        name
+        category
+        description
+      }
+      budget {
+        id
+        projectName
+        projectDescription
+        budgetAmount
+        budgetUrl
+        lastYearSettlement
+        year
+        type
+        majorCategory
+        mediumCategory
+        minorCategory
+        description
+      }
+      proposers {
+        id
+        name
+        type
+        description
+      }
+      coSigners {
+        id
+        name
+        type
+      }
+      meetings(orderBy: [{ meetingDate: desc }]) {
+        id
+        displayName
+        meetingDate
+        description
+        location
+        meetingRecordUrl
+        type
+      }
+      mergedProposals {
+        id
+        proposers {
+          id
+          name
+        }
+      }
+      historicalProposals {
+        id
+        proposers {
+          id
+          name
+        }
+      }
+    }
+  }
+`)
+
+/**
  * React Query keys for proposal-related queries
  * Following the recommended hierarchical pattern
  */
