@@ -11,12 +11,12 @@ input BooleanFilter {
 }
 
 type Budget {
-  budgetAmount: Int
+  budgetAmount: Float
   budgetUrl: String
   description: String
   government: Government
   id: ID!
-  lastYearSettlement: Int
+  lastYearSettlement: Float
   majorCategory: String
   mediumCategory: String
   minorCategory: String
@@ -27,11 +27,11 @@ type Budget {
 }
 
 input BudgetCreateInput {
-  budgetAmount: Int
+  budgetAmount: Float
   budgetUrl: String
   description: String
   government: GovernmentRelateToOneForCreateInput
-  lastYearSettlement: Int
+  lastYearSettlement: Float
   majorCategory: String
   mediumCategory: String
   minorCategory: String
@@ -73,11 +73,11 @@ input BudgetUpdateArgs {
 }
 
 input BudgetUpdateInput {
-  budgetAmount: Int
+  budgetAmount: Float
   budgetUrl: String
   description: String
   government: GovernmentRelateToOneForUpdateInput
-  lastYearSettlement: Int
+  lastYearSettlement: Float
   majorCategory: String
   mediumCategory: String
   minorCategory: String
@@ -91,12 +91,12 @@ input BudgetWhereInput {
   AND: [BudgetWhereInput!]
   NOT: [BudgetWhereInput!]
   OR: [BudgetWhereInput!]
-  budgetAmount: IntFilter
+  budgetAmount: FloatFilter
   budgetUrl: StringNullableFilter
   description: StringNullableFilter
   government: GovernmentWhereInput
   id: IDFilter
-  lastYearSettlement: IntNullableFilter
+  lastYearSettlement: FloatNullableFilter
   majorCategory: StringFilter
   mediumCategory: StringFilter
   minorCategory: StringFilter
@@ -233,6 +233,28 @@ input DateTimeNullableFilter {
   lte: DateTime
   not: DateTimeNullableFilter
   notIn: [DateTime!]
+}
+
+input FloatFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: FloatFilter
+  notIn: [Float!]
+}
+
+input FloatNullableFilter {
+  equals: Float
+  gt: Float
+  gte: Float
+  in: [Float!]
+  lt: Float
+  lte: Float
+  not: FloatNullableFilter
+  notIn: [Float!]
 }
 
 type Government {
@@ -988,6 +1010,7 @@ type RecognitionStatus {
   governmentBudgetResult: String
   id: ID!
   image: RecognitionImage
+  lineuserid: String
   proposers: String
   reason: String
   reductionAmountResult: String
@@ -1003,6 +1026,7 @@ input RecognitionStatusCreateInput {
   freezeAmountResult: String
   governmentBudgetResult: String
   image: RecognitionImageRelateToOneForCreateInput
+  lineuserid: String
   proposers: String
   reason: String
   reductionAmountResult: String
@@ -1018,6 +1042,7 @@ input RecognitionStatusOrderByInput {
   freezeAmountResult: OrderDirection
   governmentBudgetResult: OrderDirection
   id: OrderDirection
+  lineuserid: OrderDirection
   proposers: OrderDirection
   reason: OrderDirection
   reductionAmountResult: OrderDirection
@@ -1038,6 +1063,7 @@ input RecognitionStatusUpdateInput {
   freezeAmountResult: String
   governmentBudgetResult: String
   image: RecognitionImageRelateToOneForUpdateInput
+  lineuserid: String
   proposers: String
   reason: String
   reductionAmountResult: String
@@ -1057,6 +1083,7 @@ input RecognitionStatusWhereInput {
   governmentBudgetResult: StringNullableFilter
   id: IDFilter
   image: RecognitionImageWhereInput
+  lineuserid: StringNullableFilter
   proposers: StringNullableFilter
   reason: StringNullableFilter
   reductionAmountResult: StringNullableFilter

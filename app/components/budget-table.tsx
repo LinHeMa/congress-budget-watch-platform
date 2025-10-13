@@ -6,7 +6,7 @@ import { useRef, type RefObject } from "react";
 import { useOnClickOutside, useToggle } from "usehooks-ts";
 import React from "react";
 
-interface BudgetTableData {
+export interface BudgetTableData {
   id: string;
   department: string;
   reviewDate: string;

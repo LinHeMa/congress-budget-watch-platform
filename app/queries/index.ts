@@ -8,3 +8,8 @@ export {
 // Add other query exports here as you create more query files
 // export * from "./user.queries";
 // export * from "./committee.queries";
+
+export {
+  GET_PROPOSALS_QUERY,
+  proposalQueryKeys,
+} from './proposal.queries'
