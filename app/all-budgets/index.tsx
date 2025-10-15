@@ -13,25 +13,17 @@ import { useStore } from "zustand";
 import useBudgetSelectStore from "~/stores/budget-selector";
 import Image from "~/components/image";
 import { useMediaQuery } from "usehooks-ts";
-import type {
-  Proposal,
-  ProposalOrderByInput,
-} from "~/graphql/graphql";
-import {
-  OrderDirection,
-} from "~/graphql/graphql";
+import type { Proposal, ProposalOrderByInput } from "~/graphql/graphql";
+import { OrderDirection } from "~/graphql/graphql";
 import AllBudgetsSkeleton from "~/components/skeleton/all-budgets-skeleton";
 import Pagination from "~/components/pagination";
 import { usePagination, usePaginationActions } from "~/stores/paginationStore";
-import {
-  formatDate,
-  formatLegislator,
-} from '~/utils/format'
+import { formatLegislator } from "~/utils/format";
 import {
   formatNumber,
   formatReducedAndFrozenAmount,
   getProposalTypeDisplay,
-} from '../budget-detail/helpers'
+} from "../budget-detail/helpers";
 
 /**
  * 將 Proposal 轉換為 BudgetTableData
@@ -40,22 +32,31 @@ import {
 function proposalToBudgetTableData(proposal: Proposal): BudgetTableData {
   const result: BudgetTableData = {
     id: proposal.id,
-    sequence: proposal.sequence || 0,
-    department: proposal.budget?.department || 'N/A',
-    date: proposal.meetingDate ? formatDate(proposal.meetingDate) : 'N/A',
-    stage: '院會', // This is hardcoded for now
-    proposer: proposal.proposers?.map(formatLegislator).join(' ') || 'N/A',
-    proposalType: getProposalTypeDisplay(proposal.proposalType),
-    proposalResult: proposal.resolutionStatus || 'N/A',
-    proposalContent: proposal.description || 'N/A',
+    sequence: 0, // FIXME: 'sequence' is not available in the paginated query
+    department: proposal.government?.name || "N/A", // Correctly access department name
+    // FIXME: 'meetingDate' is not directly available on Proposal in paginated query.
+    // It's inside the `meetings` array which is not fetched here.
+    date: "無審議日期",
+    stage: "階段", // This is hardcoded for now
+    proposer: proposal.proposers?.map(formatLegislator).join(" ") || "未知提案人",
+    proposalType: getProposalTypeDisplay(proposal.proposalTypes), // Use 'proposalTypes'
+    proposalResult:
+      proposal.result === "passed"
+        ? "通過"
+        : proposal.result === "rejected"
+          ? "不通過"
+          : "待審議",
+    proposalContent: proposal.description || "無提案內容",
     originalAmount: formatNumber(proposal.budget?.budgetAmount),
     reducedAmount: formatReducedAndFrozenAmount(
       proposal.reductionAmount,
       proposal.freezeAmount
     ),
-    tags: proposal.tags?.map((tag) => tag?.name).join(' '),
-    status: 'committeed',
-    committeedDate: proposal.meetingDate
+    // FIXME: 'tags' are not available in the Proposal type from the GraphQL query.
+    tags: undefined,
+    status: "committeed",
+    // FIXME: 'committeedDate' relies on meetingDate which is not available.
+    committeedDate: undefined,
   };
 
   return result;
@@ -84,9 +85,12 @@ const AllBudgets = () => {
     const sortOption = sortOptions.find((o) => o.value === selectedSort);
     if (!sortOption) return [{ id: OrderDirection.Desc }];
 
+    const direction =
+      sortOption.direction === "asc" ? OrderDirection.Asc : OrderDirection.Desc;
+
     return [
       {
-        [sortOption.field]: sortOption.direction,
+        [sortOption.field]: direction,
       },
     ];
   }, [selectedSort]);
@@ -102,6 +106,7 @@ const AllBudgets = () => {
       }),
     placeholderData: keepPreviousData, // 避免切頁時閃爍
   });
+  console.log({ data });
 
   // 更新總數到 store（用於計算總頁數）
   useEffect(() => {

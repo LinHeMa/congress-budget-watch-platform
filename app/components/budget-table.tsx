@@ -8,16 +8,19 @@ import React from "react";
 
 export type BudgetTableData = {
   id: string;
+  sequence: number;
   department: string;
-  reviewDate: string;
-  reviewStage: string;
+  date: string;
+  stage: string;
   proposer: string;
-  cosigners?: string;
   proposalType: string;
   proposalResult: string;
-  originalAmount: number;
-  reducedAmount: number;
   proposalContent: string;
+  originalAmount?: string | null;
+  reducedAmount?: string | null;
+  tags?: string | null;
+  status: string; // Assuming 'committeed' is a valid status
+  committeedDate?: string | null; // This can be optional or string
 };
 
 type BudgetTableProps = {
@@ -125,7 +128,7 @@ const BudgetTableRow = ({ item }: { item: BudgetTableData }) => {
         </NavLink>
       </div>
       <TableRow label="部會">{item.department}</TableRow>
-      <TableRow label="審議日期（階段）">{item.reviewDate}</TableRow>
+      <TableRow label="審議日期（階段）">{`${item.date} (${item.stage})`}</TableRow>
       <TableRow label="提案人（連署）">{item.proposer}</TableRow>
 
       <div className="grid grid-cols-[1fr_1fr_2fr_2fr] grid-rows-[76px] justify-items-center text-center">
@@ -201,8 +204,8 @@ const DesktopTableRow = ({ item }: { item: BudgetTableData }) => {
         {item.department}
       </div>
       <div className="flex flex-col items-start justify-start pt-3 text-sm">
-        <div>{item.reviewDate}</div>
-        <div className="text-gray-600">({item.reviewStage})</div>
+        <div>{item.date}</div>
+        <div className="text-gray-600">({item.stage})</div>
       </div>
       <div className="flex items-start justify-center pt-3 text-sm">
         {item.proposer}
