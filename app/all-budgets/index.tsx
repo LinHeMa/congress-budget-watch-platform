@@ -16,84 +16,49 @@ import { useMediaQuery } from "usehooks-ts";
 import type {
   Proposal,
   ProposalOrderByInput,
-  ProposalProposalTypeType,
 } from "~/graphql/graphql";
 import {
   OrderDirection,
-  ProposalProposalTypeType as ProposalProposalTypeTypeEnum,
 } from "~/graphql/graphql";
 import AllBudgetsSkeleton from "~/components/skeleton/all-budgets-skeleton";
 import Pagination from "~/components/pagination";
 import { usePagination, usePaginationActions } from "~/stores/paginationStore";
-
-/**
- * 將 ProposalProposalTypeType 轉換為中文顯示文字
- */
-function getProposalTypeDisplay(
-  types?: Array<ProposalProposalTypeType> | null
-): string {
-  if (!types || types.length === 0) return "未分類";
-
-  const typeMap: Record<ProposalProposalTypeType, string> = {
-    [ProposalProposalTypeTypeEnum.Freeze]: "凍結",
-    [ProposalProposalTypeTypeEnum.Reduce]: "減列",
-    [ProposalProposalTypeTypeEnum.Other]: "其他",
-  };
-
-  return types.map((t) => typeMap[t] || t).join("、");
-}
+import {
+  formatDate,
+  formatLegislator,
+} from '~/utils/format'
+import {
+  formatNumber,
+  formatReducedAndFrozenAmount,
+  getProposalTypeDisplay,
+} from '../budget-detail/helpers'
 
 /**
  * 將 Proposal 轉換為 BudgetTableData
  * 此轉換確保與現有 BudgetTable 元件相容
  */
 function proposalToBudgetTableData(proposal: Proposal): BudgetTableData {
-  // 提案人：取第一個提案人，若無則顯示「無」
-  const proposer = proposal.proposers?.[0]?.name || "無";
-
-  // 連署人：將所有連署人名字用頓號連接，若無則顯示「無」
-  const cosigners =
-    proposal.coSigners && proposal.coSigners.length > 0
-      ? proposal.coSigners.map((s) => s.name).join("、")
-      : "無";
-
-  // 提案類型：從 proposalTypes 陣列轉換
-  const proposalType = getProposalTypeDisplay(proposal.proposalTypes);
-
-  // 審議結果：從 result 欄位取得，若無則顯示「待審議」
-  const proposalResult =
-    typeof proposal.result === "string"
-      ? proposal.result === "passed"
-        ? "通過"
-        : "不通過"
-      : "待審議";
-
-  // 預算金額：從 nested budget 中取得
-  const originalAmount = proposal.budget?.budgetAmount || 0;
-
-  // 減列/凍結金額：優先取 freezeAmount，其次 reductionAmount
-  // TODO: 確認是否需要加總 freezeAmount 和 reductionAmount
-  const reducedAmount = proposal.freezeAmount || proposal.reductionAmount || 0;
-
-  // 審議日期：從 nested budget 的 year 取得
-  // TODO: 確認審議日期是哪個欄位
-  const reviewDate = proposal.budget?.year
-    ? String(proposal.budget.year)
-    : "N/A";
-
-  return {
+  const result: BudgetTableData = {
     id: proposal.id,
-    department: proposal.government?.name || "未指定部會",
-    reviewDate,
-    reviewStage: proposal.government?.category || "未指定階段",
-    proposer,
-    cosigners,
-    proposalType,
-    proposalResult,
-    originalAmount,
-    reducedAmount,
-    proposalContent: proposal.reason || "未指定內容",
+    sequence: proposal.sequence || 0,
+    department: proposal.budget?.department || 'N/A',
+    date: proposal.meetingDate ? formatDate(proposal.meetingDate) : 'N/A',
+    stage: '院會', // This is hardcoded for now
+    proposer: proposal.proposers?.map(formatLegislator).join(' ') || 'N/A',
+    proposalType: getProposalTypeDisplay(proposal.proposalType),
+    proposalResult: proposal.resolutionStatus || 'N/A',
+    proposalContent: proposal.description || 'N/A',
+    originalAmount: formatNumber(proposal.budget?.budgetAmount),
+    reducedAmount: formatReducedAndFrozenAmount(
+      proposal.reductionAmount,
+      proposal.freezeAmount
+    ),
+    tags: proposal.tags?.map((tag) => tag?.name).join(' '),
+    status: 'committeed',
+    committeedDate: proposal.meetingDate
   };
+
+  return result;
 }
 
 const AllBudgets = () => {

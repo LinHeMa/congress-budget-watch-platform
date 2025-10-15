@@ -62,7 +62,34 @@ export function getResultDisplay(result?: string | null): string {
  */
 export function formatNumber(num?: number | null): string {
   if (num === null || num === undefined) return 'N/A'
-  return num.toLocaleString('zh-TW')
+  if (num === 0) return '0'
+
+  if (Math.abs(num) < 10000) {
+    return num.toLocaleString('zh-TW')
+  }
+
+  const inYi = num / 1_0000_0000
+  if (Math.abs(inYi) >= 1) {
+    return `${inYi.toFixed(1)} 億`
+  }
+
+  const inWan = num / 1_0000
+  return `${inWan.toFixed(1)} 萬`
+}
+
+/**
+ * 格式化減列與凍結金額
+ */
+export function formatReducedAndFrozenAmount(
+  reduced?: number | null,
+  frozen?: number | null
+): string {
+  const formattedReduced = reduced ? formatNumber(reduced) : '0'
+  const formattedFrozen = frozen ? formatNumber(frozen) : '0'
+
+  if (formattedReduced === '0' && formattedFrozen === '0') return '0'
+
+  return `${formattedReduced} / ${formattedFrozen}`
 }
 
 /**

@@ -17,6 +17,17 @@ export default [
     },
   },
   {
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
+  {
     ignores: ["node_modules/", "build/", ".react-router/", "schema.graphql"],
   },
 ];

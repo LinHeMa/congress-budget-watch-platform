@@ -1,7 +1,7 @@
 import React from "react";
 import { useStore } from "zustand";
 import useBudgetSelectStore from "~/stores/budget-selector";
-import Select, { components } from "react-select";
+import Select, { components, type DropdownIndicatorProps } from "react-select";
 import Image from "./image";
 
 type BudgetOption = {
@@ -32,7 +32,7 @@ const content = {
   ] as BudgetOption[],
 };
 
-export const DropdownIndicator = (props: any) => {
+export const DropdownIndicator = (props: DropdownIndicatorProps) => {
   return (
     <components.DropdownIndicator {...props}>
       <Image
@@ -130,7 +130,7 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
   };
 
   return (
-    <fieldset>
+    <fieldset className={className}>
       <legend className="sr-only">{content.pageTitle}</legend>
       {visible ? (
         <div className="mt-3 space-y-3">

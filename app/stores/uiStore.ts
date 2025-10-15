@@ -130,7 +130,7 @@ export const useUIStore = create<UIState>()(
 
         resetProgress: () =>
           set(
-            (state) => ({
+            (_state) => ({
               progressState: {
                 currentStep: 0,
                 isComplete: false,

@@ -241,10 +241,10 @@ const DesktopTableRow = ({ item }: { item: BudgetTableData }) => {
         </div>
       </div>
       <div className="flex items-start justify-center pt-3 md:text-xs lg:text-sm">
-        {item.reducedAmount.toLocaleString()}
+        {item.reducedAmount}
       </div>
       <div className="flex items-start justify-center pt-3 md:text-xs lg:text-sm">
-        {item.originalAmount.toLocaleString()}
+        {item.originalAmount}
       </div>
       <div className="flex items-start justify-center pt-3 md:text-xs lg:text-sm">
         999999

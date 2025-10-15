@@ -38,7 +38,7 @@ export const createBudgetSelectStore = (
 ) => {
   const props = { ...DEFAULT_PROPS, ...initProps };
 
-  return createStore<BudgetSelectState>()((set, get) => ({
+  return createStore<BudgetSelectState>()((set, _get) => ({
     // Initialize state with props
     ...props,
 
