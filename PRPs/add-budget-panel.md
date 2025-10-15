@@ -53,7 +53,7 @@ From `app/all-budgets/index.tsx` (lines 33-83), the existing structure includes:
 #### Zustand Store (`app/stores/budget-selector.tsx`)
 
 ```typescript
-interface BudgetSelectState {
+type BudgetSelectState {
   selectedValue: string; // Filter value (default: "all")
   searchedValue: string; // Search value (default: "")
   visible: boolean; // Visibility toggle (default: true)
@@ -66,7 +66,7 @@ interface BudgetSelectState {
 #### SortToolbar Component (`app/components/sort-toolbar.tsx`)
 
 ```typescript
-interface SortToolbarProps {
+type SortToolbarProps {
   selectedValue: string;
   onChange: (value: string) => void;
 }
@@ -81,14 +81,14 @@ interface SortToolbarProps {
 
 ### Component Patterns Established
 
-- Use `React.FC<Props>` with TypeScript interfaces
+- Use `React.FC<Props>` with TypeScript types
 - Optional props with sensible defaults
 - Proper event handler typing: `(value: string) => void`
 - Consistent styling with TailwindCSS classes
 
 ## Implementation Blueprint
 
-### Phase 1: Component Interface Definition
+### Phase 1: Component type Definition
 
 ```typescript
 // app/components/budgets-panel/index.tsx
@@ -96,7 +96,7 @@ import type { Budget } from "~/graphql/graphql";
 
 type SortValue = string; // "projectName-asc", "budgetAmount-desc", etc.
 
-interface BudgetsPanelProps {
+type BudgetsPanelProps {
   // Required data
   budgets: Budget[];
 
@@ -313,7 +313,7 @@ const [sort, setSort] = useState<string>("budgetAmount-desc");
 ### TypeScript Integration
 
 - **Import Budget type**: `import type { Budget } from "~/graphql/graphql";`
-- **Reuse existing interfaces**: Import `SortToolbarProps` patterns
+- **Reuse existing types**: Import `SortToolbarProps` patterns
 - **Proper generic typing**: Use existing patterns from `sort-toolbar.tsx`
 - **Event handler types**: Follow `(value: string) => void` pattern
 
@@ -445,11 +445,11 @@ grep -r "import.*budgets-panel" app/
 
 3. **No Breaking Changes**:
    - All existing components remain unchanged
-   - Zustand store interface unchanged
+   - Zustand store type unchanged
    - All imports and dependencies preserved
 
 4. **TypeScript Compliance**:
-   - Proper interfaces for all props
+   - Proper types for all props
    - Type-safe event handlers
    - Generic typing where appropriate
 
@@ -459,8 +459,8 @@ grep -r "import.*budgets-panel" app/
    - Create directory and files
    - Set up basic component skeleton with proper imports
 
-2. **Props Interface Implementation** (15 min)
-   - Define comprehensive `BudgetsPanelProps` interface
+2. **Props type Implementation** (15 min)
+   - Define comprehensive `BudgetsPanelProps` type
    - Set up controlled/uncontrolled logic
    - Implement hooks following React rules
 

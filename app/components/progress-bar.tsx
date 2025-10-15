@@ -1,4 +1,4 @@
-interface ProgressBarProps {
+type ProgressBarProps = {
   isDesktop?: boolean;
   isFinished?: boolean;
   count?: number;
@@ -7,7 +7,7 @@ interface ProgressBarProps {
   gap?: number;
   className?: string;
   labels?: string[];
-}
+};
 
 const ProgressBar: React.FC<ProgressBarProps> = ({
   isFinished = true,

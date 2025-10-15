@@ -3,7 +3,7 @@ import { useMemo } from "react";
 /**
  * Props for progress calculations
  */
-export interface ProgressCalculationParams {
+export type ProgressCalculationParams = {
   height: number;
   gap: number;
   count: number;
@@ -12,7 +12,7 @@ export interface ProgressCalculationParams {
 /**
  * Return type for progress calculations
  */
-export interface ProgressCalculations {
+export type ProgressCalculations = {
   totalHeight: number;
   baseZIndex: number;
 }

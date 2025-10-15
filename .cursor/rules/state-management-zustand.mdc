@@ -25,17 +25,17 @@ description: 在此專案中，跨元件/全域狀態一律優先使用 Zustand�
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
-interface HeaderState {
+type HeaderState {
   isShareModalOpen: boolean;
 }
 
-interface UIActions {
+type UIActions {
   toggleShareModal: () => void;
   openShareModal: () => void;
   closeShareModal: () => void;
 }
 
-interface UIState {
+type UIState {
   headerState: HeaderState;
   actions: UIActions;
 }
@@ -69,7 +69,7 @@ export const useUIActions = () => useUIStore((s) => s.actions);
 ```ts
 import { createStore } from 'zustand/vanilla';
 
-interface WidgetState {
+type WidgetState {
   value: string;
   visible: boolean;
   setValue: (v: string) => void;

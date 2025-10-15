@@ -579,7 +579,7 @@ pnpm typecheck
 **Expected Output:**
 - ✅ No TypeScript errors
 - ✅ All Proposal types properly imported and used
-- ✅ BudgetTableData interface satisfied
+- ✅ BudgetTableData type satisfied
 
 #### Step 4.2: Linting
 
@@ -740,7 +740,7 @@ cd /Users/user/Documents/code/congress-budget && pnpm dev
 - React Query Pattern: `app/queries/budget.queries.ts`
 - Component Structure: `app/all-budgets/index.tsx`
 - Sorting Logic: `app/components/sort-toolbar.tsx`
-- Table Interface: `app/components/budget-table.tsx` (BudgetTableData interface)
+- Table type: `app/components/budget-table.tsx` (BudgetTableData type)
 
 ### TypeScript Types
 - Proposal Type: `app/graphql/graphql.ts` lines 1123-1150

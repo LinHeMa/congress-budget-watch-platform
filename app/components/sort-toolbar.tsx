@@ -69,10 +69,10 @@ export function sortBudgetsByOption(
   });
 }
 
-interface SortToolbarProps {
+type SortToolbarProps = {
   selectedValue: string;
   onChange: (value: string) => void;
-}
+};
 
 const SortToolbar: React.FC<SortToolbarProps> = ({
   selectedValue,

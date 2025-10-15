@@ -4,15 +4,15 @@ import useBudgetSelectStore from "~/stores/budget-selector";
 import Select, { components } from "react-select";
 import Image from "./image";
 
-interface BudgetOption {
+type BudgetOption = {
   title: string;
   value: string;
-}
+};
 
-interface BudgetsSelectorProps {
+type BudgetsSelectorProps = {
   onSelectionChange?: (selectedValue: string) => void;
   className?: string;
-}
+};
 
 const content = {
   pageTitle: "選擇預算分類方式:",

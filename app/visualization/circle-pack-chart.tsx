@@ -95,7 +95,7 @@ const CirclePackChart = ({
       .attr("height", height)
       .attr(
         "style",
-        `max-width: 100%; height: auto; display: block; cursor: grab;`
+        `max-width: 100%; height: auto; display: block; cursor: default;`
       );
 
     const nodesData: d3.HierarchyCircularNode<NodeDatum>[] = root
@@ -320,12 +320,15 @@ const CirclePackChart = ({
       zoomTo(newView);
     }
 
-    // 建立 d3-zoom behavior
+    // 建立 d3-zoom behavior 用於程式化縮放動畫
+    // 注意：我們不呼叫 svg.call(zoomBehavior) 來綁定事件監聽器，
+    // 因為我們想禁用使用者的手動縮放（滾輪、拖曳），
+    // 只保留程式化的點擊聚焦功能。
     const zoomBehavior = d3
       .zoom<SVGSVGElement, unknown>()
       .scaleExtent([0.5, 10]) // 限制縮放範圍：最小 0.5 倍，最大 10 倍
       .on("zoom", (event) => {
-        // 拖曳和滾輪時更新視圖
+        // 這個事件處理器只會在程式化縮放時被觸發
         applyZoomTransform(event.transform);
       });
 
@@ -397,23 +400,8 @@ const CirclePackChart = ({
         );
     }
 
-    // 綁定 zoom behavior 到 SVG
-    svg.call(
-      zoomBehavior as (
-        selection: d3.Selection<SVGSVGElement, undefined, null, undefined>
-      ) => void
-    );
-
     // 設定初始視圖
     const initialView: [number, number, number] = [root.x, root.y, root.r * 2];
-    const initialTransform = viewToTransform(initialView);
-    svg.call(
-      zoomBehavior.transform as (
-        selection: d3.Selection<SVGSVGElement, undefined, null, undefined>,
-        transform: d3.ZoomTransform
-      ) => void,
-      initialTransform
-    );
     zoomTo(initialView);
 
     // initial interactions

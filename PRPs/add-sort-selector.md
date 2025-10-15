@@ -82,7 +82,7 @@ const totalHeight = useMemo(() => {
 
 ```typescript
 // Define in the component file or shared types
-interface SortOption {
+type SortOption {
   value: string; // "projectName-asc", "budgetAmount-desc", etc.
   label: string; // "專案名稱 (A-Z)", "預算金額 (高到低)", etc.
   field: keyof Pick<Budget, "projectName" | "budgetAmount" | "year">;
@@ -320,14 +320,14 @@ pnpm dev
    - No additional state management needed
 
 3. **TypeScript Enhancements**:
-   - Proper type definitions for `SortOption` interface
+   - Proper type definitions for `SortOption` type
    - Type-safe sorting logic for Budget fields
    - Generic typing for react-select component
 
 ## Implementation Sequence & Time Estimates
 
 1. **Type Definitions** (5 min)
-   - Define `SortOption` interface
+   - Define `SortOption` type
    - Create `sortOptions` array with all sort configurations
 
 2. **Sort Logic Implementation** (15 min)

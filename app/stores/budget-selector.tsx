@@ -1,20 +1,20 @@
 import { createStore } from "zustand";
 
-interface BudgetSelectProps {
+type BudgetSelectProps = {
   selectedValue: string;
   searchedValue: string;
   visible: boolean;
   // 排序相關
   selectedSort: string;
-}
+};
 
-interface BudgetSelectState extends BudgetSelectProps {
+type BudgetSelectState = BudgetSelectProps & {
   setSearchedValue: (value: string) => void;
   setSelectedValue: (value: string) => void;
   toggleVisible: () => void;
   setSelectedSort: (value: string) => void;
   resetToDefault: () => void;
-}
+};
 
 /**
  * Default props for the budget selector store

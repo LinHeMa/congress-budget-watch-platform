@@ -79,7 +79,7 @@ app/
 
 ```tsx
 // Pseudocode Structure
-interface BudgetHeaderProps {
+type BudgetHeaderProps {
   onLogoClick?: () => void;
   onShareClick?: () => void;
   className?: string;
@@ -126,7 +126,7 @@ const BudgetHeader = ({
 **Adaptations from Next.js example:**
 
 - Replace `next/image` with `<img>` tags
-- Enhance TypeScript interfaces for better type safety
+- Enhance TypeScript types for better type safety
 - Extract progress calculation logic to custom hook
 - Add Zustand integration for progress state management
 
@@ -134,7 +134,7 @@ const BudgetHeader = ({
 
 ```tsx
 // Pseudocode Structure
-interface ProgressBarProps {
+type ProgressBarProps {
   isFinished?: boolean;
   count?: number;
   width?: number;
@@ -206,7 +206,7 @@ const ProgressBar = ({
 
 ```tsx
 // stores/uiStore.ts - Pseudocode
-interface UIState {
+type UIState {
   headerState: {
     isShareModalOpen: boolean;
   };
@@ -316,7 +316,7 @@ pnpm dev
 
 Each component should include:
 
-- TypeScript interfaces with JSDoc comments
+- TypeScript types with JSDoc comments
 - Usage examples in component files
 - Props documentation with default values
 - Accessibility considerations

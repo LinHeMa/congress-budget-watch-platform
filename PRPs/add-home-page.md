@@ -221,7 +221,7 @@ export function meta() {
   ];
 }
 
-interface NavigationButton {
+type NavigationButton {
   label: string;
   href: string;
   isExternal?: boolean;
@@ -290,11 +290,11 @@ export default function Home() {
 }
 ```
 
-#### 2.2 TypeScript Interfaces
+#### 2.2 TypeScript types
 
 ```typescript
 // Types are inline in component for simplicity
-interface NavigationButton {
+type NavigationButton {
   label: string;
   href: string;
   isExternal?: boolean; // For future external links
@@ -445,7 +445,7 @@ React Router's `NavLink` provides `isActive` prop in render function:
 
 1. Backup current `app/routes/home.tsx` (optional)
 2. Implement new home page structure:
-   - Add proper TypeScript interfaces
+   - Add proper TypeScript types
    - Implement responsive layout structure
    - Add title, banner, description sections
    - Create navigation buttons array
@@ -573,7 +573,7 @@ pnpm format:check || echo "No formatter configured"
 - `app/routes/home.tsx` - Completely redesigned home page
   - New layout with title, banner, description
   - 4 navigation buttons with responsive design
-  - TypeScript interfaces for navigation data
+  - TypeScript types for navigation data
   - Accessibility enhancements
   - Responsive design implementation
 
@@ -700,7 +700,7 @@ pnpm format:check || echo "No formatter configured"
 ### TypeScript Best Practices
 
 1. **No `any` Type**: Use explicit types or `unknown` if type is truly unknown
-2. **Interface Definitions**: Define interfaces for data structures
+2. **type Definitions**: Define types for data structures
 3. **Strict Mode**: Follow strict TypeScript configuration
 4. **Type Inference**: Let TypeScript infer simple types, explicitly type complex ones
 
@@ -940,7 +940,7 @@ You are implementing a landing page redesign for a React Router v7 application. 
 
 ### If You Encounter Issues
 
-1. **TypeScript errors**: Check interface definitions and import statements
+1. **TypeScript errors**: Check type definitions and import statements
 2. **Image not loading**: Verify Image component import and file path
 3. **Styling issues**: Check Tailwind v4 class syntax (use `border-[3px]` not `border-3`)
 4. **Routing issues**: Verify routes.ts exports array syntax

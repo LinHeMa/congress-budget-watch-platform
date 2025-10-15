@@ -22,7 +22,7 @@ import type { Budget } from "~/graphql/graphql";
 
 type SortValue = string; // 例如 "projectName-asc"
 
-interface BudgetsPanelProps {
+type BudgetsPanelProps {
   // 資料
   budgets: Budget[];
   isLoading?: boolean;

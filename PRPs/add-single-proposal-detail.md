@@ -522,7 +522,7 @@ import { ProposalProposalTypeType as ProposalProposalTypeTypeEnum } from "~/grap
 /**
  * Timeline 元件所需的資料格式
  */
-export interface TimelineItem {
+export type TimelineItem {
   id: number | string;
   date: string;
   title: string;
@@ -532,7 +532,7 @@ export interface TimelineItem {
 /**
  * 併案資訊的資料格式
  */
-export interface MergedProposalInfo {
+export type MergedProposalInfo {
   id: string;
   date: string;
   proposers: string;

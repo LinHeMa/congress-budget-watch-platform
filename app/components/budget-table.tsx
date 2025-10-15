@@ -6,7 +6,7 @@ import { useRef, type RefObject } from "react";
 import { useOnClickOutside, useToggle } from "usehooks-ts";
 import React from "react";
 
-export interface BudgetTableData {
+export type BudgetTableData = {
   id: string;
   department: string;
   reviewDate: string;
@@ -18,13 +18,13 @@ export interface BudgetTableData {
   originalAmount: number;
   reducedAmount: number;
   proposalContent: string;
-}
+};
 
-interface BudgetTableProps {
+type BudgetTableProps = {
   data: BudgetTableData[];
   className?: string;
   isDesktop?: boolean;
-}
+};
 
 const TableRow = ({
   label,

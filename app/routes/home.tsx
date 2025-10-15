@@ -12,7 +12,7 @@ export function meta() {
   ];
 }
 
-interface NavigationButton {
+type NavigationButton = {
   label: string;
   href: string;
   isExternal?: boolean;
@@ -74,7 +74,7 @@ export default function Home() {
           ))}
         </nav>
       </div>
-      <div className="flex items-center justify-center md:mt-25 md:gap-x-3">
+      <div className="flex items-center justify-center gap-x-2 mt-15 md:mt-25 md:gap-x-3">
         <Image
           src="/image/Friedrich-Naumann-Foundation-logo.svg"
           alt="Friedrich-Naumann-Foundation-logo"

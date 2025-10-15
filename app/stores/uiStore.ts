@@ -2,24 +2,24 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 /**
- * Header state interface
+ * Header state type
  */
-interface HeaderState {
+type HeaderState = {
   isShareModalOpen: boolean;
-}
+};
 
 /**
- * Progress state interface
+ * Progress state type
  */
-interface ProgressState {
+type ProgressState = {
   currentStep: number;
   isComplete: boolean;
-}
+};
 
 /**
- * UI Store actions interface
+ * UI Store actions type
  */
-interface UIActions {
+type UIActions = {
   // Header actions
   toggleShareModal: () => void;
   openShareModal: () => void;
@@ -32,16 +32,16 @@ interface UIActions {
 
   // Combined actions
   resetUI: () => void;
-}
+};
 
 /**
- * Complete UI Store state interface
+ * Complete UI Store state type
  */
-interface UIState {
+type UIState = {
   headerState: HeaderState;
   progressState: ProgressState;
   actions: UIActions;
-}
+};
 
 /**
  * UI Store using Zustand

@@ -8,7 +8,7 @@ Replace the existing custom timeline component with daisyUI's vertical timeline 
 
 - Install daisyUI and integrate with existing TailwindCSS v4 setup
 - Replace current timeline component with daisyUI vertical timeline (right side only)
-- Maintain existing Timeline and TimelineItem interfaces
+- Maintain existing Timeline and TimelineItem types
 - Preserve all current functionality without affecting other components
 - Keep the same data structure and props API
 
@@ -23,7 +23,7 @@ Replace the existing custom timeline component with daisyUI's vertical timeline 
 ### Current Timeline Structure
 
 ```typescript
-// Current TimelineItemData interface
+// Current TimelineItemData type
 export type TimelineItemData = {
   id: string | number;
   date: string;
@@ -155,7 +155,7 @@ export const TimelineItem = ({ date, title, description, isLast = false }: Timel
 
 ### API Compatibility
 
-- Maintain exact same `TimelineItemData` interface
+- Maintain exact same `TimelineItemData` type
 - Keep same `TimelineProps` structure
 - Preserve `isLast` prop functionality for conditional styling
 
@@ -211,7 +211,7 @@ pnpm dev
 - [ ] No TypeScript errors or build failures
 - [ ] No impact on other components or pages
 - [ ] Responsive design maintained
-- [ ] All existing props and interfaces unchanged
+- [ ] All existing props and types unchanged
 
 ## Files to Modify
 

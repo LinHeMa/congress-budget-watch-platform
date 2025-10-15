@@ -36,7 +36,7 @@ pnpm add react-select
 ### 型別與選項建議
 
 ```ts
-export interface SortOption {
+export type SortOption {
   value: string; // ex: "projectName-asc"
   label: string; // ex: "專案名稱 (A-Z)"
   field: string; // ex: "projectName" | "budgetAmount" | "year"
@@ -69,7 +69,7 @@ type Budget = {
   year?: number | null;
 };
 
-interface SortOption {
+type SortOption {
   value: string;
   label: string;
   field: "projectName" | "budgetAmount" | "year";

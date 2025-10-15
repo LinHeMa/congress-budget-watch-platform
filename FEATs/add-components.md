@@ -45,7 +45,7 @@ export default BudgetHeader;
 import Image from "next/image";
 import React from "react";
 
-interface ProgressBarProps {
+type ProgressBarProps {
   isFinished?: boolean;
   count?: number;
   width?: number;
