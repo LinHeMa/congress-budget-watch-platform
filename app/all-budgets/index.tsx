@@ -3,10 +3,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { redirect } from "react-router";
 import { ERROR_REDIRECT_ROUTE } from "~/constants/endpoints";
 import { execute } from "~/graphql/execute";
-import {
-  GET_PAGINATED_PROPOSALS_QUERY,
-  proposalQueryKeys,
-} from "~/queries";
+import { GET_PAGINATED_PROPOSALS_QUERY, proposalQueryKeys } from "~/queries";
 import content from "./page-content";
 import ProgressBar from "~/components/progress-bar";
 import BudgetsSelector from "~/components/budgets-selector";
@@ -27,10 +24,7 @@ import {
 } from "~/graphql/graphql";
 import AllBudgetsSkeleton from "~/components/skeleton/all-budgets-skeleton";
 import Pagination from "~/components/pagination";
-import {
-  usePagination,
-  usePaginationActions,
-} from "~/stores/paginationStore";
+import { usePagination, usePaginationActions } from "~/stores/paginationStore";
 
 /**
  * 將 ProposalProposalTypeType 轉換為中文顯示文字
@@ -150,7 +144,7 @@ const AllBudgets = () => {
       setTotalCount(data.proposalsCount);
     }
   }, [data?.proposalsCount, setTotalCount]);
-  
+
   // 排序變更時重置到第 1 頁
   useEffect(() => {
     setPage(1);
@@ -248,19 +242,13 @@ const AllBudgets = () => {
         <BudgetsSelector />
         <div className="h-0.5 w-full bg-black md:hidden" />
 
-        {/* 排序下拉（react-select） */}
-        <SortToolbar selectedValue={selectedSort} onChange={setSelectedSort} />
-        <div className="h-0.5 w-full bg-black md:hidden" />
-
         {/* 上方分頁元件（新增）*/}
         <Pagination className="mt-4" />
+        {/* 排序下拉（react-select） */}
+        <SortToolbar selectedValue={selectedSort} onChange={setSelectedSort} />
 
         {/* 使用新的表格組件渲染清單 */}
-        <BudgetTable
-          isDesktop={isDesktop}
-          data={tableData}
-          className="mt-4"
-        />
+        <BudgetTable isDesktop={isDesktop} data={tableData} className="mt-4" />
 
         {/* 下方分頁元件（新增，複用同一元件）*/}
         <Pagination className="mt-4 mb-8" />
