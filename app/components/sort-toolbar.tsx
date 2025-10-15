@@ -1,73 +1,47 @@
 import Select from "react-select";
 import { useMemo } from "react";
-import type { Budget } from "~/graphql/graphql";
 import { DropdownIndicator } from "~/components/budgets-selector";
 
 export const sortOptions = [
   {
-    value: "projectName-asc",
-    label: "專案名稱 (A-Z)",
-    field: "projectName",
+    value: "description-asc",
+    label: "提案描述 (A-Z)",
+    field: "description",
     direction: "asc",
   },
   {
-    value: "projectName-desc",
-    label: "專案名稱 (Z-A)",
-    field: "projectName",
+    value: "description-desc",
+    label: "提案描述 (Z-A)",
+    field: "description",
     direction: "desc",
   },
   {
-    value: "budgetAmount-desc",
-    label: "預算金額 (高到低)",
-    field: "budgetAmount",
+    value: "freezeAmount-desc",
+    label: "凍結金額 (高到低)",
+    field: "freezeAmount",
     direction: "desc",
   },
   {
-    value: "budgetAmount-asc",
-    label: "預算金額 (低到高)",
-    field: "budgetAmount",
+    value: "freezeAmount-asc",
+    label: "凍結金額 (低到高)",
+    field: "freezeAmount",
     direction: "asc",
   },
   {
-    value: "year-desc",
-    label: "年度 (新到舊)",
-    field: "year",
+    value: "id-desc",
+    label: "提案時間 (新到舊)",
+    field: "id",
     direction: "desc",
   },
   {
-    value: "year-asc",
-    label: "年度 (舊到新)",
-    field: "year",
+    value: "id-asc",
+    label: "提案時間 (舊到新)",
+    field: "id",
     direction: "asc",
   },
 ] as const;
 
 export type SortOption = (typeof sortOptions)[number];
-
-export function sortBudgetsByOption(
-  budgets: Budget[],
-  selectedValue: string
-): Budget[] {
-  const selected = sortOptions.find((o) => o.value === selectedValue);
-  if (!selected) return budgets;
-
-  return [...budgets].sort((a, b) => {
-    const aValue = a[selected.field as keyof Budget];
-    const bValue = b[selected.field as keyof Budget];
-
-    if (selected.field === "budgetAmount" || selected.field === "year") {
-      const aNum = Number(aValue) || 0;
-      const bNum = Number(bValue) || 0;
-      return selected.direction === "asc" ? aNum - bNum : bNum - aNum;
-    }
-
-    const aStr = String(aValue ?? "").toLowerCase();
-    const bStr = String(bValue ?? "").toLowerCase();
-    return selected.direction === "asc"
-      ? aStr.localeCompare(bStr, "zh-TW")
-      : bStr.localeCompare(aStr, "zh-TW");
-  });
-}
 
 type SortToolbarProps = {
   selectedValue: string;

@@ -14,3 +14,6 @@ export {
   GET_PROPOSAL_BY_ID_QUERY,
   proposalQueryKeys,
 } from './proposal.queries'
+
+export * from "./budget.queries";
+export * from "./proposal.queries";

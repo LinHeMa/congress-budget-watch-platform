@@ -1,25 +1,36 @@
-import { useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMemo, useEffect, useRef } from "react";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { redirect } from "react-router";
 import { ERROR_REDIRECT_ROUTE } from "~/constants/endpoints";
 import { execute } from "~/graphql/execute";
-import { GET_PROPOSALS_QUERY, proposalQueryKeys } from "~/queries";
+import {
+  GET_PAGINATED_PROPOSALS_QUERY,
+  proposalQueryKeys,
+} from "~/queries";
 import content from "./page-content";
 import ProgressBar from "~/components/progress-bar";
 import BudgetsSelector from "~/components/budgets-selector";
-import SortToolbar, { sortBudgetsByOption } from "~/components/sort-toolbar";
+import SortToolbar, { sortOptions } from "~/components/sort-toolbar";
 import BudgetTable, { type BudgetTableData } from "~/components/budget-table";
 import { useStore } from "zustand";
 import useBudgetSelectStore from "~/stores/budget-selector";
 import Image from "~/components/image";
 import { useMediaQuery } from "usehooks-ts";
 import type {
-  Budget,
   Proposal,
+  ProposalOrderByInput,
   ProposalProposalTypeType,
 } from "~/graphql/graphql";
-import { ProposalProposalTypeType as ProposalProposalTypeTypeEnum } from "~/graphql/graphql";
+import {
+  OrderDirection,
+  ProposalProposalTypeType as ProposalProposalTypeTypeEnum,
+} from "~/graphql/graphql";
 import AllBudgetsSkeleton from "~/components/skeleton/all-budgets-skeleton";
+import Pagination from "~/components/pagination";
+import {
+  usePagination,
+  usePaginationActions,
+} from "~/stores/paginationStore";
 
 /**
  * 將 ProposalProposalTypeType 轉換為中文顯示文字
@@ -91,61 +102,93 @@ function proposalToBudgetTableData(proposal: Proposal): BudgetTableData {
   };
 }
 
-/**
- * 將 Proposal 適配為 Budget 型別以供排序使用
- * 只提取排序所需的欄位
- */
-function proposalToBudgetForSorting(proposal: Proposal): Budget {
-  return {
-    id: proposal.id,
-    projectName: proposal.budget?.projectName,
-    budgetAmount: proposal.budget?.budgetAmount,
-    year: proposal.budget?.year,
-    description: proposal.description,
-    government: proposal.government,
-    // 其他欄位設為 undefined（排序不需要）
-    __typename: "Budget",
-    budgetUrl: undefined,
-    lastYearSettlement: undefined,
-    majorCategory: proposal.budget?.majorCategory,
-    mediumCategory: proposal.budget?.mediumCategory,
-    minorCategory: proposal.budget?.minorCategory,
-    projectDescription: undefined,
-    type: proposal.budget?.type,
-  } as Budget;
-}
-
 const AllBudgets = () => {
-  const { data, isLoading, isError } = useQuery({
-    queryKey: proposalQueryKeys.lists(),
-    queryFn: () => execute(GET_PROPOSALS_QUERY),
-  });
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  // 分頁狀態
+  const { currentPage, pageSize } = usePagination();
+  const { setTotalCount, setPage } = usePaginationActions();
+
+  // 排序狀態（現有）
   const selectedSort = useStore(useBudgetSelectStore, (s) => s.selectedSort);
   const setSelectedSort = useStore(
     useBudgetSelectStore,
     (s) => s.setSelectedSort
   );
+  const isDesktop = useMediaQuery("(min-width: 768px)");
 
+  // 重複資料檢測 Map
+  const seenProposalIds = useRef<Map<string, boolean>>(new Map());
+
+  // 計算 GraphQL 參數
+  const skip = (currentPage - 1) * pageSize;
+  const orderBy = useMemo((): ProposalOrderByInput[] => {
+    // 將 sortOptions 的 value 轉換為 GraphQL orderBy 格式
+    const sortOption = sortOptions.find((o) => o.value === selectedSort);
+    if (!sortOption) return [{ id: OrderDirection.Desc }];
+
+    return [
+      {
+        [sortOption.field]: sortOption.direction,
+      },
+    ];
+  }, [selectedSort]);
+
+  // 修改後的 React Query（支援分頁）
+  const { data, isLoading, isError, isPlaceholderData } = useQuery({
+    queryKey: proposalQueryKeys.paginated(currentPage, pageSize, selectedSort),
+    queryFn: () =>
+      execute(GET_PAGINATED_PROPOSALS_QUERY, {
+        skip,
+        take: pageSize,
+        orderBy,
+      }),
+    placeholderData: keepPreviousData, // 避免切頁時閃爍
+  });
+
+  // 更新總數到 store（用於計算總頁數）
+  useEffect(() => {
+    if (data?.proposalsCount != null) {
+      setTotalCount(data.proposalsCount);
+    }
+  }, [data?.proposalsCount, setTotalCount]);
+  
+  // 排序變更時重置到第 1 頁
+  useEffect(() => {
+    setPage(1);
+  }, [selectedSort, setPage]);
+
+  // 重複資料檢測
+  useEffect(() => {
+    if (!data?.proposals) return;
+
+    // 切換頁碼或排序時清除 Map
+    seenProposalIds.current.clear();
+
+    // 檢測重複
+    data.proposals.forEach((proposal) => {
+      if (seenProposalIds.current.has(proposal.id)) {
+        if (process.env.NODE_ENV === "development") {
+          console.warn(
+            `[Pagination] 檢測到重複的 proposal ID: ${proposal.id}`,
+            {
+              currentPage,
+              selectedSort,
+              proposal,
+            }
+          );
+        }
+      } else {
+        seenProposalIds.current.set(proposal.id, true);
+      }
+    });
+  }, [data?.proposals, currentPage, selectedSort]);
+
+  // tableData 邏輯保持不變（但不再需要排序，因為已在 GQL 處理）
   const tableData = useMemo(() => {
     if (!data?.proposals) return [];
 
-    // 1. 將 Proposal 轉換為 Budget 型別以供排序
-    const proposalsAsBudgets = data.proposals.map(proposalToBudgetForSorting);
-
-    // 2. 使用現有排序邏輯
-    const sortedBudgets = sortBudgetsByOption(proposalsAsBudgets, selectedSort);
-
-    // 3. 根據排序後的 id 順序重新排列原始 proposals
-    const sortedProposals = sortedBudgets
-      .map((sortedBudget) =>
-        data.proposals?.find((p) => p.id === sortedBudget.id)
-      )
-      .filter((p): p is Proposal => !!p);
-
-    // 4. 轉換為 BudgetTableData 格式
-    return sortedProposals.map(proposalToBudgetTableData);
-  }, [data?.proposals, selectedSort]);
+    // 直接轉換為 BudgetTableData（排序已由 GraphQL orderBy 處理）
+    return data.proposals.map(proposalToBudgetTableData);
+  }, [data?.proposals]);
 
   if (isLoading) return <AllBudgetsSkeleton isDesktop={isDesktop} />;
   if (isError) return redirect(ERROR_REDIRECT_ROUTE);
@@ -209,8 +252,25 @@ const AllBudgets = () => {
         <SortToolbar selectedValue={selectedSort} onChange={setSelectedSort} />
         <div className="h-0.5 w-full bg-black md:hidden" />
 
+        {/* 上方分頁元件（新增）*/}
+        <Pagination className="mt-4" />
+
         {/* 使用新的表格組件渲染清單 */}
-        <BudgetTable isDesktop={isDesktop} data={tableData} className="mt-4" />
+        <BudgetTable
+          isDesktop={isDesktop}
+          data={tableData}
+          className="mt-4"
+        />
+
+        {/* 下方分頁元件（新增，複用同一元件）*/}
+        <Pagination className="mt-4 mb-8" />
+
+        {/* Placeholder data 載入提示（可選）*/}
+        {isPlaceholderData && (
+          <div className="fixed right-4 bottom-4 rounded bg-blue-100 px-4 py-2 text-sm text-blue-800 shadow-lg">
+            正在載入新頁面...
+          </div>
+        )}
       </div>
     </>
   );

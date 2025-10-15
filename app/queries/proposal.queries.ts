@@ -189,6 +189,80 @@ export const proposalQueryKeys = {
     ...proposalQueryKeys.lists(),
     { filters },
   ],
+  // 新增: 分頁查詢 keys
+  paginated: (page: number, pageSize: number, sortBy: string) =>
+    [
+      ...proposalQueryKeys.lists(),
+      'paginated',
+      { page, pageSize, sortBy },
+    ] as const,
   details: () => [...proposalQueryKeys.all, 'detail'] as const,
   detail: (id: string) => [...proposalQueryKeys.details(), id] as const,
 } as const
+
+/**
+ * GraphQL query to get paginated proposals with total count
+ * Supports pagination (skip/take) and ordering
+ *
+ * Usage Example:
+ *
+ * ```tsx
+ * const { data } = useQuery({
+ *   queryKey: proposalQueryKeys.paginated(page, pageSize, sortBy),
+ *   queryFn: () => execute(GET_PAGINATED_PROPOSALS_QUERY, {
+ *     skip: (page - 1) * pageSize,
+ *     take: pageSize,
+ *     orderBy: [{ id: 'desc' }],
+ *   }),
+ * });
+ * ```
+ */
+export const GET_PAGINATED_PROPOSALS_QUERY = graphql(`
+  query GetPaginatedProposals(
+    $skip: Int!
+    $take: Int!
+    $orderBy: [ProposalOrderByInput!]!
+  ) {
+    proposals(skip: $skip, take: $take, orderBy: $orderBy) {
+      id
+      description
+      reason
+      publishStatus
+      result
+      freezeAmount
+      reductionAmount
+      budgetImageUrl
+      proposalTypes
+      recognitionAnswer
+      unfreezeStatus
+      government {
+        id
+        name
+        category
+        description
+      }
+      budget {
+        id
+        projectName
+        budgetAmount
+        year
+        type
+        majorCategory
+        mediumCategory
+        minorCategory
+      }
+      proposers {
+        id
+        name
+        type
+        description
+      }
+      coSigners {
+        id
+        name
+        type
+      }
+    }
+    proposalsCount
+  }
+`)

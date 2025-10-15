@@ -1140,6 +1140,10 @@ export type Proposal = {
   proposers?: Maybe<Array<People>>;
   proposersCount?: Maybe<Scalars['Int']['output']>;
   publishStatus?: Maybe<Scalars['String']['output']>;
+  react_angry?: Maybe<Scalars['Int']['output']>;
+  react_disappoint?: Maybe<Scalars['Int']['output']>;
+  react_good?: Maybe<Scalars['Int']['output']>;
+  react_whatever?: Maybe<Scalars['Int']['output']>;
   reason?: Maybe<Scalars['String']['output']>;
   recognitionAnswer?: Maybe<Scalars['String']['output']>;
   reductionAmount?: Maybe<Scalars['Int']['output']>;
@@ -1246,6 +1250,10 @@ export type ProposalCreateInput = {
   proposalTypes?: InputMaybe<Array<ProposalProposalTypeType>>;
   proposers?: InputMaybe<PeopleRelateToManyForCreateInput>;
   publishStatus?: InputMaybe<Scalars['String']['input']>;
+  react_angry?: InputMaybe<Scalars['Int']['input']>;
+  react_disappoint?: InputMaybe<Scalars['Int']['input']>;
+  react_good?: InputMaybe<Scalars['Int']['input']>;
+  react_whatever?: InputMaybe<Scalars['Int']['input']>;
   reason?: InputMaybe<Scalars['String']['input']>;
   recognitionAnswer?: InputMaybe<Scalars['String']['input']>;
   reductionAmount?: InputMaybe<Scalars['Int']['input']>;
@@ -1266,6 +1274,10 @@ export type ProposalOrderByInput = {
   freezeAmount?: InputMaybe<OrderDirection>;
   id?: InputMaybe<OrderDirection>;
   publishStatus?: InputMaybe<OrderDirection>;
+  react_angry?: InputMaybe<OrderDirection>;
+  react_disappoint?: InputMaybe<OrderDirection>;
+  react_good?: InputMaybe<OrderDirection>;
+  react_whatever?: InputMaybe<OrderDirection>;
   reason?: InputMaybe<OrderDirection>;
   recognitionAnswer?: InputMaybe<OrderDirection>;
   reductionAmount?: InputMaybe<OrderDirection>;
@@ -1309,6 +1321,10 @@ export type ProposalUpdateInput = {
   proposalTypes?: InputMaybe<Array<ProposalProposalTypeType>>;
   proposers?: InputMaybe<PeopleRelateToManyForUpdateInput>;
   publishStatus?: InputMaybe<Scalars['String']['input']>;
+  react_angry?: InputMaybe<Scalars['Int']['input']>;
+  react_disappoint?: InputMaybe<Scalars['Int']['input']>;
+  react_good?: InputMaybe<Scalars['Int']['input']>;
+  react_whatever?: InputMaybe<Scalars['Int']['input']>;
   reason?: InputMaybe<Scalars['String']['input']>;
   recognitionAnswer?: InputMaybe<Scalars['String']['input']>;
   reductionAmount?: InputMaybe<Scalars['Int']['input']>;
@@ -1333,6 +1349,10 @@ export type ProposalWhereInput = {
   mergedProposals?: InputMaybe<ProposalManyRelationFilter>;
   proposers?: InputMaybe<PeopleManyRelationFilter>;
   publishStatus?: InputMaybe<StringNullableFilter>;
+  react_angry?: InputMaybe<IntNullableFilter>;
+  react_disappoint?: InputMaybe<IntNullableFilter>;
+  react_good?: InputMaybe<IntNullableFilter>;
+  react_whatever?: InputMaybe<IntNullableFilter>;
   reason?: InputMaybe<StringNullableFilter>;
   recognitionAnswer?: InputMaybe<StringNullableFilter>;
   reductionAmount?: InputMaybe<IntNullableFilter>;
@@ -1961,6 +1981,15 @@ export type GetProposalByIdQueryVariables = Exact<{
 
 export type GetProposalByIdQuery = { __typename?: 'Query', proposal?: { __typename?: 'Proposal', id: string, description?: string | null, reason?: string | null, publishStatus?: string | null, result?: string | null, freezeAmount?: number | null, reductionAmount?: number | null, budgetImageUrl?: string | null, proposalTypes?: Array<ProposalProposalTypeType> | null, recognitionAnswer?: string | null, unfreezeStatus?: string | null, government?: { __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null } | null, budget?: { __typename?: 'Budget', id: string, projectName?: string | null, projectDescription?: string | null, budgetAmount?: number | null, budgetUrl?: string | null, lastYearSettlement?: number | null, year?: number | null, type?: string | null, majorCategory?: string | null, mediumCategory?: string | null, minorCategory?: string | null, description?: string | null } | null, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null }> | null, coSigners?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null }> | null, meetings?: Array<{ __typename?: 'Meeting', id: string, displayName?: string | null, meetingDate?: any | null, description?: string | null, location?: string | null, meetingRecordUrl?: string | null, type?: string | null }> | null, mergedProposals?: Array<{ __typename?: 'Proposal', id: string, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null }> | null }> | null, historicalProposals?: Array<{ __typename?: 'Proposal', id: string, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null }> | null }> | null } | null };
 
+export type GetPaginatedProposalsQueryVariables = Exact<{
+  skip: Scalars['Int']['input'];
+  take: Scalars['Int']['input'];
+  orderBy: Array<ProposalOrderByInput> | ProposalOrderByInput;
+}>;
+
+
+export type GetPaginatedProposalsQuery = { __typename?: 'Query', proposalsCount?: number | null, proposals?: Array<{ __typename?: 'Proposal', id: string, description?: string | null, reason?: string | null, publishStatus?: string | null, result?: string | null, freezeAmount?: number | null, reductionAmount?: number | null, budgetImageUrl?: string | null, proposalTypes?: Array<ProposalProposalTypeType> | null, recognitionAnswer?: string | null, unfreezeStatus?: string | null, government?: { __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null } | null, budget?: { __typename?: 'Budget', id: string, projectName?: string | null, budgetAmount?: number | null, year?: number | null, type?: string | null, majorCategory?: string | null, mediumCategory?: string | null, minorCategory?: string | null } | null, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null }> | null, coSigners?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null }> | null }> | null };
+
 export class TypedDocumentString<TResult, TVariables>
   extends String
   implements DocumentTypeDecoration<TResult, TVariables>
@@ -2118,3 +2147,48 @@ export const GetProposalByIdDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetProposalByIdQuery, GetProposalByIdQueryVariables>;
+export const GetPaginatedProposalsDocument = new TypedDocumentString(`
+    query GetPaginatedProposals($skip: Int!, $take: Int!, $orderBy: [ProposalOrderByInput!]!) {
+  proposals(skip: $skip, take: $take, orderBy: $orderBy) {
+    id
+    description
+    reason
+    publishStatus
+    result
+    freezeAmount
+    reductionAmount
+    budgetImageUrl
+    proposalTypes
+    recognitionAnswer
+    unfreezeStatus
+    government {
+      id
+      name
+      category
+      description
+    }
+    budget {
+      id
+      projectName
+      budgetAmount
+      year
+      type
+      majorCategory
+      mediumCategory
+      minorCategory
+    }
+    proposers {
+      id
+      name
+      type
+      description
+    }
+    coSigners {
+      id
+      name
+      type
+    }
+  }
+  proposalsCount
+}
+    `) as unknown as TypedDocumentString<GetPaginatedProposalsQuery, GetPaginatedProposalsQueryVariables>;

@@ -755,6 +755,10 @@ type Proposal {
   proposers(cursor: PeopleWhereUniqueInput, orderBy: [PeopleOrderByInput!]! = [], skip: Int! = 0, take: Int, where: PeopleWhereInput! = {}): [People!]
   proposersCount(where: PeopleWhereInput! = {}): Int
   publishStatus: String
+  react_angry: Int
+  react_disappoint: Int
+  react_good: Int
+  react_whatever: Int
   reason: String
   recognitionAnswer: String
   reductionAmount: Int
@@ -777,6 +781,10 @@ input ProposalCreateInput {
   proposalTypes: [ProposalProposalTypeType!]
   proposers: PeopleRelateToManyForCreateInput
   publishStatus: String
+  react_angry: Int
+  react_disappoint: Int
+  react_good: Int
+  react_whatever: Int
   reason: String
   recognitionAnswer: String
   reductionAmount: Int
@@ -797,6 +805,10 @@ input ProposalOrderByInput {
   freezeAmount: OrderDirection
   id: OrderDirection
   publishStatus: OrderDirection
+  react_angry: OrderDirection
+  react_disappoint: OrderDirection
+  react_good: OrderDirection
+  react_whatever: OrderDirection
   reason: OrderDirection
   recognitionAnswer: OrderDirection
   reductionAmount: OrderDirection
@@ -840,6 +852,10 @@ input ProposalUpdateInput {
   proposalTypes: [ProposalProposalTypeType!]
   proposers: PeopleRelateToManyForUpdateInput
   publishStatus: String
+  react_angry: Int
+  react_disappoint: Int
+  react_good: Int
+  react_whatever: Int
   reason: String
   recognitionAnswer: String
   reductionAmount: Int
@@ -864,6 +880,10 @@ input ProposalWhereInput {
   mergedProposals: ProposalManyRelationFilter
   proposers: PeopleManyRelationFilter
   publishStatus: StringNullableFilter
+  react_angry: IntNullableFilter
+  react_disappoint: IntNullableFilter
+  react_good: IntNullableFilter
+  react_whatever: IntNullableFilter
   reason: StringNullableFilter
   recognitionAnswer: StringNullableFilter
   reductionAmount: IntNullableFilter
