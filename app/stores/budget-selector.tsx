@@ -1,11 +1,17 @@
 import { createStore } from "zustand";
 
+type DepartmentFilter = {
+  category: string | null;
+  departmentId: string | null;
+};
+
 type BudgetSelectProps = {
   selectedValue: string;
   searchedValue: string;
   visible: boolean;
   // 排序相關
   selectedSort: string;
+  departmentFilter: DepartmentFilter;
 };
 
 type BudgetSelectState = BudgetSelectProps & {
@@ -14,6 +20,9 @@ type BudgetSelectState = BudgetSelectProps & {
   toggleVisible: () => void;
   setSelectedSort: (value: string) => void;
   resetToDefault: () => void;
+  setDepartmentCategory: (category: string | null) => void;
+  setDepartmentId: (id: string | null) => void;
+  clearDepartmentFilter: () => void;
 };
 
 /**
@@ -24,6 +33,7 @@ const DEFAULT_PROPS: BudgetSelectProps = {
   searchedValue: "",
   visible: true,
   selectedSort: "id-asc",
+  departmentFilter: { category: null, departmentId: null },
 };
 
 /**
@@ -54,6 +64,33 @@ export const createBudgetSelectStore = (
 
     setSelectedSort: (value: string) =>
       set((state) => ({ ...state, selectedSort: value })),
+
+    setDepartmentCategory: (category: string | null) =>
+      set((state) => ({
+        ...state,
+        departmentFilter: {
+          category,
+          departmentId: null, // 重置第二階段選擇
+        },
+      })),
+
+    setDepartmentId: (id: string | null) =>
+      set((state) => ({
+        ...state,
+        departmentFilter: {
+          ...state.departmentFilter,
+          departmentId: id,
+        },
+      })),
+
+    clearDepartmentFilter: () =>
+      set((state) => ({
+        ...state,
+        departmentFilter: {
+          category: null,
+          departmentId: null,
+        },
+      })),
 
     resetToDefault: () =>
       set((state) => ({

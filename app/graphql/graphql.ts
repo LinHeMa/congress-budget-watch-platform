@@ -14,7 +14,7 @@ export type Scalars = {
   Boolean: { input: boolean; output: boolean; }
   Int: { input: number; output: number; }
   Float: { input: number; output: number; }
-  DateTime: { input: string; output: string; }
+  DateTime: { input: any; output: any; }
   /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
   JSON: { input: any; output: any; }
 };
@@ -1969,6 +1969,11 @@ export type GetBudgetsWithGovernmentQueryVariables = Exact<{ [key: string]: neve
 
 export type GetBudgetsWithGovernmentQuery = { __typename?: 'Query', budgetsCount?: number | null, budgets?: Array<{ __typename?: 'Budget', id: string, type?: string | null, year?: number | null, projectName?: string | null, projectDescription?: string | null, budgetAmount?: number | null, majorCategory?: string | null, mediumCategory?: string | null, minorCategory?: string | null, description?: string | null, government?: { __typename?: 'Government', id: string, name?: string | null, category?: string | null } | null }> | null };
 
+export type GetGovernmentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetGovernmentsQuery = { __typename?: 'Query', governments?: Array<{ __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null }> | null };
+
 export type GetProposalsOrderedByIdDescQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1985,6 +1990,7 @@ export type GetPaginatedProposalsQueryVariables = Exact<{
   skip: Scalars['Int']['input'];
   take: Scalars['Int']['input'];
   orderBy: Array<ProposalOrderByInput> | ProposalOrderByInput;
+  where: ProposalWhereInput;
 }>;
 
 
@@ -2031,6 +2037,16 @@ export const GetBudgetsWithGovernmentDocument = new TypedDocumentString(`
   budgetsCount
 }
     `) as unknown as TypedDocumentString<GetBudgetsWithGovernmentQuery, GetBudgetsWithGovernmentQueryVariables>;
+export const GetGovernmentsDocument = new TypedDocumentString(`
+    query GetGovernments {
+  governments {
+    id
+    name
+    category
+    description
+  }
+}
+    `) as unknown as TypedDocumentString<GetGovernmentsQuery, GetGovernmentsQueryVariables>;
 export const GetProposalsOrderedByIdDescDocument = new TypedDocumentString(`
     query GetProposalsOrderedByIdDesc {
   proposals(orderBy: [{id: desc}]) {
@@ -2148,8 +2164,8 @@ export const GetProposalByIdDocument = new TypedDocumentString(`
 }
     `) as unknown as TypedDocumentString<GetProposalByIdQuery, GetProposalByIdQueryVariables>;
 export const GetPaginatedProposalsDocument = new TypedDocumentString(`
-    query GetPaginatedProposals($skip: Int!, $take: Int!, $orderBy: [ProposalOrderByInput!]!) {
-  proposals(skip: $skip, take: $take, orderBy: $orderBy) {
+    query GetPaginatedProposals($skip: Int!, $take: Int!, $orderBy: [ProposalOrderByInput!]!, $where: ProposalWhereInput!) {
+  proposals(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
     id
     description
     reason
@@ -2189,6 +2205,6 @@ export const GetPaginatedProposalsDocument = new TypedDocumentString(`
       type
     }
   }
-  proposalsCount
+  proposalsCount(where: $where)
 }
     `) as unknown as TypedDocumentString<GetPaginatedProposalsQuery, GetPaginatedProposalsQueryVariables>;

@@ -3,6 +3,8 @@ export {
   GET_BUDGETS_QUERY,
   // GET_BUDGET_BY_ID_QUERY, // TODO: Uncomment when needed
   budgetQueryKeys,
+  GET_GOVERNMENTS_QUERY,
+  governmentQueryKeys,
 } from "./budget.queries";
 
 // Add other query exports here as you create more query files

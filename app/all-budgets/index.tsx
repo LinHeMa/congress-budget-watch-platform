@@ -8,59 +8,20 @@ import content from "./page-content";
 import ProgressBar from "~/components/progress-bar";
 import BudgetsSelector from "~/components/budgets-selector";
 import SortToolbar, { sortOptions } from "~/components/sort-toolbar";
-import BudgetTable, { type BudgetTableData } from "~/components/budget-table";
+import BudgetTable from "~/components/budget-table";
 import { useStore } from "zustand";
 import useBudgetSelectStore from "~/stores/budget-selector";
 import Image from "~/components/image";
 import { useMediaQuery } from "usehooks-ts";
-import type { Proposal, ProposalOrderByInput } from "~/graphql/graphql";
+import type {
+  ProposalOrderByInput,
+  ProposalWhereInput,
+} from "~/graphql/graphql";
 import { OrderDirection } from "~/graphql/graphql";
 import AllBudgetsSkeleton from "~/components/skeleton/all-budgets-skeleton";
 import Pagination from "~/components/pagination";
 import { usePagination, usePaginationActions } from "~/stores/paginationStore";
-import { formatLegislator } from "~/utils/format";
-import {
-  formatNumber,
-  formatReducedAndFrozenAmount,
-  getProposalTypeDisplay,
-} from "../budget-detail/helpers";
-
-/**
- * 將 Proposal 轉換為 BudgetTableData
- * 此轉換確保與現有 BudgetTable 元件相容
- */
-function proposalToBudgetTableData(proposal: Proposal): BudgetTableData {
-  const result: BudgetTableData = {
-    id: proposal.id,
-    sequence: 0, // FIXME: 'sequence' is not available in the paginated query
-    department: proposal.government?.name || "N/A", // Correctly access department name
-    // FIXME: 'meetingDate' is not directly available on Proposal in paginated query.
-    // It's inside the `meetings` array which is not fetched here.
-    date: "無審議日期",
-    stage: "階段", // This is hardcoded for now
-    proposer: proposal.proposers?.map(formatLegislator).join(" ") || "未知提案人",
-    proposalType: getProposalTypeDisplay(proposal.proposalTypes), // Use 'proposalTypes'
-    proposalResult:
-      proposal.result === "passed"
-        ? "通過"
-        : proposal.result === "rejected"
-          ? "不通過"
-          : "待審議",
-    proposalContent: proposal.description || "無提案內容",
-    originalAmount: formatNumber(proposal.budget?.budgetAmount),
-    reducedAmount: formatReducedAndFrozenAmount(
-      proposal.reductionAmount,
-      proposal.freezeAmount
-    ),
-    // FIXME: 'tags' are not available in the Proposal type from the GraphQL query.
-    tags: undefined,
-    status: "committeed",
-    // FIXME: 'committeedDate' relies on meetingDate which is not available.
-    committeedDate: undefined,
-  };
-
-  return result;
-}
+import { proposalToBudgetTableData } from "./helpers";
 
 const AllBudgets = () => {
   // 分頁狀態
@@ -72,6 +33,10 @@ const AllBudgets = () => {
   const setSelectedSort = useStore(
     useBudgetSelectStore,
     (s) => s.setSelectedSort
+  );
+  const departmentId = useStore(
+    useBudgetSelectStore,
+    (s) => s.departmentFilter.departmentId
   );
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
@@ -95,18 +60,34 @@ const AllBudgets = () => {
     ];
   }, [selectedSort]);
 
+  const whereFilter = useMemo((): ProposalWhereInput => {
+    if (departmentId) {
+      return {
+        government: {
+          id: { equals: departmentId },
+        },
+      };
+    }
+    return {};
+  }, [departmentId]);
+
   // 修改後的 React Query（支援分頁）
   const { data, isLoading, isError, isPlaceholderData } = useQuery({
-    queryKey: proposalQueryKeys.paginated(currentPage, pageSize, selectedSort),
+    queryKey: proposalQueryKeys.paginated(
+      currentPage,
+      pageSize,
+      selectedSort,
+      whereFilter
+    ),
     queryFn: () =>
       execute(GET_PAGINATED_PROPOSALS_QUERY, {
         skip,
         take: pageSize,
         orderBy,
+        where: whereFilter,
       }),
     placeholderData: keepPreviousData, // 避免切頁時閃爍
   });
-  console.log({ data });
 
   // 更新總數到 store（用於計算總頁數）
   useEffect(() => {
@@ -115,10 +96,10 @@ const AllBudgets = () => {
     }
   }, [data?.proposalsCount, setTotalCount]);
 
-  // 排序變更時重置到第 1 頁
+  // 排序或篩選變更時重置到第 1 頁
   useEffect(() => {
     setPage(1);
-  }, [selectedSort, setPage]);
+  }, [selectedSort, departmentId, setPage]);
 
   // 重複資料檢測
   useEffect(() => {
@@ -130,7 +111,7 @@ const AllBudgets = () => {
     // 檢測重複
     data.proposals.forEach((proposal) => {
       if (seenProposalIds.current.has(proposal.id)) {
-        if (process.env.NODE_ENV === "development") {
+        if (import.meta.env.DEV) {
           console.warn(
             `[Pagination] 檢測到重複的 proposal ID: ${proposal.id}`,
             {
@@ -152,7 +133,7 @@ const AllBudgets = () => {
 
     // 直接轉換為 BudgetTableData（排序已由 GraphQL orderBy 處理）
     return data.proposals.map(proposalToBudgetTableData);
-  }, [data?.proposals]);
+  }, [data?.proposals?.length]);
 
   if (isLoading) return <AllBudgetsSkeleton isDesktop={isDesktop} />;
   if (isError) return redirect(ERROR_REDIRECT_ROUTE);

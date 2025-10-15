@@ -190,13 +190,18 @@ export const proposalQueryKeys = {
     { filters },
   ],
   // 新增: 分頁查詢 keys
-  paginated: (page: number, pageSize: number, sortBy: string) =>
+  paginated: (
+    page: number,
+    pageSize: number,
+    sortBy: string,
+    where?: Record<string, unknown>
+  ) =>
     [
       ...proposalQueryKeys.lists(),
-      'paginated',
-      { page, pageSize, sortBy },
+      "paginated",
+      { page, pageSize, sortBy, where },
     ] as const,
-  details: () => [...proposalQueryKeys.all, 'detail'] as const,
+  details: () => [...proposalQueryKeys.all, "detail"] as const,
   detail: (id: string) => [...proposalQueryKeys.details(), id] as const,
 } as const
 
@@ -222,8 +227,9 @@ export const GET_PAGINATED_PROPOSALS_QUERY = graphql(`
     $skip: Int!
     $take: Int!
     $orderBy: [ProposalOrderByInput!]!
+    $where: ProposalWhereInput!
   ) {
-    proposals(skip: $skip, take: $take, orderBy: $orderBy) {
+    proposals(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
       id
       description
       reason
@@ -263,6 +269,6 @@ export const GET_PAGINATED_PROPOSALS_QUERY = graphql(`
         type
       }
     }
-    proposalsCount
+    proposalsCount(where: $where)
   }
 `)

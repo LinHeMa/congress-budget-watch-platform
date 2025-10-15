@@ -70,3 +70,27 @@ export const budgetQueryKeys = {
   details: () => [...budgetQueryKeys.all, "detail"] as const,
   detail: (id: string) => [...budgetQueryKeys.details(), id] as const,
 } as const;
+
+/**
+ * GraphQL query to get all governments for filtering
+ */
+export const GET_GOVERNMENTS_QUERY = graphql(`
+  query GetGovernments {
+    governments {
+      id
+      name
+      category
+      description
+    }
+  }
+`);
+
+/**
+ * React Query keys for government-related queries
+ */
+export const governmentQueryKeys = {
+  all: ["governments"] as const,
+  lists: () => [...governmentQueryKeys.all, "list"] as const,
+  list: (filters?: Record<string, unknown>) =>
+    [...governmentQueryKeys.lists(), { filters }] as const,
+} as const;

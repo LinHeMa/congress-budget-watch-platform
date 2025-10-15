@@ -1,8 +1,20 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useStore } from "zustand";
+import { useQuery } from "@tanstack/react-query";
+import { execute } from "~/graphql/execute";
+import { GET_GOVERNMENTS_QUERY, governmentQueryKeys } from "~/queries";
 import useBudgetSelectStore from "~/stores/budget-selector";
-import Select, { components, type DropdownIndicatorProps } from "react-select";
+import Select, {
+  components,
+  type DropdownIndicatorProps,
+  type SingleValue,
+} from "react-select";
 import Image from "./image";
+
+type OptionType = {
+  value: string;
+  label: string;
+};
 
 type BudgetOption = {
   title: string;
@@ -32,7 +44,7 @@ const content = {
   ] as BudgetOption[],
 };
 
-export const DropdownIndicator = (props: DropdownIndicatorProps) => {
+export const DropdownIndicator = (props: DropdownIndicatorProps<any>) => {
   return (
     <components.DropdownIndicator {...props}>
       <Image
@@ -45,31 +57,123 @@ export const DropdownIndicator = (props: DropdownIndicatorProps) => {
 };
 
 const ByDepartmentSelector = ({ value }: { value: string }) => {
-  const deleteTypeOptions = [{ value: "all-delete", label: "通案刪減" }];
-  const deleteFundOptions = [
-    { value: "x-fund", label: "臺鐵局撥入資產及債務管理基金" },
-  ];
+  // 從 store 取得狀態與 actions
+  const departmentFilter = useStore(
+    useBudgetSelectStore,
+    (state) => state.departmentFilter
+  );
+  const setDepartmentCategory = useStore(
+    useBudgetSelectStore,
+    (state) => state.setDepartmentCategory
+  );
+  const setDepartmentId = useStore(
+    useBudgetSelectStore,
+    (state) => state.setDepartmentId
+  );
+
+  // Fetch governments data
+  const { data: governmentsData, isLoading } = useQuery({
+    queryKey: governmentQueryKeys.lists(),
+    queryFn: () => execute(GET_GOVERNMENTS_QUERY),
+    enabled: value === "by-department", // 只在選中時 fetch
+  });
+
+  // 計算 unique categories
+  const categoryOptions = useMemo(() => {
+    if (!governmentsData?.governments) return [];
+
+    const uniqueCategories = Array.from(
+      new Set(
+        governmentsData.governments
+          .map((g) => g.category)
+          .filter((c): c is string => c != null && c !== "")
+      )
+    ).sort();
+
+    return uniqueCategories.map((cat) => ({
+      value: cat,
+      label: cat,
+    }));
+  }, [governmentsData?.governments]);
+
+  // 根據選定的 category 過濾 departments
+  const departmentOptions = useMemo(() => {
+    if (!governmentsData?.governments || !departmentFilter.category) {
+      return [];
+    }
+
+    const filtered = governmentsData.governments
+      .filter((g) => g.category === departmentFilter.category)
+      .map((g) => ({
+        value: g.id,
+        label: g.name || "未命名機關",
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+
+    return filtered;
+  }, [governmentsData?.governments, departmentFilter.category]);
+
+  // 當前選擇的值（用於 react-select）
+  const selectedCategoryValue = departmentFilter.category
+    ? { value: departmentFilter.category, label: departmentFilter.category }
+    : null;
+
+  const selectedDepartmentValue = useMemo(() => {
+    if (!departmentFilter.departmentId || !governmentsData?.governments) {
+      return null;
+    }
+    const dept = governmentsData.governments.find(
+      (g) => g.id === departmentFilter.departmentId
+    );
+    return dept ? { value: dept.id, label: dept.name || "未命名機關" } : null;
+  }, [departmentFilter.departmentId, governmentsData?.governments]);
 
   if (value !== "by-department") return null;
+
   return (
     <div className="flex flex-col gap-y-3 md:flex-row md:gap-x-2">
+      {/* 第一階段：選擇 Category */}
       <Select
-        options={deleteTypeOptions}
+        value={selectedCategoryValue}
+        onChange={(opt) => {
+          const singleValue = opt as SingleValue<OptionType>;
+          setDepartmentCategory(singleValue?.value || null);
+        }}
+        options={categoryOptions}
         components={{ DropdownIndicator }}
         styles={{
           control: (styles) => ({ ...styles, border: "2px solid black" }),
           indicatorSeparator: (styles) => ({ ...styles, display: "none" }),
         }}
-        placeholder="刪減方式"
+        placeholder={isLoading ? "載入中..." : "選擇機關類別"}
+        isLoading={isLoading}
+        isClearable
+        aria-label="選擇機關類別"
       />
+
+      {/* 第二階段：選擇 Department */}
       <Select
-        options={deleteFundOptions}
+        value={selectedDepartmentValue}
+        onChange={(opt) => {
+          const singleValue = opt as SingleValue<OptionType>;
+          setDepartmentId(singleValue?.value || null);
+        }}
+        options={departmentOptions}
         components={{ DropdownIndicator }}
         styles={{
           control: (styles) => ({ ...styles, border: "2px solid black" }),
           indicatorSeparator: (styles) => ({ ...styles, display: "none" }),
         }}
-        placeholder="刪減標的"
+        placeholder={
+          !departmentFilter.category
+            ? "請先選擇類別"
+            : departmentOptions.length === 0
+            ? "此類別無機關"
+            : "選擇機關名稱"
+        }
+        isDisabled={!departmentFilter.category || departmentOptions.length === 0}
+        isClearable
+        aria-label="選擇機關名稱"
       />
     </div>
   );
