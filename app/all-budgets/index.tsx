@@ -22,6 +22,7 @@ import AllBudgetsSkeleton from "~/components/skeleton/all-budgets-skeleton";
 import Pagination from "~/components/pagination";
 import { usePagination, usePaginationActions } from "~/stores/paginationStore";
 import { proposalToBudgetTableData } from "./helpers";
+import useDebounce from "~/hooks/useDebounce";
 
 const AllBudgets = () => {
   // 分頁狀態
@@ -42,6 +43,11 @@ const AllBudgets = () => {
     useBudgetSelectStore,
     (s) => s.peopleFilter.personId
   );
+  const searchedValue = useStore(
+    useBudgetSelectStore,
+    (s) => s.searchedValue
+  );
+  const debouncedSearchedValue = useDebounce(searchedValue, 500);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   // 重複資料檢測 Map
@@ -83,8 +89,17 @@ const AllBudgets = () => {
       };
     }
 
+    if (debouncedSearchedValue) {
+      filters.OR = [
+        { reason: { contains: debouncedSearchedValue } },
+        { description: { contains: debouncedSearchedValue } },
+        { government: { name: { contains: debouncedSearchedValue } } },
+        { proposers: { some: { name: { contains: debouncedSearchedValue } } } },
+      ];
+    }
+
     return filters;
-  }, [departmentId, personId]);
+  }, [departmentId, personId, debouncedSearchedValue]);
 
   // 修改後的 React Query（支援分頁）
   const { data, isLoading, isError, isPlaceholderData } = useQuery({
@@ -114,7 +129,7 @@ const AllBudgets = () => {
   // 排序或篩選變更時重置到第 1 頁
   useEffect(() => {
     setPage(1);
-  }, [selectedSort, departmentId, personId, setPage]);
+  }, [selectedSort, departmentId, personId, debouncedSearchedValue, setPage]);
 
   // 重複資料檢測
   useEffect(() => {
