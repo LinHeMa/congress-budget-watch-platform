@@ -1974,6 +1974,11 @@ export type GetGovernmentsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetGovernmentsQuery = { __typename?: 'Query', governments?: Array<{ __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null }> | null };
 
+export type GetPeopleListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetPeopleListQuery = { __typename?: 'Query', peopleList?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null, party?: { __typename?: 'People', id: string, name?: string | null, type?: string | null } | null }> | null };
+
 export type GetProposalsOrderedByIdDescQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -2047,6 +2052,21 @@ export const GetGovernmentsDocument = new TypedDocumentString(`
   }
 }
     `) as unknown as TypedDocumentString<GetGovernmentsQuery, GetGovernmentsQueryVariables>;
+export const GetPeopleListDocument = new TypedDocumentString(`
+    query GetPeopleList {
+  peopleList(orderBy: [{name: asc}]) {
+    id
+    name
+    type
+    description
+    party {
+      id
+      name
+      type
+    }
+  }
+}
+    `) as unknown as TypedDocumentString<GetPeopleListQuery, GetPeopleListQueryVariables>;
 export const GetProposalsOrderedByIdDescDocument = new TypedDocumentString(`
     query GetProposalsOrderedByIdDesc {
   proposals(orderBy: [{id: desc}]) {

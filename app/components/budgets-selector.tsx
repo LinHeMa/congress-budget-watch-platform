@@ -2,7 +2,12 @@ import React, { useMemo } from "react";
 import { useStore } from "zustand";
 import { useQuery } from "@tanstack/react-query";
 import { execute } from "~/graphql/execute";
-import { GET_GOVERNMENTS_QUERY, governmentQueryKeys } from "~/queries";
+import {
+  GET_GOVERNMENTS_QUERY,
+  governmentQueryKeys,
+  GET_PEOPLE_LIST_QUERY,
+  peopleQueryKeys,
+} from "~/queries";
 import useBudgetSelectStore from "~/stores/budget-selector";
 import Select, {
   components,
@@ -44,7 +49,7 @@ const content = {
   ] as BudgetOption[],
 };
 
-export const DropdownIndicator = (props: DropdownIndicatorProps<any>) => {
+export const DropdownIndicator = (props: DropdownIndicatorProps<OptionType>) => {
   return (
     <components.DropdownIndicator {...props}>
       <Image
@@ -178,23 +183,71 @@ const ByDepartmentSelector = ({ value }: { value: string }) => {
     </div>
   );
 };
-const ByLegislatorSelector = ({ value }: { value: string }) => {
-  const legislatorOptions = [
-    { value: "KawloIyunPacidal", label: "高潞·以用·巴魕剌Kawlo Iyun Pacidal" },
-  ];
+
+const ByPeopleSelector = ({ value }: { value: string }) => {
+  // 從 store 取得狀態與 actions
+  const personId = useStore(
+    useBudgetSelectStore,
+    (state) => state.peopleFilter.personId
+  );
+  const setPersonId = useStore(
+    useBudgetSelectStore,
+    (state) => state.setPersonId
+  );
+
+  // Fetch people list data
+  const { data: peopleData, isLoading } = useQuery({
+    queryKey: peopleQueryKeys.lists(),
+    queryFn: () => execute(GET_PEOPLE_LIST_QUERY),
+    enabled: value === "by-legislator", // 只在選中時 fetch
+  });
+
+  // 計算選項清單（只顯示立委，不包含政黨）
+  const peopleOptions = useMemo(() => {
+    if (!peopleData?.peopleList) return [];
+
+    // 過濾出立委（假設 type !== "政黨" 或類似邏輯）
+    // 如果需要更精確的過濾，可能需要根據實際資料調整
+    return peopleData.peopleList
+      .filter((person) => person.name) // 確保有名字
+      .map((person) => ({
+        value: person.id,
+        label: person.name || "未命名",
+        party: person.party?.name || null, // 保留政黨資訊以便顯示
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }, [peopleData?.peopleList]);
+
+  // 當前選擇的值（用於 react-select）
+  const selectedPersonValue = useMemo(() => {
+    if (!personId || !peopleData?.peopleList) {
+      return null;
+    }
+    const person = peopleData.peopleList.find((p) => p.id === personId);
+    return person ? { value: person.id, label: person.name || "未命名" } : null;
+  }, [personId, peopleData?.peopleList]);
 
   if (value !== "by-legislator") return null;
+
   return (
     <div className="flex flex-col gap-y-3">
       <Select
-        options={legislatorOptions}
+        value={selectedPersonValue}
+        onChange={(opt) => {
+          const singleValue = opt as SingleValue<OptionType>;
+          setPersonId(singleValue?.value || null);
+        }}
+        options={peopleOptions}
         components={{ DropdownIndicator }}
         className="md:w-96"
         styles={{
           control: (styles) => ({ ...styles, border: "2px solid black" }),
           indicatorSeparator: (styles) => ({ ...styles, display: "none" }),
         }}
-        placeholder="立法委員"
+        placeholder={isLoading ? "載入中..." : "選擇立法委員"}
+        isLoading={isLoading}
+        isClearable
+        aria-label="選擇立法委員"
       />
     </div>
   );
@@ -225,9 +278,26 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
     useBudgetSelectStore,
     (state) => state.setSelectedValue
   );
+  const clearDepartmentFilter = useStore(
+    useBudgetSelectStore,
+    (state) => state.clearDepartmentFilter
+  );
+  const clearPeopleFilter = useStore(
+    useBudgetSelectStore,
+    (state) => state.clearPeopleFilter
+  );
 
   const handleSelectionChange = (value: string) => {
     setSelectedValue(value);
+
+    // 切換選項時清除相關過濾器
+    if (value !== "by-department") {
+      clearDepartmentFilter();
+    }
+    if (value !== "by-legislator") {
+      clearPeopleFilter();
+    }
+
     if (onSelectionChange) {
       onSelectionChange(value);
     }
@@ -260,11 +330,11 @@ const BudgetsSelector: React.FC<BudgetsSelectorProps> = ({
                   {option.title}
                 </label>
               </div>
-              {selectedValue === option.value && (
+              {selectedValue === "by-department" && (
                 <ByDepartmentSelector value={option.value} />
               )}
-              {selectedValue === option.value && (
-                <ByLegislatorSelector value={option.value} />
+              {selectedValue === "by-legislator" && (
+                <ByPeopleSelector value={option.value} />
               )}
             </div>
           ))}

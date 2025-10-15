@@ -38,6 +38,10 @@ const AllBudgets = () => {
     useBudgetSelectStore,
     (s) => s.departmentFilter.departmentId
   );
+  const personId = useStore(
+    useBudgetSelectStore,
+    (s) => s.peopleFilter.personId
+  );
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   // 重複資料檢測 Map
@@ -61,15 +65,26 @@ const AllBudgets = () => {
   }, [selectedSort]);
 
   const whereFilter = useMemo((): ProposalWhereInput => {
+    const filters: ProposalWhereInput = {};
+
+    // Department 過濾
     if (departmentId) {
-      return {
-        government: {
-          id: { equals: departmentId },
+      filters.government = {
+        id: { equals: departmentId },
+      };
+    }
+
+    // People (Legislator) 過濾
+    if (personId) {
+      filters.proposers = {
+        some: {
+          id: { equals: personId },
         },
       };
     }
-    return {};
-  }, [departmentId]);
+
+    return filters;
+  }, [departmentId, personId]);
 
   // 修改後的 React Query（支援分頁）
   const { data, isLoading, isError, isPlaceholderData } = useQuery({
@@ -99,7 +114,7 @@ const AllBudgets = () => {
   // 排序或篩選變更時重置到第 1 頁
   useEffect(() => {
     setPage(1);
-  }, [selectedSort, departmentId, setPage]);
+  }, [selectedSort, departmentId, personId, setPage]);
 
   // 重複資料檢測
   useEffect(() => {

@@ -5,6 +5,8 @@ export {
   budgetQueryKeys,
   GET_GOVERNMENTS_QUERY,
   governmentQueryKeys,
+  GET_PEOPLE_LIST_QUERY,
+  peopleQueryKeys,
 } from "./budget.queries";
 
 // Add other query exports here as you create more query files

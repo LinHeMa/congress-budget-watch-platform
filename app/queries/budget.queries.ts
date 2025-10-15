@@ -94,3 +94,32 @@ export const governmentQueryKeys = {
   list: (filters?: Record<string, unknown>) =>
     [...governmentQueryKeys.lists(), { filters }] as const,
 } as const;
+
+/**
+ * GraphQL query to get all people (legislators) with party info
+ */
+export const GET_PEOPLE_LIST_QUERY = graphql(`
+  query GetPeopleList {
+    peopleList(orderBy: [{ name: asc }]) {
+      id
+      name
+      type
+      description
+      party {
+        id
+        name
+        type
+      }
+    }
+  }
+`);
+
+/**
+ * React Query keys for people-related queries
+ */
+export const peopleQueryKeys = {
+  all: ["people"] as const,
+  lists: () => [...peopleQueryKeys.all, "list"] as const,
+  list: (filters?: Record<string, unknown>) =>
+    [...peopleQueryKeys.lists(), { filters }] as const,
+} as const;

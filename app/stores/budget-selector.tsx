@@ -5,6 +5,10 @@ type DepartmentFilter = {
   departmentId: string | null;
 };
 
+type PeopleFilter = {
+  personId: string | null;
+};
+
 type BudgetSelectProps = {
   selectedValue: string;
   searchedValue: string;
@@ -12,6 +16,7 @@ type BudgetSelectProps = {
   // 排序相關
   selectedSort: string;
   departmentFilter: DepartmentFilter;
+  peopleFilter: PeopleFilter;
 };
 
 type BudgetSelectState = BudgetSelectProps & {
@@ -23,6 +28,8 @@ type BudgetSelectState = BudgetSelectProps & {
   setDepartmentCategory: (category: string | null) => void;
   setDepartmentId: (id: string | null) => void;
   clearDepartmentFilter: () => void;
+  setPersonId: (id: string | null) => void;
+  clearPeopleFilter: () => void;
 };
 
 /**
@@ -34,6 +41,7 @@ const DEFAULT_PROPS: BudgetSelectProps = {
   visible: true,
   selectedSort: "id-asc",
   departmentFilter: { category: null, departmentId: null },
+  peopleFilter: { personId: null },
 };
 
 /**
@@ -96,6 +104,22 @@ export const createBudgetSelectStore = (
       set((state) => ({
         ...state,
         selectedValue: DEFAULT_PROPS.selectedValue,
+      })),
+
+    setPersonId: (id: string | null) =>
+      set((state) => ({
+        ...state,
+        peopleFilter: {
+          personId: id,
+        },
+      })),
+
+    clearPeopleFilter: () =>
+      set((state) => ({
+        ...state,
+        peopleFilter: {
+          personId: null,
+        },
       })),
   }));
 };
