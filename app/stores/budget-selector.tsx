@@ -23,7 +23,7 @@ const DEFAULT_PROPS: BudgetSelectProps = {
   selectedValue: "all",
   searchedValue: "",
   visible: true,
-  selectedSort: "projectName-asc",
+  selectedSort: "id-asc",
 };
 
 /**

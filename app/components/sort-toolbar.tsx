@@ -4,40 +4,16 @@ import { DropdownIndicator } from "~/components/budgets-selector";
 
 export const sortOptions = [
   {
-    value: "description-asc",
-    label: "提案描述 (A-Z)",
-    field: "description",
-    direction: "asc",
-  },
-  {
-    value: "description-desc",
-    label: "提案描述 (Z-A)",
-    field: "description",
-    direction: "desc",
-  },
-  {
-    value: "freezeAmount-desc",
-    label: "凍結金額 (高到低)",
-    field: "freezeAmount",
-    direction: "desc",
-  },
-  {
-    value: "freezeAmount-asc",
-    label: "凍結金額 (低到高)",
-    field: "freezeAmount",
+    value: "id-asc",
+    label: "編號 (升序)",
+    field: "id",
     direction: "asc",
   },
   {
     value: "id-desc",
-    label: "提案時間 (新到舊)",
+    label: "編號 (降序)",
     field: "id",
     direction: "desc",
-  },
-  {
-    value: "id-asc",
-    label: "提案時間 (舊到新)",
-    field: "id",
-    direction: "asc",
   },
 ] as const;
 
