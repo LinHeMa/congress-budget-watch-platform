@@ -2,60 +2,17 @@ import * as d3 from "d3";
 import { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router";
 import { FROZEN_PATH_D } from "~/constants/svg-paths";
-
-type NodeDatum = {
-  name: string;
-  value?: number;
-  color?: string;
-  id?: string;
-  isFrozen?: boolean;
-  children?: NodeDatum[];
-};
-
-const FAKE_DATA: NodeDatum = {
-  name: "root",
-  children: [
-    {
-      name: "徐巧芯\n中國國民黨\n999999萬",
-      value: 999999,
-      color: "#6B7FFF",
-      isFrozen: true,
-      id: "1-14-1-05-024-7990",
-    },
-    {
-      name: "徐巧芯\n中國國民黨\n689998萬",
-      value: 689998,
-      color: "#6B7FFF",
-      id: "1-14-1-05-024-7991",
-      children: [
-        // { name: "B-1", value: 1600 },
-        // { name: "B-2", value: 300 },
-      ],
-    },
-    {
-      name: "徐巧芯\n中國國民黨\n70000萬",
-      value: 70000,
-      color: "#6B7FFF",
-      id: "1-14-1-05-024-7992",
-      children: [
-        // { name: "C-1", value: 600 },
-        // { name: "C-2", value: 500 },
-        // { name: "C-3", value: 400 },
-        // { name: "C-4", value: 300 },
-      ],
-    },
-  ],
-};
+import type { NodeDatum } from "./helpers";
 
 type CirclePackChartProps = {
-  data?: NodeDatum;
+  data: NodeDatum;
   width?: number;
   height?: number;
   padding?: number;
 };
 
 const CirclePackChart = ({
-  data = FAKE_DATA,
+  data,
   width: customWidth = 720,
   height: customHeight,
   padding = 3,

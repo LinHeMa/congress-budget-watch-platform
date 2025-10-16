@@ -108,7 +108,6 @@ export const GET_PEOPLE_LIST_QUERY = graphql(`
       party {
         id
         name
-        type
       }
     }
   }

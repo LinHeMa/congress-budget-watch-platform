@@ -262,6 +262,9 @@ export const GET_PAGINATED_PROPOSALS_QUERY = graphql(`
         name
         type
         description
+        party {
+          name
+        }
       }
       coSigners {
         id

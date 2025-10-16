@@ -133,6 +133,7 @@ export type Committee = {
   displayName?: Maybe<Scalars['String']['output']>;
   endDate?: Maybe<Scalars['DateTime']['output']>;
   id: Scalars['ID']['output'];
+  key?: Maybe<Scalars['String']['output']>;
   members?: Maybe<Array<People>>;
   membersCount?: Maybe<Scalars['Int']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -604,6 +605,8 @@ export type Mutation = {
   createInitialUser: UserAuthenticationWithPasswordSuccess;
   createMeeting?: Maybe<Meeting>;
   createMeetings?: Maybe<Array<Maybe<Meeting>>>;
+  createParties?: Maybe<Array<Maybe<Party>>>;
+  createParty?: Maybe<Party>;
   createPeople?: Maybe<People>;
   createPeopleList?: Maybe<Array<Maybe<People>>>;
   createProposal?: Maybe<Proposal>;
@@ -624,6 +627,8 @@ export type Mutation = {
   deleteGovernments?: Maybe<Array<Maybe<Government>>>;
   deleteMeeting?: Maybe<Meeting>;
   deleteMeetings?: Maybe<Array<Maybe<Meeting>>>;
+  deleteParties?: Maybe<Array<Maybe<Party>>>;
+  deleteParty?: Maybe<Party>;
   deletePeople?: Maybe<People>;
   deletePeopleList?: Maybe<Array<Maybe<People>>>;
   deleteProposal?: Maybe<Proposal>;
@@ -645,6 +650,8 @@ export type Mutation = {
   updateGovernments?: Maybe<Array<Maybe<Government>>>;
   updateMeeting?: Maybe<Meeting>;
   updateMeetings?: Maybe<Array<Maybe<Meeting>>>;
+  updateParties?: Maybe<Array<Maybe<Party>>>;
+  updateParty?: Maybe<Party>;
   updatePeople?: Maybe<People>;
   updatePeopleList?: Maybe<Array<Maybe<People>>>;
   updateProposal?: Maybe<Proposal>;
@@ -708,6 +715,16 @@ export type MutationCreateMeetingArgs = {
 
 export type MutationCreateMeetingsArgs = {
   data: Array<MeetingCreateInput>;
+};
+
+
+export type MutationCreatePartiesArgs = {
+  data: Array<PartyCreateInput>;
+};
+
+
+export type MutationCreatePartyArgs = {
+  data: PartyCreateInput;
 };
 
 
@@ -808,6 +825,16 @@ export type MutationDeleteMeetingArgs = {
 
 export type MutationDeleteMeetingsArgs = {
   where: Array<MeetingWhereUniqueInput>;
+};
+
+
+export type MutationDeletePartiesArgs = {
+  where: Array<PartyWhereUniqueInput>;
+};
+
+
+export type MutationDeletePartyArgs = {
+  where: PartyWhereUniqueInput;
 };
 
 
@@ -915,6 +942,17 @@ export type MutationUpdateMeetingsArgs = {
 };
 
 
+export type MutationUpdatePartiesArgs = {
+  data: Array<PartyUpdateArgs>;
+};
+
+
+export type MutationUpdatePartyArgs = {
+  data: PartyUpdateInput;
+  where: PartyWhereUniqueInput;
+};
+
+
 export type MutationUpdatePeopleArgs = {
   data: PeopleUpdateInput;
   where: PeopleWhereUniqueInput;
@@ -1013,6 +1051,54 @@ export enum OrderDirection {
   Desc = 'desc'
 }
 
+export type Party = {
+  __typename?: 'Party';
+  id: Scalars['ID']['output'];
+  name?: Maybe<Scalars['String']['output']>;
+};
+
+export type PartyCreateInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PartyOrderByInput = {
+  id?: InputMaybe<OrderDirection>;
+  name?: InputMaybe<OrderDirection>;
+};
+
+export type PartyRelateToOneForCreateInput = {
+  connect?: InputMaybe<PartyWhereUniqueInput>;
+  create?: InputMaybe<PartyCreateInput>;
+};
+
+export type PartyRelateToOneForUpdateInput = {
+  connect?: InputMaybe<PartyWhereUniqueInput>;
+  create?: InputMaybe<PartyCreateInput>;
+  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+export type PartyUpdateArgs = {
+  data: PartyUpdateInput;
+  where: PartyWhereUniqueInput;
+};
+
+export type PartyUpdateInput = {
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type PartyWhereInput = {
+  AND?: InputMaybe<Array<PartyWhereInput>>;
+  NOT?: InputMaybe<Array<PartyWhereInput>>;
+  OR?: InputMaybe<Array<PartyWhereInput>>;
+  id?: InputMaybe<IdFilter>;
+  name?: InputMaybe<StringFilter>;
+};
+
+export type PartyWhereUniqueInput = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+};
+
 export type PasswordState = {
   __typename?: 'PasswordState';
   isSet: Scalars['Boolean']['output'];
@@ -1025,7 +1111,7 @@ export type People = {
   description?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   name?: Maybe<Scalars['String']['output']>;
-  party?: Maybe<People>;
+  party?: Maybe<Party>;
   term?: Maybe<Term>;
   type?: Maybe<Scalars['String']['output']>;
 };
@@ -1048,7 +1134,7 @@ export type PeopleCreateInput = {
   committees?: InputMaybe<CommitteeRelateToManyForCreateInput>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  party?: InputMaybe<PeopleRelateToOneForCreateInput>;
+  party?: InputMaybe<PartyRelateToOneForCreateInput>;
   term?: InputMaybe<TermRelateToOneForCreateInput>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1078,17 +1164,6 @@ export type PeopleRelateToManyForUpdateInput = {
   set?: InputMaybe<Array<PeopleWhereUniqueInput>>;
 };
 
-export type PeopleRelateToOneForCreateInput = {
-  connect?: InputMaybe<PeopleWhereUniqueInput>;
-  create?: InputMaybe<PeopleCreateInput>;
-};
-
-export type PeopleRelateToOneForUpdateInput = {
-  connect?: InputMaybe<PeopleWhereUniqueInput>;
-  create?: InputMaybe<PeopleCreateInput>;
-  disconnect?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
 export type PeopleUpdateArgs = {
   data: PeopleUpdateInput;
   where: PeopleWhereUniqueInput;
@@ -1098,7 +1173,7 @@ export type PeopleUpdateInput = {
   committees?: InputMaybe<CommitteeRelateToManyForUpdateInput>;
   description?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
-  party?: InputMaybe<PeopleRelateToOneForUpdateInput>;
+  party?: InputMaybe<PartyRelateToOneForUpdateInput>;
   term?: InputMaybe<TermRelateToOneForUpdateInput>;
   type?: InputMaybe<Scalars['String']['input']>;
 };
@@ -1111,7 +1186,7 @@ export type PeopleWhereInput = {
   description?: InputMaybe<StringFilter>;
   id?: InputMaybe<IdFilter>;
   name?: InputMaybe<StringFilter>;
-  party?: InputMaybe<PeopleWhereInput>;
+  party?: InputMaybe<PartyWhereInput>;
   term?: InputMaybe<TermWhereInput>;
   type?: InputMaybe<StringFilter>;
 };
@@ -1381,6 +1456,9 @@ export type Query = {
   meeting?: Maybe<Meeting>;
   meetings?: Maybe<Array<Meeting>>;
   meetingsCount?: Maybe<Scalars['Int']['output']>;
+  parties?: Maybe<Array<Party>>;
+  partiesCount?: Maybe<Scalars['Int']['output']>;
+  party?: Maybe<Party>;
   people?: Maybe<People>;
   peopleList?: Maybe<Array<People>>;
   peopleListCount?: Maybe<Scalars['Int']['output']>;
@@ -1475,6 +1553,25 @@ export type QueryMeetingsArgs = {
 
 export type QueryMeetingsCountArgs = {
   where?: MeetingWhereInput;
+};
+
+
+export type QueryPartiesArgs = {
+  cursor?: InputMaybe<PartyWhereUniqueInput>;
+  orderBy?: Array<PartyOrderByInput>;
+  skip?: Scalars['Int']['input'];
+  take?: InputMaybe<Scalars['Int']['input']>;
+  where?: PartyWhereInput;
+};
+
+
+export type QueryPartiesCountArgs = {
+  where?: PartyWhereInput;
+};
+
+
+export type QueryPartyArgs = {
+  where: PartyWhereUniqueInput;
 };
 
 
@@ -1894,6 +1991,7 @@ export type TermWhereInput = {
 
 export type TermWhereUniqueInput = {
   id?: InputMaybe<Scalars['ID']['input']>;
+  termNumber?: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type User = {
@@ -1977,7 +2075,7 @@ export type GetGovernmentsQuery = { __typename?: 'Query', governments?: Array<{ 
 export type GetPeopleListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPeopleListQuery = { __typename?: 'Query', peopleList?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null, party?: { __typename?: 'People', id: string, name?: string | null, type?: string | null } | null }> | null };
+export type GetPeopleListQuery = { __typename?: 'Query', peopleList?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null, party?: { __typename?: 'Party', id: string, name?: string | null } | null }> | null };
 
 export type GetProposalsOrderedByIdDescQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1999,7 +2097,7 @@ export type GetPaginatedProposalsQueryVariables = Exact<{
 }>;
 
 
-export type GetPaginatedProposalsQuery = { __typename?: 'Query', proposalsCount?: number | null, proposals?: Array<{ __typename?: 'Proposal', id: string, description?: string | null, reason?: string | null, publishStatus?: string | null, result?: string | null, freezeAmount?: number | null, reductionAmount?: number | null, budgetImageUrl?: string | null, proposalTypes?: Array<ProposalProposalTypeType> | null, recognitionAnswer?: string | null, unfreezeStatus?: string | null, government?: { __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null } | null, budget?: { __typename?: 'Budget', id: string, projectName?: string | null, budgetAmount?: number | null, year?: number | null, type?: string | null, majorCategory?: string | null, mediumCategory?: string | null, minorCategory?: string | null } | null, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null }> | null, coSigners?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null }> | null }> | null };
+export type GetPaginatedProposalsQuery = { __typename?: 'Query', proposalsCount?: number | null, proposals?: Array<{ __typename?: 'Proposal', id: string, description?: string | null, reason?: string | null, publishStatus?: string | null, result?: string | null, freezeAmount?: number | null, reductionAmount?: number | null, budgetImageUrl?: string | null, proposalTypes?: Array<ProposalProposalTypeType> | null, recognitionAnswer?: string | null, unfreezeStatus?: string | null, government?: { __typename?: 'Government', id: string, name?: string | null, category?: string | null, description?: string | null } | null, budget?: { __typename?: 'Budget', id: string, projectName?: string | null, budgetAmount?: number | null, year?: number | null, type?: string | null, majorCategory?: string | null, mediumCategory?: string | null, minorCategory?: string | null } | null, proposers?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null, description?: string | null, party?: { __typename?: 'Party', name?: string | null } | null }> | null, coSigners?: Array<{ __typename?: 'People', id: string, name?: string | null, type?: string | null }> | null }> | null };
 
 export class TypedDocumentString<TResult, TVariables>
   extends String
@@ -2062,7 +2160,6 @@ export const GetPeopleListDocument = new TypedDocumentString(`
     party {
       id
       name
-      type
     }
   }
 }
@@ -2218,6 +2315,9 @@ export const GetPaginatedProposalsDocument = new TypedDocumentString(`
       name
       type
       description
+      party {
+        name
+      }
     }
     coSigners {
       id

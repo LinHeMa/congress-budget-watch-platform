@@ -115,6 +115,7 @@ type Committee {
   displayName: String
   endDate: DateTime
   id: ID!
+  key: String
   members(cursor: PeopleWhereUniqueInput, orderBy: [PeopleOrderByInput!]! = [], skip: Int! = 0, take: Int, where: PeopleWhereInput! = {}): [People!]
   membersCount(where: PeopleWhereInput! = {}): Int
   name: String
@@ -557,6 +558,8 @@ type Mutation {
   createInitialUser(data: CreateInitialUserInput!): UserAuthenticationWithPasswordSuccess!
   createMeeting(data: MeetingCreateInput!): Meeting
   createMeetings(data: [MeetingCreateInput!]!): [Meeting]
+  createParties(data: [PartyCreateInput!]!): [Party]
+  createParty(data: PartyCreateInput!): Party
   createPeople(data: PeopleCreateInput!): People
   createPeopleList(data: [PeopleCreateInput!]!): [People]
   createProposal(data: ProposalCreateInput!): Proposal
@@ -577,6 +580,8 @@ type Mutation {
   deleteGovernments(where: [GovernmentWhereUniqueInput!]!): [Government]
   deleteMeeting(where: MeetingWhereUniqueInput!): Meeting
   deleteMeetings(where: [MeetingWhereUniqueInput!]!): [Meeting]
+  deleteParties(where: [PartyWhereUniqueInput!]!): [Party]
+  deleteParty(where: PartyWhereUniqueInput!): Party
   deletePeople(where: PeopleWhereUniqueInput!): People
   deletePeopleList(where: [PeopleWhereUniqueInput!]!): [People]
   deleteProposal(where: ProposalWhereUniqueInput!): Proposal
@@ -598,6 +603,8 @@ type Mutation {
   updateGovernments(data: [GovernmentUpdateArgs!]!): [Government]
   updateMeeting(data: MeetingUpdateInput!, where: MeetingWhereUniqueInput!): Meeting
   updateMeetings(data: [MeetingUpdateArgs!]!): [Meeting]
+  updateParties(data: [PartyUpdateArgs!]!): [Party]
+  updateParty(data: PartyUpdateInput!, where: PartyWhereUniqueInput!): Party
   updatePeople(data: PeopleUpdateInput!, where: PeopleWhereUniqueInput!): People
   updatePeopleList(data: [PeopleUpdateArgs!]!): [People]
   updateProposal(data: ProposalUpdateInput!, where: ProposalWhereUniqueInput!): Proposal
@@ -645,6 +652,53 @@ enum OrderDirection {
   desc
 }
 
+type Party {
+  id: ID!
+  name: String
+}
+
+input PartyCreateInput {
+  name: String
+}
+
+input PartyOrderByInput {
+  id: OrderDirection
+  name: OrderDirection
+}
+
+input PartyRelateToOneForCreateInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateInput
+}
+
+input PartyRelateToOneForUpdateInput {
+  connect: PartyWhereUniqueInput
+  create: PartyCreateInput
+  disconnect: Boolean
+}
+
+input PartyUpdateArgs {
+  data: PartyUpdateInput!
+  where: PartyWhereUniqueInput!
+}
+
+input PartyUpdateInput {
+  name: String
+}
+
+input PartyWhereInput {
+  AND: [PartyWhereInput!]
+  NOT: [PartyWhereInput!]
+  OR: [PartyWhereInput!]
+  id: IDFilter
+  name: StringFilter
+}
+
+input PartyWhereUniqueInput {
+  id: ID
+  name: String
+}
+
 type PasswordState {
   isSet: Boolean!
 }
@@ -655,7 +709,7 @@ type People {
   description: String
   id: ID!
   name: String
-  party: People
+  party: Party
   term: Term
   type: String
 }
@@ -664,7 +718,7 @@ input PeopleCreateInput {
   committees: CommitteeRelateToManyForCreateInput
   description: String
   name: String
-  party: PeopleRelateToOneForCreateInput
+  party: PartyRelateToOneForCreateInput
   term: TermRelateToOneForCreateInput
   type: String
 }
@@ -694,17 +748,6 @@ input PeopleRelateToManyForUpdateInput {
   set: [PeopleWhereUniqueInput!]
 }
 
-input PeopleRelateToOneForCreateInput {
-  connect: PeopleWhereUniqueInput
-  create: PeopleCreateInput
-}
-
-input PeopleRelateToOneForUpdateInput {
-  connect: PeopleWhereUniqueInput
-  create: PeopleCreateInput
-  disconnect: Boolean
-}
-
 input PeopleUpdateArgs {
   data: PeopleUpdateInput!
   where: PeopleWhereUniqueInput!
@@ -714,7 +757,7 @@ input PeopleUpdateInput {
   committees: CommitteeRelateToManyForUpdateInput
   description: String
   name: String
-  party: PeopleRelateToOneForUpdateInput
+  party: PartyRelateToOneForUpdateInput
   term: TermRelateToOneForUpdateInput
   type: String
 }
@@ -727,7 +770,7 @@ input PeopleWhereInput {
   description: StringFilter
   id: IDFilter
   name: StringFilter
-  party: PeopleWhereInput
+  party: PartyWhereInput
   term: TermWhereInput
   type: StringFilter
 }
@@ -911,6 +954,9 @@ type Query {
   meeting(where: MeetingWhereUniqueInput!): Meeting
   meetings(cursor: MeetingWhereUniqueInput, orderBy: [MeetingOrderByInput!]! = [], skip: Int! = 0, take: Int, where: MeetingWhereInput! = {}): [Meeting!]
   meetingsCount(where: MeetingWhereInput! = {}): Int
+  parties(cursor: PartyWhereUniqueInput, orderBy: [PartyOrderByInput!]! = [], skip: Int! = 0, take: Int, where: PartyWhereInput! = {}): [Party!]
+  partiesCount(where: PartyWhereInput! = {}): Int
+  party(where: PartyWhereUniqueInput!): Party
   people(where: PeopleWhereUniqueInput!): People
   peopleList(cursor: PeopleWhereUniqueInput, orderBy: [PeopleOrderByInput!]! = [], skip: Int! = 0, take: Int, where: PeopleWhereInput! = {}): [People!]
   peopleListCount(where: PeopleWhereInput! = {}): Int
@@ -1203,6 +1249,7 @@ input TermWhereInput {
 
 input TermWhereUniqueInput {
   id: ID
+  termNumber: Int
 }
 
 type User {

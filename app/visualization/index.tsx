@@ -1,9 +1,20 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { VisualizationSelector } from "~/components/visualization-selector";
 import CirclePackChart from "./circle-pack-chart";
 import DepartmentChart from "./department";
 import BudgetTypeLegend from "~/components/budget-type-legend";
 import { BUDGET_TYPE_LEGEND_ITEMS } from "~/constants/legends";
+import { GET_PAGINATED_PROPOSALS_QUERY, proposalQueryKeys } from "~/queries";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { execute } from "~/graphql/execute";
+import {
+  OrderDirection,
+  ProposalProposalTypeType,
+  type ProposalOrderByInput,
+  type ProposalWhereInput,
+} from "~/graphql/graphql";
+import { sortOptions } from "~/components/sort-toolbar";
+import { transformToCirclePackData } from "./helpers";
 
 type OptionType = {
   value: string;
@@ -21,6 +32,101 @@ const Visualization = () => {
   const [activeTab, setActiveTab] = useState("legislator");
   const [mode, setMode] = useState<"amount" | "count">("amount");
   const [selectOptions, setSelectOptions] = useState<OptionType[]>(yearOptions);
+  const selectedSort = "id-asc";
+  const currentPage = 1;
+  const pageSize = 10;
+  const whereFilter = () => {
+    const filters: ProposalWhereInput = {};
+
+    return filters;
+  };
+  const orderBy = useMemo((): ProposalOrderByInput[] => {
+    // 將 sortOptions 的 value 轉換為 GraphQL orderBy 格式
+    const sortOption = sortOptions.find((o) => o.value === selectedSort);
+    if (!sortOption) return [{ id: OrderDirection.Desc }];
+
+    const direction =
+      sortOption.direction === "asc" ? OrderDirection.Asc : OrderDirection.Desc;
+
+    return [
+      {
+        [sortOption.field]: direction,
+      },
+    ];
+  }, [selectedSort]);
+  const { data, isLoading, isError, isPlaceholderData } = useQuery({
+    queryKey: proposalQueryKeys.paginated(
+      currentPage,
+      pageSize,
+      selectedSort,
+      whereFilter()
+    ),
+    queryFn: () =>
+      execute(GET_PAGINATED_PROPOSALS_QUERY, {
+        skip: 0,
+        take: pageSize,
+        orderBy,
+        where: whereFilter(),
+      }),
+    placeholderData: keepPreviousData, // 避免切頁時閃爍
+  });
+
+  const summaryStats = useMemo(() => {
+    if (!data?.proposals) {
+      return {
+        totalReductionAmount: 0,
+        reductionCount: 0,
+        totalFreezeAmount: 0,
+        freezeCount: 0,
+        mainResolutionCount: 0,
+      };
+    }
+
+    return data.proposals.reduce(
+      (acc, proposal) => {
+        if (proposal.reductionAmount) {
+          acc.totalReductionAmount += proposal.reductionAmount;
+          acc.reductionCount += 1;
+        }
+        if (proposal.freezeAmount) {
+          acc.totalFreezeAmount += proposal.freezeAmount;
+          acc.freezeCount += 1;
+        }
+        if (proposal.proposalTypes?.includes(ProposalProposalTypeType.Other)) {
+          acc.mainResolutionCount += 1;
+        }
+        return acc;
+      },
+      {
+        totalReductionAmount: 0,
+        reductionCount: 0,
+        totalFreezeAmount: 0,
+        freezeCount: 0,
+        mainResolutionCount: 0,
+      }
+    );
+  }, [data]);
+
+  const circlePackData = useMemo(() => {
+    if (!data) return null;
+    return transformToCirclePackData(data);
+  }, [data]);
+
+  if (isLoading) {
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <p>載入中...</p>
+      </div>
+    );
+  }
+
+  if (isError) {
+    return (
+      <div className="flex h-96 items-center justify-center">
+        <p className="text-red-600">資料載入失敗，請稍後再試。</p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -87,20 +193,38 @@ const Visualization = () => {
         <div className="flex flex-col items-center justify-center rounded-lg border-2 bg-[#E9E9E9] p-2.5 md:mx-auto md:max-w-[488px]">
           <div>
             <p>
-              總共刪減 <span className="text-[#E9808E]">28,470,404</span>元（
-              <span className="text-[#E9808E]">32</span>個提案）
+              總共刪減{" "}
+              <span className="text-[#E9808E]">
+                {summaryStats.totalReductionAmount.toLocaleString()}
+              </span>
+              元（
+              <span className="text-[#E9808E]">
+                {summaryStats.reductionCount}
+              </span>
+              個提案）
             </p>
             <p>
-              凍結 <span className="text-[#E9808E]">28,470</span>元（
-              <span className="text-[#E9808E]">134</span>個提案）
+              凍結{" "}
+              <span className="text-[#E9808E]">
+                {summaryStats.totalFreezeAmount.toLocaleString()}
+              </span>
+              元（
+              <span className="text-[#E9808E]">{summaryStats.freezeCount}</span>
+              個提案）
             </p>
             <p>
-              主決議提案數： <span className="text-[#E9808E]">32</span>個
+              主決議提案數：
+              <span className="text-[#E9808E]">
+                {summaryStats.mainResolutionCount}
+              </span>
+              個
             </p>
           </div>
         </div>
         <BudgetTypeLegend items={BUDGET_TYPE_LEGEND_ITEMS} />
-        {activeTab === "legislator" && <CirclePackChart />}
+        {activeTab === "legislator" && circlePackData && (
+          <CirclePackChart data={circlePackData} />
+        )}
         {activeTab === "department" && <DepartmentChart />}
       </div>
     </div>
