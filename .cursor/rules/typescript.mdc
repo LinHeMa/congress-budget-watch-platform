@@ -1,0 +1,47 @@
+---
+description: "禁止使用 `any` 型別，應優先使用 `type` 關鍵字定義明確的型別，或讓 TypeScript 自動推斷型別。"
+globs:
+  - "**/*.ts"
+  - "**/*.tsx"
+alwaysApply: true
+---
+
+在 TypeScript 中，應始終避免使用 `any` 型別。`any` 會關閉型別檢查，削弱 TypeScript 提供的安全性。
+
+**遵循原則：**
+
+1.  **禁止使用 `any`**：在任何情況下都不要使用 `any`。
+2.  **型別推斷**：盡可能讓 TypeScript 自動推斷變數或函式回傳值的型別。
+3.  **明確定義**：若無法推斷，請使用 `type` 關鍵字手動建立型別定義。若情況需要，也可使用 `type`。
+4.  **引入共享型別**：若型別已在其他地方定義（例如 GraphQL schema 或共享函式庫），請直接引入使用。
+5.  **未知型別 `unknown`**：若變數的型別在編譯時期確實未知，應使用 `unknown` 而非 `any`。`unknown` 更安全，因为它要求在使用前必須先進行型別檢查或斷言。
+
+**範例：**
+
+```typescript
+// 不佳：使用 any
+let data: any;
+data = "some string";
+console.log(data.toUpperCase()); // 런타임 오류 위험
+
+// 良好：型別推斷
+let inferredData = "some string";
+console.log(inferredData.toUpperCase());
+
+// 良好：明確定義型別
+type UserProfile = {
+  id: number;
+  name: string;
+};
+
+function getUser(): UserProfile {
+  // ...
+}
+
+// 良好：使用 unknown 進行安全檢查
+function processUnknown(input: unknown) {
+  if (typeof input === 'string') {
+    console.log(input.toUpperCase());
+  }
+}
+```
