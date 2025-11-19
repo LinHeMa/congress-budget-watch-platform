@@ -1,7 +1,0 @@
-node_modules/
-build/
-.react-router/
-schema.graphql
-pnpm-lock.yaml
-.cursor
-.next
