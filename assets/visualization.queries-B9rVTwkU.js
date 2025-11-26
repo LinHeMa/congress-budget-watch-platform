@@ -1,4 +1,4 @@
-import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-HYPlJro8.js";const u="/congress-budget-watch-platform/".replace(/\/$/,""),m=`${u}/`,g=500,P=({src:e,...o})=>l.jsx("img",{src:m+e,...o});t(`
+import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js";const u="/congress-budget-watch-platform/".replace(/\/$/,""),m=`${u}/`,g=500,P=({src:e,...o})=>l.jsx("img",{src:m+e,...o});t(`
   query GetBudgetsWithGovernment {
     budgets {
       id
@@ -104,11 +104,18 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-HYPlJro8.js
       react_good
       react_whatever
       budgetImageUrl
+      historicalParentProposals {
+        id
+      }
+      mergedParentProposals {
+        id
+        proposers {
+          id
+          name
+        }
+      }
       historicalProposals {
         id
-        meetings {
-          id
-        }
       }
       government {
         id
@@ -159,6 +166,9 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-HYPlJro8.js
       }
       historicalProposals {
         id
+        meetings {
+          id
+        }
         proposers {
           id
           name
@@ -166,14 +176,14 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-HYPlJro8.js
       }
     }
   }
-`),$=t(`
+`),h=t(`
   query GetProposalYears {
     budgetYears(orderBy: [{ year: desc }]) {
       id
       year
     }
   }
-`),r={all:["proposals"],lists:()=>[...r.all,"list"],list:e=>[...r.lists(),{filters:e}],paginated:(e,o,n,p,d)=>[...r.lists(),"paginated",{page:e,pageSize:o,sortBy:n,where:p,year:d}],details:()=>[...r.all,"detail"],detail:e=>[...r.details(),e],years:()=>[...r.all,"years"]},h=t(`
+`),r={all:["proposals"],lists:()=>[...r.all,"list"],list:e=>[...r.lists(),{filters:e}],paginated:(e,o,n,p,d)=>[...r.lists(),"paginated",{page:e,pageSize:o,sortBy:n,where:p,year:d}],details:()=>[...r.all,"detail"],detail:e=>[...r.details(),e],years:()=>[...r.all,"years"]},$=t(`
   query GetPaginatedProposals(
     $skip: Int!
     $take: Int!
@@ -277,4 +287,4 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-HYPlJro8.js
       }
     }
   }
-`);export{S as G,P as I,m as S,I as U,g as a,i as b,$ as c,h as d,T as e,E as f,a as g,_ as h,s as i,A as j,r as p};
+`);export{S as G,P as I,m as S,I as U,g as a,i as b,h as c,$ as d,T as e,E as f,a as g,_ as h,s as i,A as j,r as p};
