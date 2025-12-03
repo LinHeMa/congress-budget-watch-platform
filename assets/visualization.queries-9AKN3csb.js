@@ -1,4 +1,4 @@
-import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js";const u="/congress-budget-watch-platform/".replace(/\/$/,""),m=`${u}/`,g=500,P=({src:e,...o})=>l.jsx("img",{src:m+e,...o});t(`
+import{p as d}from"./chunk-FGUA77HG-BrA7_UWl.js";import{t}from"./gql-B-mwqB7Q.js";const l="/congress-budget-watch-platform/".replace(/\/$/,""),u=`${l}/`,c=500,g=({src:e,...o})=>d.jsx("img",{src:u+e,...o});t(`
   query GetBudgetsWithGovernment {
     budgets {
       id
@@ -19,7 +19,7 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
     }
     budgetsCount
   }
-`);const _=t(`
+`);const P=t(`
   query GetGovernments {
     governments {
       id
@@ -28,7 +28,7 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
       description
     }
   }
-`),a={all:["governments"],lists:()=>[...a.all,"list"],list:e=>[...a.lists(),{filters:e}]},A=t(`
+`),a={all:["governments"],lists:()=>[...a.all,"list"],list:e=>[...a.lists(),{filters:e}]},_=t(`
   query GetPeopleList {
     peopleList(orderBy: [{ name: asc }]) {
       id
@@ -85,7 +85,7 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
     }
     proposalsCount
   }
-`);const E=t(`
+`);const A=t(`
   query GetProposalById($id: ID!) {
     proposal(where: { id: $id }) {
       id
@@ -176,14 +176,14 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
       }
     }
   }
-`),h=t(`
+`),E=t(`
   query GetProposalYears {
     budgetYears(orderBy: [{ year: desc }]) {
       id
       year
     }
   }
-`),r={all:["proposals"],lists:()=>[...r.all,"list"],list:e=>[...r.lists(),{filters:e}],paginated:(e,o,n,p,d)=>[...r.lists(),"paginated",{page:e,pageSize:o,sortBy:n,where:p,year:d}],details:()=>[...r.all,"detail"],detail:e=>[...r.details(),e],years:()=>[...r.all,"years"]},$=t(`
+`),r={all:["proposals"],lists:()=>[...r.all,"list"],list:e=>[...r.lists(),{filters:e}],paginated:(e,o,n,p)=>[...r.lists(),"paginated",{page:e,sortBy:o,where:n,year:p}],details:()=>[...r.all,"detail"],detail:e=>[...r.details(),e],years:()=>[...r.all,"years"]},h=t(`
   query GetPaginatedProposals(
     $skip: Int!
     $take: Int!
@@ -229,7 +229,7 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
     }
     proposalsCount(where: $where)
   }
-`),I=t(`
+`),S=t(`
   mutation UPDATE_PROPOSAL_REACTS(
     $where: ProposalWhereUniqueInput!
     $data: ProposalUpdateInput!
@@ -242,7 +242,7 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
       react_whatever
     }
   }
-`),S=t(`
+`),I=t(`
   query GetLatestBudgetYear($skip: Int!, $take: Int!) {
     budgetYears(orderBy: [{ year: desc }], skip: $skip, take: $take) {
       year
@@ -250,14 +250,13 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
       dataProgress
     }
   }
-`),i={all:["budgetYear"],list:(e=0,o=1)=>[...i.all,"list",{skip:e,take:o}],latest:()=>[...i.all,"latest"]},T=t(`
+`),i={all:["budgetYear"],list:(e=0,o=1)=>[...i.all,"list",{skip:e,take:o}],latest:()=>[...i.all,"latest"]},$=t(`
   query GetVisualizationProposals(
     $skip: Int!
-    $take: Int!
     $orderBy: [ProposalOrderByInput!]!
     $where: ProposalWhereInput!
   ) {
-    proposals(skip: $skip, take: $take, orderBy: $orderBy, where: $where) {
+    proposals(skip: $skip, orderBy: $orderBy, where: $where) {
       ...VisualizationProposalWithContext
     }
   }
@@ -287,4 +286,4 @@ import{p as l}from"./chunk-4WY6JWTD-2Cr-QbDP.js";import{t}from"./gql-lnTnoR53.js
       }
     }
   }
-`);export{S as G,P as I,m as S,I as U,g as a,i as b,h as c,$ as d,T as e,E as f,a as g,_ as h,s as i,A as j,r as p};
+`);export{I as G,g as I,u as S,S as U,c as a,i as b,E as c,h as d,$ as e,A as f,a as g,P as h,s as i,_ as j,r as p};
